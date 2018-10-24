@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 -- 新增panel物件   
 */
 public class Main_Frame extends Frame {
-    SuperPainter parent;
+    
      Main_Frame(String APPVERSION,String Title) {
         
         JPanel Panel_Main = new JPanel();     
