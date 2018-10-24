@@ -1,22 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package superpainter;
 
-/**
- *
- * @author lv379
- */
-public class SuperPainter {
 
-    /**
-     * @param args the command line arguments
-     */
+/**
+ SuperPainter -- JAVA 軟體工程實作
+ */
+
+
+public class SuperPainter {
+    
+    
     public static void main(String[] args) {
-       Main_Frame SP_Frame = new Main_Frame();
+       String APPVERSION= "20181024-build1357";
+       String Title = "SuperPrinter";
+       Main_Frame MF = new Main_Frame(APPVERSION,Title);
        
     }
+    
+    
     
 }
