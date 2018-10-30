@@ -8,14 +8,25 @@ import java.text.*;
 
 public class SuperPainter {
     
+    //自動日期版本設定
+    static boolean Auto_date_State = false;
+    //設定標題及手動版本號
+    static String  APPVERSION_static = "20181013 build 0446";
+    static String Title = "SuperPrinter";
+    //
     
     public static void main(String[] args) {
+       
+       
+       if(Auto_date_State == true){       
        Date Date = new Date( );
        SimpleDateFormat date = new SimpleDateFormat ("yyyyMMdd");
        SimpleDateFormat time = new SimpleDateFormat ("hhmm");
        String APPVERSION= date.format(Date) + "build" + time.format(Date);
-       String Title = "SuperPrinter";
-       Main_Frame MF = new Main_Frame(APPVERSION,Title);
+       new Main_Frame(APPVERSION,Title);     
+       }else if(Auto_date_State == false){          
+       new Main_Frame(APPVERSION_static,Title);      
+       } 
        
     }
     
