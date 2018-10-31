@@ -13,9 +13,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
-public class toolbartBTN extends Panel{
+public class toolbarBTN extends Panel{
     JButton lineBTN,circleBTN;
-    toolbartBTN(){
+    toolbarBTN(){
         super();
         lineBTN = new JButton("線");
         circleBTN = new JButton("圓");
