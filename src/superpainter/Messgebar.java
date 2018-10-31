@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 public class Messgebar extends Panel{
      Messgebar(){
         super();
+               
+                
+                
         
     }
     

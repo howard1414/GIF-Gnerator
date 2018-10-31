@@ -13,10 +13,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
-public class toolbarBTN extends JPanel{
+public class ToolbarBTN extends JPanel{
     JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN;
     final static JPanel Panel_Button = new JPanel();
-    toolbarBTN(){
+    ToolbarBTN(){
         super();
         saveBTN = new JButton("  存檔  ");
         LoadBTN = new JButton("  讀檔  ");
