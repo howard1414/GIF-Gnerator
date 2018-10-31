@@ -14,8 +14,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class toolbarBTN extends JPanel{
-    JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN;
+    JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN,setBTN;
     final static JPanel Panel_Button = new JPanel();
+    BTN_Option BTN_Option =new BTN_Option ();
     toolbarBTN(){
         super();
         saveBTN = new JButton("  存檔  ");
@@ -24,11 +25,16 @@ public class toolbarBTN extends JPanel{
         circleBTN = new JButton("  圓  ");
         lineBTN = new JButton("  線  ");
         closeBTN = new JButton("<<");
+        setBTN = new JButton("  選項  ");
         //設定外觀
         lineBTN.setFont(new Font("新細明體", Font.BOLD, 15));
         lineBTN.setBackground(new Color(0xFFBB00));
         lineBTN.setForeground(Color.white);
         lineBTN.setUI(new UI_Template());
+        setBTN.setFont(new Font("新細明體", Font.BOLD, 15));
+        setBTN.setBackground(new Color(0xFFBB00));
+        setBTN.setForeground(Color.white);
+        setBTN.setUI(new UI_Template());
         LoadBTN.setFont(new Font("新細明體", Font.BOLD, 15));
         LoadBTN.setBackground(new Color(0xFFBB00));
         LoadBTN.setForeground(Color.white);
@@ -58,7 +64,10 @@ public class toolbarBTN extends JPanel{
         Panel_Button.add(OptBTN);
         Panel_Button.add(lineBTN);
         Panel_Button.add(circleBTN); 
-        Panel_Button.add(closeBTN);      
+        Panel_Button.add(setBTN);
+        Panel_Button.add(closeBTN);
+        //設定建置
+        
         //按鍵動作
         closeBTN.addMouseListener(
                 new MouseAdapter()
@@ -69,9 +78,22 @@ public class toolbarBTN extends JPanel{
                     }
                 }
         );
-         //Panel_Button.pack();
+        setBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        setup();
+                    }
+                }
+        );
+        
     }
     public void set_pannel_visible(boolean state){
         Panel_Button.setVisible(state);
+    }
+    public void setup(){
+        BTN_Option.setVisible(true);
+        System.out.println("show...");
     }
 }

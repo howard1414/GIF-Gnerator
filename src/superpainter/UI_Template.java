@@ -30,11 +30,13 @@ public class UI_Template extends BasicButtonUI {
     @Override
     public void paint (Graphics g, JComponent c) {
         AbstractButton b = (AbstractButton) c;
-        paintBackground(g, b, b.getModel().isPressed() ? 2 : 0);
+        paint_click_Background(g, b, b.getModel().isPressed() ? 2 : 0);
+        //paint_moveon_Background(g, b, b.getModel().isRollover() ? 2 : 0);
+        
         super.paint(g, c);
     }
 
-    private void paintBackground (Graphics g, JComponent c, int yOffset) {
+    private void paint_click_Background (Graphics g, JComponent c, int yOffset) {
         Dimension size = c.getSize();
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -42,5 +44,14 @@ public class UI_Template extends BasicButtonUI {
         g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 10, 3);
         g.setColor(c.getBackground());
         g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 5, 10, 3);
+    }
+    private void paint_moveon_Background (Graphics g, JComponent c, int yOffset) {
+        Dimension size = c.getSize();
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(c.getBackground().darker());
+        g.fillRoundRect(0, yOffset, size.width, size.height - yOffset, 10, 3);
+        g.setColor(c.getBackground());
+        g.fillRoundRect(0, yOffset, size.width, size.height + yOffset - 5, 10, 5);
     }
 }

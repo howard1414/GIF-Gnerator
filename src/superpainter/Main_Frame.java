@@ -31,6 +31,7 @@ public class Main_Frame extends Frame {
                 }
             }
         );
+        this.pack();
 }
     
     void Add_Object(){
@@ -39,6 +40,7 @@ public class Main_Frame extends Frame {
         Panel_Main.add(Main_Drawing_space,BorderLayout.CENTER);
         toolbarBTN toolbarBTN = new toolbarBTN();
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
+        
     }
     
 }
