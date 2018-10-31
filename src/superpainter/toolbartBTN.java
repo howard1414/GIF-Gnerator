@@ -9,6 +9,18 @@ package superpainter;
  *
  * @author HALUNA
  */
-public class toolbartBTN {
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.JPanel;
+public class toolbartBTN extends Panel{
+    JButton lineBTN,circleBTN;
+    toolbartBTN(){
+        super();
+        lineBTN = new JButton("線");
+        circleBTN = new JButton("圓");
+        this.add(lineBTN);
+        this.add(circleBTN);        
+    }
     
 }

@@ -7,8 +7,16 @@ package superpainter;
 
 /**
  *
- * @author HALUNA
+ *訊息欄位設計
  */
-public class Messgebar {
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JPanel;
+public class Messgebar extends Panel{
+     Messgebar(){
+        super();
+        
+    }
+    
     
 }
