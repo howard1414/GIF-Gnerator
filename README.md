@@ -19,4 +19,10 @@ Computer Program Engineering (II) project work
 <br>- Add the listen event for the drawing frame (clicked)
 <br>- Set up the Main panel layout to board 
 
-
+<br> 20181031
+<br> building version 1521
+<br>- Add the button to the pannel
+<br>- Add the auto hiding menu
+<br>- Add the mouse motion listener
+<br>- Add the UI template
+<br>- Proving the mainframe performance

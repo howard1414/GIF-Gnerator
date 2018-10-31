@@ -11,10 +11,11 @@ import javax.swing.JPanel;
 -- 新增panel物件   
 */
 public class Main_Frame extends Frame {
-    JPanel Panel_Main = new JPanel(); 
+    public JPanel Panel_Main = new JPanel(); 
+    
      Main_Frame(String APPVERSION,String Title) {
         
-           
+        
         this.setSize(600,600);
         this.setLocation(200, 200);
         this.add(Panel_Main);
@@ -37,9 +38,14 @@ public class Main_Frame extends Frame {
         Main_Drawing_space Main_Drawing_space = new Main_Drawing_space();
         Panel_Main.add(Main_Drawing_space,BorderLayout.CENTER);
         toolbarBTN toolbarBTN = new toolbarBTN();
+<<<<<<< HEAD
         Panel_Main.add(toolbarBTN,BorderLayout.NORTH);
         Messgebar Messgerbar = new Messgebar();
         Panel_Main.add(Messgerbar,BorderLayout.SOUTH);
         
+=======
+        Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
+>>>>>>> 229ab04acde85373a1738e24370facde8ef564d7
     }
+    
 }
