@@ -2,6 +2,7 @@
 package superpainter;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.JPanel;
 /*
 主視窗介面
