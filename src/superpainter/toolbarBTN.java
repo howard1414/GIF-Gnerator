@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
-public class toolbarBTN extends Panel{
+public class toolbarBTN extends JPanel{
     JButton lineBTN,circleBTN;
     toolbarBTN(){
         super();
