@@ -10,13 +10,14 @@ import javax.swing.JPanel;
 -- 新增panel物件   
 */
 public class Main_Frame extends Frame {
-    
+    JPanel Panel_Main = new JPanel(); 
      Main_Frame(String APPVERSION,String Title) {
         
-        JPanel Panel_Main = new JPanel();     
+           
         this.setSize(600,600);
         this.setLocation(200, 200);
-        this.add(Panel_Main);  
+        this.add(Panel_Main);
+        Panel_Main.setLayout(new BorderLayout());
         this.setTitle(Title + " - " + APPVERSION);
         Add_Object();
         this.setVisible(true);
@@ -31,6 +32,8 @@ public class Main_Frame extends Frame {
 }
     
     void Add_Object(){
-        
+        //將其餘版面新增至程式面板上
+        Main_Drawing_space Main_Drawing_space = new Main_Drawing_space();
+        Panel_Main.add(Main_Drawing_space,BorderLayout.CENTER);
     }
 }
