@@ -33,12 +33,14 @@ public class Main_Frame extends Frame {
         );
         this.pack();
 }
-    
+ 
     void Add_Object(){
         //將其餘版面新增至程式面板上
         Main_Drawing_space Main_Drawing_space = new Main_Drawing_space();
         Panel_Main.add(Main_Drawing_space,BorderLayout.CENTER);
-        toolbarBTN toolbarBTN = new toolbarBTN();
+        Messgebar  Messgebar = new Messgebar();
+        ToolbarBTN toolbarBTN = new ToolbarBTN(Messgebar);
+        Panel_Main.add(Messgebar,BorderLayout.SOUTH);       
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
         
     }

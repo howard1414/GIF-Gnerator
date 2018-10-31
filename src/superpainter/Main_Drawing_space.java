@@ -31,7 +31,7 @@ public class Main_Drawing_space extends Panel{
                     {
                         x=e.getX();                     
                         if(x<20){
-                        toolbarBTN.Panel_Button.setVisible(true);                        
+                        ToolbarBTN.Panel_Button.setVisible(true);                        
                         }                 
                     }
                 }
