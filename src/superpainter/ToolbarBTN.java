@@ -91,8 +91,6 @@ public class ToolbarBTN extends JPanel{
                     }
                 }
         );    
-        
-
         LoadBTN.addMouseListener(
 
                 new MouseAdapter()
@@ -104,9 +102,6 @@ public class ToolbarBTN extends JPanel{
                     }
                 }
         );
-        
-
-
         saveBTN.addMouseListener(
                 new MouseAdapter()
                 {
@@ -144,12 +139,11 @@ public class ToolbarBTN extends JPanel{
                 }
         );
          //Panel_Button.pack();
-
     }
     public void set_pannel_visible(boolean state){
         Panel_Button.setVisible(state);
     }
     public void setup(){
-        BTN_Option.setVisible(true);
+        BTN_Option.setVisible(true);       
     }
 }
