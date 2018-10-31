@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
     JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN;
     final static JPanel Panel_Button = new JPanel();
-    ToolbarBTN(){
+    ToolbarBTN(Messgebar Messgebar){
         super();
         saveBTN = new JButton("  存檔  ");
         LoadBTN = new JButton("  讀檔  ");
@@ -66,6 +66,51 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                         set_pannel_visible(false);
+                    }
+                }
+        );
+        LoadBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        Messgebar.setLB("讀取檔案");
+                    }
+                }
+        );
+        saveBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                         Messgebar.setLB("儲存檔案");;
+                    }
+                }
+        );
+        OptBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                         Messgebar.setLB("輸出");
+                    }
+                }
+        );
+        lineBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                         Messgebar.setLB("畫線工具啟用中");
+                    }
+                }
+        );
+        circleBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                         Messgebar.setLB("畫圓工具啟用中");
                     }
                 }
         );
