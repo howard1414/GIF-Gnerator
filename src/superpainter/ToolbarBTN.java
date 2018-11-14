@@ -14,7 +14,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN;
+    JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN,chang3d;
     final static JPanel Panel_Button = new JPanel();
     ToolbarBTN(Messgebar Messgebar){
         super();
@@ -23,8 +23,13 @@ public class ToolbarBTN extends JPanel{
         OptBTN = new JButton("  輸出  ");
         circleBTN = new JButton("  圓  ");
         lineBTN = new JButton("  線  ");
+        chang3d = new JButton("3D切換");       
         closeBTN = new JButton("<<");
         //設定外觀
+        chang3d.setFont(new Font("新細明體", Font.BOLD, 15));
+        chang3d.setBackground(new Color(0xFFBB00));
+        chang3d.setForeground(Color.white);
+        chang3d.setUI(new UI_Template());
         lineBTN.setFont(new Font("新細明體", Font.BOLD, 15));
         lineBTN.setBackground(new Color(0xFFBB00));
         lineBTN.setForeground(Color.white);
@@ -58,7 +63,8 @@ public class ToolbarBTN extends JPanel{
         Panel_Button.add(OptBTN);
         Panel_Button.add(lineBTN);
         Panel_Button.add(circleBTN); 
-        Panel_Button.add(closeBTN);      
+        Panel_Button.add(closeBTN);
+        Panel_Button.add(chang3d);
         //按鍵動作
         closeBTN.addMouseListener(
                 new MouseAdapter()
