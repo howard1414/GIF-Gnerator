@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 public class Messgebar extends JPanel{
     JLabel LB1;
     Messgebar(){
+        //訊息欄位初始
         super();
         LB1 = new JLabel("待機中....");
         LB1.setForeground(Color.WHITE);
@@ -25,6 +26,7 @@ public class Messgebar extends JPanel{
         this.add(LB1,BorderLayout.EAST);
     }
     public void setLB(String s){
+        //更改LB
     LB1.setText(s);
     } 
     
