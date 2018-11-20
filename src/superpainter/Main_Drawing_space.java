@@ -21,12 +21,15 @@ public class Main_Drawing_space extends Panel{
     Point fp,lp;
     Status status;
     Vector<SaveLine> lines=null;
+    Color color;
     Main_Drawing_space(){
         super();
         this.add(Drawing_space);
         this.setBackground(new Color( 50 , 50  ,50));     
         this.setLayout(null);
         this.setVisible(true);
+        lines = new Vector<SaveLine>();
+        color = Color.red;
          //mouse event blocks
         this.addMouseMotionListener(
           new MouseAdapter()
@@ -40,16 +43,21 @@ public class Main_Drawing_space extends Panel{
                     }
                 }
          );
+        //功能實作
         this.addMouseListener(
           new MouseAdapter()      
                 {
                     public void mousePressed(MouseEvent e)
                     {
-                       if(Main_Drawing_space.this.status==Status.drawpaint) 
-                       {
-                        System.out.print("鼠標點下\n");                       
+                       if(Main_Drawing_space.this.status==Status.drawpencil) 
+                       {                
                         Main_Drawing_space.this.status = Status.drawingpencil;
                         fp=e.getPoint();
+                       }
+                       else if(Main_Drawing_space.this.status==Status.drawline)
+                       {
+                         Main_Drawing_space.this.status = Status.drawingline;
+                         fp=e.getPoint();   
                        }
                     }
                     public void mouseReleased(MouseEvent e)
@@ -59,7 +67,16 @@ public class Main_Drawing_space extends Panel{
                             Main_Drawing_space.this.status=Status.active;
                             lp=null;
                             fp=null;
-                            System.out.print("鼠標放開\n");
+                            
+                        }
+                        else if(Main_Drawing_space.this.status == Status.drawingline)
+                        {
+                            Main_Drawing_space.this.status=Status.active;
+                            lines.add(new SaveLine(fp,lp)); 
+                            lp=null;
+                            fp=null;
+                            System.out.print(lines.size()+"\n");
+                            repaint();
                         }    
                     }
                 }
@@ -68,18 +85,23 @@ public class Main_Drawing_space extends Panel{
             {
                 public void mouseDragged(MouseEvent e)
                 {   
-                   if( Main_Drawing_space.this.status == Status.drawingpencil)
+                   if(Main_Drawing_space.this.status == Status.drawingpencil)
                    {    
                        lp=e.getPoint();
                        Graphics g=  Main_Drawing_space.this.getGraphics();
-                       g.setColor(Color.red);
+                       g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       Point savefp;
-                       savefp = fp;
-                       fp=lp;
-                       System.out.print("鼠標拖動\n");
-                       lines.add(new SaveLine(savefp,lp));
-                   } 
+                       lines.add(new SaveLine(fp,lp));
+                       fp=lp;     
+                   }
+                   else if(Main_Drawing_space.this.status == Status.drawingline)
+                   {   
+                       repaint();
+                       lp=e.getPoint(); 
+                       Graphics g=  Main_Drawing_space.this.getGraphics();
+                       g.setColor(color);
+                       g.drawLine(fp.x, fp.y, lp.x, lp.y);
+                   }    
                  }
             }
         );
@@ -99,12 +121,11 @@ public class Main_Drawing_space extends Panel{
     }*/
     public void paint(Graphics g)
     {
-        g.setColor(Color.red);
+        g.setColor(color);
         if(lines!=null)
         {   
             for(SaveLine l : lines)
             {
-                System.out.print("drawLine");
                  g.drawLine(l.fristpoint.x, l.fristpoint.y, l.lastpoint.x, l.lastpoint.y);  
             }
         }

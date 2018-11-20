@@ -23,7 +23,7 @@ public class ToolbarBTN extends JPanel{
         OptBTN = new JButton("  輸出  ");
         pencilBTN = new JButton(" 畫筆 ");
         circleBTN = new JButton("  圓  ");
-        lineBTN = new JButton("  線  ");
+        lineBTN = new JButton("  直線  ");
         chang3d = new JButton("3D切換");       
         closeBTN = new JButton("<<");
         //設定外觀
@@ -114,8 +114,8 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          Messgebar.setLB("畫筆工具啟用中");
-                         MDS.status=Status.drawpaint;
-                         System.out.print("Status.drawpaint\n");
+                         MDS.status=Status.drawpencil;
+                         System.out.print("Status.drawpencil\n");
                     }
                 }
         );
@@ -125,6 +125,8 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          Messgebar.setLB("畫線工具啟用中");
+                         MDS.status=Status.drawline;
+                         System.out.print("Status.drawline\n");
                     }
                 }
         );
