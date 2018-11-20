@@ -38,7 +38,7 @@ public class Main_Frame extends Frame {
         Main_Drawing_space Main_Drawing_space = new Main_Drawing_space();
         Panel_Main.add(Main_Drawing_space,BorderLayout.CENTER);
         Messgebar  Messgebar = new Messgebar();
-        ToolbarBTN toolbarBTN = new ToolbarBTN(Messgebar);
+        ToolbarBTN toolbarBTN = new ToolbarBTN(Messgebar,Main_Drawing_space);
         Panel_Main.add(Messgebar,BorderLayout.SOUTH);       
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
     }

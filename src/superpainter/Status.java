@@ -10,5 +10,5 @@ package superpainter;
  * @author HALUNA
  */
 public enum Status {
-    drawing,active,drawstop;
+    drawpaint,drawingpencil,active;
 }

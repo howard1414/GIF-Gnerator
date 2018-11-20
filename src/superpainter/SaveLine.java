@@ -10,9 +10,10 @@ import java.awt.*;
  * @author HALUNA
  */
 public class SaveLine {
-    Point fp,lp;
-      SaveLine(Point f,Point l){
-          fp=f;
-          lp=l;          
+    Point fristpoint;
+    Point lastpoint;
+      SaveLine(Point start ,Point end){
+          fristpoint=start;
+          lastpoint=end;          
       }
 }

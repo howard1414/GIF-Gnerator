@@ -14,13 +14,14 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,LoadBTN,OptBTN,lineBTN,circleBTN,closeBTN,chang3d;
+    JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d;
     final static JPanel Panel_Button = new JPanel();
-    ToolbarBTN(Messgebar Messgebar){
+    ToolbarBTN(Messgebar Messgebar,Main_Drawing_space MDS){
         super();
         saveBTN = new JButton("  存檔  ");
         LoadBTN = new JButton("  讀檔  ");
         OptBTN = new JButton("  輸出  ");
+        pencilBTN = new JButton(" 畫筆 ");
         circleBTN = new JButton("  圓  ");
         lineBTN = new JButton("  線  ");
         chang3d = new JButton("3D切換");       
@@ -54,6 +55,10 @@ public class ToolbarBTN extends JPanel{
         closeBTN.setBackground(new Color(0xFFBB00));
         closeBTN.setForeground(Color.white);
         closeBTN.setUI(new UI_Template());
+        pencilBTN.setFont(new Font("新細明體", Font.BOLD, 15));
+        pencilBTN.setBackground(new Color(0xFFBB00));
+        pencilBTN.setForeground(Color.white);
+        pencilBTN.setUI(new UI_Template());
         //設定pannel layout
         Panel_Button.setLayout(new GridLayout(10,1,10,10));
         Panel_Button.setBackground(new Color(0x8e8e8e));
@@ -61,6 +66,7 @@ public class ToolbarBTN extends JPanel{
         Panel_Button.add(LoadBTN);
         Panel_Button.add(saveBTN);
         Panel_Button.add(OptBTN);
+        Panel_Button.add(pencilBTN);
         Panel_Button.add(lineBTN);
         Panel_Button.add(circleBTN); 
         Panel_Button.add(closeBTN);
@@ -99,6 +105,17 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          Messgebar.setLB("輸出");
+                    }
+                }
+        );
+        pencilBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                         Messgebar.setLB("畫筆工具啟用中");
+                         MDS.status=Status.drawpaint;
+                         System.out.print("Status.drawpaint\n");
                     }
                 }
         );

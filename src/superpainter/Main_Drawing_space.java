@@ -45,17 +45,22 @@ public class Main_Drawing_space extends Panel{
                 {
                     public void mousePressed(MouseEvent e)
                     {
+                       if(Main_Drawing_space.this.status==Status.drawpaint) 
+                       {
                         System.out.print("鼠標點下\n");                       
-                        Main_Drawing_space.this.status = Status.drawing;
+                        Main_Drawing_space.this.status = Status.drawingpencil;
                         fp=e.getPoint();
+                       }
                     }
                     public void mouseReleased(MouseEvent e)
-                    {
-                        Main_Drawing_space.this.status=Status.active;
-                        lp=null;
-                        fp=null;
-                        System.out.print("鼠標放開\n");
-                            
+                    {   
+                        if(Main_Drawing_space.this.status == Status.drawingpencil)
+                        {
+                            Main_Drawing_space.this.status=Status.active;
+                            lp=null;
+                            fp=null;
+                            System.out.print("鼠標放開\n");
+                        }    
                     }
                 }
         );
@@ -63,9 +68,18 @@ public class Main_Drawing_space extends Panel{
             {
                 public void mouseDragged(MouseEvent e)
                 {   
-                    
-                    
-                  System.out.print("鼠標拖動\n");
+                   if( Main_Drawing_space.this.status == Status.drawingpencil)
+                   {    
+                       lp=e.getPoint();
+                       Graphics g=  Main_Drawing_space.this.getGraphics();
+                       g.setColor(Color.red);
+                       g.drawLine(fp.x, fp.y, lp.x, lp.y);
+                       Point savefp;
+                       savefp = fp;
+                       fp=lp;
+                       System.out.print("鼠標拖動\n");
+                       lines.add(new SaveLine(savefp,lp));
+                   } 
                  }
             }
         );
@@ -83,4 +97,16 @@ public class Main_Drawing_space extends Panel{
    /* void change_color(){
          this.setBackground(new Color( ran.nextInt(256) , ran.nextInt(256)  ,ran.nextInt(256)));
     }*/
+    public void paint(Graphics g)
+    {
+        g.setColor(Color.red);
+        if(lines!=null)
+        {   
+            for(SaveLine l : lines)
+            {
+                System.out.print("drawLine");
+                 g.drawLine(l.fristpoint.x, l.fristpoint.y, l.lastpoint.x, l.lastpoint.y);  
+            }
+        }
+    }
 }
