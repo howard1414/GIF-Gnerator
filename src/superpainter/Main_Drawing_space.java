@@ -22,6 +22,7 @@ public class Main_Drawing_space extends Panel{
     Status status;
     Vector<SaveLine> lines=null;
     Color color;
+    int drawline =0 ;
     Main_Drawing_space(){
         super();
         this.add(Drawing_space);
@@ -72,6 +73,7 @@ public class Main_Drawing_space extends Panel{
                         else if(Main_Drawing_space.this.status == Status.drawingline)
                         {
                             Main_Drawing_space.this.status=Status.active;
+                            drawline=0;
                             lines.add(new SaveLine(fp,lp)); 
                             lp=null;
                             fp=null;
@@ -96,11 +98,20 @@ public class Main_Drawing_space extends Panel{
                    }
                    else if(Main_Drawing_space.this.status == Status.drawingline)
                    {   
-                       repaint();
+                       if(drawline !=0){
+                           int temp = lines.size();
+                           lines.removeElementAt(temp-1);
+                           repaint();
+                           System.out.print("repaint\n");
+                       }
                        lp=e.getPoint(); 
                        Graphics g=  Main_Drawing_space.this.getGraphics();
                        g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
+                       lines.add(new SaveLine(fp,lp)); 
+                       System.out.print("set line \n");
+                       System.out.print("lp.x=" + lp.x + ",lp.y=" +lp.y+"\n");
+                       drawline=1;     
                    }    
                  }
             }
