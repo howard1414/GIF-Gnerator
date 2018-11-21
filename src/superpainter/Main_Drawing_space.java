@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.JPanel;
+import java.util.*;
 /**
  *
  * @author lv379
@@ -18,17 +19,21 @@ public class Main_Drawing_space extends Panel{
     JPanel Drawing_space = new JPanel();
     int x=0,y=0;
     Rectangle windowSize; 
-    Point fp,lp;
-    Status status;
-    Vector<SaveLine> lines=null;
-    Color color;
-    int drawline =0 ;
+    Point fp,lp;                     //存取座標點
+    Status status;                   //狀態儲存
+    Vector<SaveLine> lines=null;     //繪布紀錄儲存
+    Color color;                     //色彩更改
+    Stack re;                        //存取繪畫紀錄堆疊
+    int pencilem = 0;                //復原用
+    int drawline =0 ;                //判斷是否為第一次畫線用
+    
     Main_Drawing_space(){
         super();
         this.add(Drawing_space);
         this.setBackground(new Color( 50 , 50  ,50));     
         this.setLayout(null);
         this.setVisible(true);
+        re = new Stack();
         lines = new Vector<SaveLine>();
         color = Color.red;
          //mouse event blocks
@@ -49,35 +54,36 @@ public class Main_Drawing_space extends Panel{
           new MouseAdapter()      
                 {
                     public void mousePressed(MouseEvent e)
-                    {
-                       if(Main_Drawing_space.this.status==Status.drawpencil) 
+                    {  
+                        //鉛筆功能(按下滑鼠左鍵)
+                       if(Main_Drawing_space.this.status==Status.drawpencil)        
                        {                
-                        Main_Drawing_space.this.status = Status.drawingpencil;
                         fp=e.getPoint();
+                        pencilem = lines.size();
                        }
-                       else if(Main_Drawing_space.this.status==Status.drawline)
+                       //畫線功能(按下滑鼠左鍵)
+                       else if(Main_Drawing_space.this.status==Status.drawline)     
                        {
-                         Main_Drawing_space.this.status = Status.drawingline;
-                         fp=e.getPoint();   
+                         fp=e.getPoint();
                        }
                     }
                     public void mouseReleased(MouseEvent e)
                     {   
-                        if(Main_Drawing_space.this.status == Status.drawingpencil)
+                        //鉛筆功能(放開滑鼠左鍵)
+                        if(Main_Drawing_space.this.status == Status.drawpencil)
                         {
-                            Main_Drawing_space.this.status=Status.active;
+                            re.push(lines.size()-pencilem);
                             lp=null;
                             fp=null;
                             
                         }
-                        else if(Main_Drawing_space.this.status == Status.drawingline)
+                        //直線功能(放開滑鼠左鍵)
+                        else if(Main_Drawing_space.this.status == Status.drawline)
                         {
-                            Main_Drawing_space.this.status=Status.active;
                             drawline=0;
-                            lines.add(new SaveLine(fp,lp)); 
                             lp=null;
                             fp=null;
-                            System.out.print(lines.size()+"\n");
+                            re.push(1);
                             repaint();
                         }    
                     }
@@ -86,8 +92,9 @@ public class Main_Drawing_space extends Panel{
         this.addMouseMotionListener(new MouseAdapter()
             {
                 public void mouseDragged(MouseEvent e)
-                {   
-                   if(Main_Drawing_space.this.status == Status.drawingpencil)
+                {  
+                   //鉛筆功能(拖曳滑鼠)
+                   if(Main_Drawing_space.this.status == Status.drawpencil)
                    {    
                        lp=e.getPoint();
                        Graphics g=  Main_Drawing_space.this.getGraphics();
@@ -96,21 +103,19 @@ public class Main_Drawing_space extends Panel{
                        lines.add(new SaveLine(fp,lp));
                        fp=lp;     
                    }
-                   else if(Main_Drawing_space.this.status == Status.drawingline)
-                   {   
-                       if(drawline !=0){
+                   //畫線功能(拖曳滑鼠)
+                   else if(Main_Drawing_space.this.status == Status.drawline)
+                   {  
+                           if(drawline !=0){
                            int temp = lines.size();
                            lines.removeElementAt(temp-1);
                            repaint();
-                           System.out.print("repaint\n");
                        }
                        lp=e.getPoint(); 
                        Graphics g=  Main_Drawing_space.this.getGraphics();
                        g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
                        lines.add(new SaveLine(fp,lp)); 
-                       System.out.print("set line \n");
-                       System.out.print("lp.x=" + lp.x + ",lp.y=" +lp.y+"\n");
                        drawline=1;     
                    }    
                  }
@@ -130,6 +135,35 @@ public class Main_Drawing_space extends Panel{
    /* void change_color(){
          this.setBackground(new Color( ran.nextInt(256) , ran.nextInt(256)  ,ran.nextInt(256)));
     }*/
+    
+    //復原功能實作
+    public int recovery(){
+        if(re.empty() == false){
+            if((int)re.peek() != 1){
+                int count = (int)re.peek();
+                while(count!=0){
+                    int temp = lines.size();
+                    lines.removeElementAt(temp-1);
+                    count--;
+                }
+                re.pop();
+            }
+            else
+            {   
+                int temp = lines.size();
+                lines.removeElementAt(temp-1);
+                re.pop();
+            }
+            repaint();            
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    } 
+ 
+    
     public void paint(Graphics g)
     {
         g.setColor(color);

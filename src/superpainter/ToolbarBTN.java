@@ -14,7 +14,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d;
+    JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN;
     final static JPanel Panel_Button = new JPanel();
     ToolbarBTN(Messgebar Messgebar,Main_Drawing_space MDS){
         super();
@@ -24,8 +24,9 @@ public class ToolbarBTN extends JPanel{
         pencilBTN = new JButton(" 畫筆 ");
         circleBTN = new JButton("  圓  ");
         lineBTN = new JButton("  直線  ");
-        chang3d = new JButton("3D切換");       
-        closeBTN = new JButton("<<");
+        chang3d = new JButton(" 3D切換 ");       
+        closeBTN = new JButton(" << ");
+        recoveryBTN = new JButton(" 復原 ");
         //設定外觀
         chang3d.setFont(new Font("新細明體", Font.BOLD, 15));
         chang3d.setBackground(new Color(0xFFBB00));
@@ -59,6 +60,10 @@ public class ToolbarBTN extends JPanel{
         pencilBTN.setBackground(new Color(0xFFBB00));
         pencilBTN.setForeground(Color.white);
         pencilBTN.setUI(new UI_Template());
+        recoveryBTN.setFont(new Font("新細明體", Font.BOLD, 15));
+        recoveryBTN.setBackground(new Color(0xFFBB00));
+        recoveryBTN.setForeground(Color.white);
+        recoveryBTN.setUI(new UI_Template());
         //設定pannel layout
         Panel_Button.setLayout(new GridLayout(10,1,10,10));
         Panel_Button.setBackground(new Color(0x8e8e8e));
@@ -69,8 +74,9 @@ public class ToolbarBTN extends JPanel{
         Panel_Button.add(pencilBTN);
         Panel_Button.add(lineBTN);
         Panel_Button.add(circleBTN); 
-        Panel_Button.add(closeBTN);
         Panel_Button.add(chang3d);
+        Panel_Button.add(recoveryBTN);
+        Panel_Button.add(closeBTN);
         //按鍵動作
         closeBTN.addMouseListener(
                 new MouseAdapter()
@@ -115,7 +121,6 @@ public class ToolbarBTN extends JPanel{
                     {
                          Messgebar.setLB("畫筆工具啟用中");
                          MDS.status=Status.drawpencil;
-                         System.out.print("Status.drawpencil\n");
                     }
                 }
         );
@@ -126,7 +131,6 @@ public class ToolbarBTN extends JPanel{
                     {
                          Messgebar.setLB("畫線工具啟用中");
                          MDS.status=Status.drawline;
-                         System.out.print("Status.drawline\n");
                     }
                 }
         );
@@ -138,6 +142,24 @@ public class ToolbarBTN extends JPanel{
                          Messgebar.setLB("畫圓工具啟用中");
                     }
                 }
+        );
+        recoveryBTN.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {   
+                        int temp ;
+                        temp = MDS.recovery();
+                        if(temp == 1 ){
+                            Messgebar.setLB("返回上一步驟");
+                        }
+                        else
+                        {
+                            Messgebar.setLB("已是最原始步驟");
+                        }
+                        
+                    }    
+                }    
         );
          //Panel_Button.pack();
     }
