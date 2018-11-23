@@ -11,17 +11,19 @@ import javax.swing.JPanel;
 -- 新增panel物件   
 */
 public class Main_Frame extends Frame {
-    public JPanel Panel_Main = new JPanel(); 
-    
+    public JPanel Panel_Main = new JPanel();
+    Main_Drawing_space Main_Drawing_space ;
+    Messgebar  Messgebar ;
      Main_Frame(String APPVERSION,String Title) {
-        
-        
-        this.setSize(600,600);
-        this.setLocation(200, 200);
+         Main_Drawing_space = new Main_Drawing_space(this);
+         Messgebar = new Messgebar();
+        this.setSize(700,700);
+        this.setLocation(100, 20);
         this.add(Panel_Main);
         Panel_Main.setLayout(new BorderLayout());
+        Panel_Main.setBackground(new Color( 50 , 50  ,50));
         this.setTitle(Title + " - " + APPVERSION);
-        Add_Object();
+        Add_Object(this);
         this.setVisible(true);
         this.addWindowListener( new WindowAdapter()
             {
@@ -32,15 +34,16 @@ public class Main_Frame extends Frame {
             }
         );
 }
- 
-    void Add_Object(){
+
+    void Add_Object(Main_Frame MF){
         //將其餘版面新增至程式面板上
-        Main_Drawing_space Main_Drawing_space = new Main_Drawing_space();
-        Panel_Main.add(Main_Drawing_space,BorderLayout.CENTER);
-        Messgebar  Messgebar = new Messgebar();
-        ToolbarBTN toolbarBTN = new ToolbarBTN(Messgebar,Main_Drawing_space);
+        ToolbarBTN toolbarBTN = new ToolbarBTN(MF);
         Panel_Main.add(Messgebar,BorderLayout.SOUTH);       
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
+    }
+    
+    void add_Panel_Main(){
+         Panel_Main.add(Main_Drawing_space);
     }
     
 }

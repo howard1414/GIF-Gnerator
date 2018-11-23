@@ -14,9 +14,10 @@ import java.util.*;
  *
  * @author lv379
  */
-public class Main_Drawing_space extends Panel{
+public class Main_Drawing_space extends Canvas{
     Random ran = new Random();  
     JPanel Drawing_space = new JPanel();
+    //painting_space sp ; 
     int x=0,y=0;
     Rectangle windowSize; 
     Point fp,lp;                     //存取座標點
@@ -27,16 +28,13 @@ public class Main_Drawing_space extends Panel{
     int pencilem = 0;                //復原用
     int drawline =0 ;                //判斷是否為第一次畫線用
     
-    Main_Drawing_space(){
+    Main_Drawing_space(Main_Frame MF){
         super();
-        this.add(Drawing_space);
-        this.setBackground(new Color( 50 , 50  ,50));     
-        this.setLayout(null);
+        this.setBackground(Color.WHITE);     
         this.setVisible(true);
         re = new Stack();
         lines = new Vector<SaveLine>();
         color = Color.red;
-         //mouse event blocks
         this.addMouseMotionListener(
           new MouseAdapter()
                 {
@@ -135,7 +133,6 @@ public class Main_Drawing_space extends Panel{
    /* void change_color(){
          this.setBackground(new Color( ran.nextInt(256) , ran.nextInt(256)  ,ran.nextInt(256)));
     }*/
-    
     //復原功能實作
     public int recovery(){
         if(re.empty() == false){
@@ -162,8 +159,16 @@ public class Main_Drawing_space extends Panel{
             return 0;
         }
     } 
- 
-    
+    //double buffering
+    public void update(Graphics g){
+        Image ImageBuffer = null;
+        Graphics GraImage = null;
+        ImageBuffer = createImage(this.getWidth(), this.getHeight());
+        GraImage = ImageBuffer.getGraphics();
+        paint(GraImage);
+        GraImage.dispose(); 
+        g.drawImage(ImageBuffer, 0, 0, this);
+    }
     public void paint(Graphics g)
     {
         g.setColor(color);
@@ -171,7 +176,7 @@ public class Main_Drawing_space extends Panel{
         {   
             for(SaveLine l : lines)
             {
-                 g.drawLine(l.fristpoint.x, l.fristpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                 g.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
             }
         }
     }

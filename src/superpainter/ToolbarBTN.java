@@ -14,10 +14,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN;
+    JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,AddnewPG;
     final static JPanel Panel_Button = new JPanel();
-    ToolbarBTN(Messgebar Messgebar,Main_Drawing_space MDS){
+    ToolbarBTN(Main_Frame MF){
         super();
+        AddnewPG = new JButton(" 新建頁面 ");
         saveBTN = new JButton("  存檔  ");
         LoadBTN = new JButton("  讀檔  ");
         OptBTN = new JButton("  輸出  ");
@@ -64,10 +65,15 @@ public class ToolbarBTN extends JPanel{
         recoveryBTN.setBackground(new Color(0xFFBB00));
         recoveryBTN.setForeground(Color.white);
         recoveryBTN.setUI(new UI_Template());
+        AddnewPG.setFont(new Font("新細明體", Font.BOLD, 15));
+        AddnewPG.setBackground(new Color(0xFFBB00));
+        AddnewPG.setForeground(Color.white);
+        AddnewPG.setUI(new UI_Template());
         //設定pannel layout
         Panel_Button.setLayout(new GridLayout(10,1,10,10));
         Panel_Button.setBackground(new Color(0x8e8e8e));
         //新增到panel上
+        Panel_Button.add(AddnewPG);
         Panel_Button.add(LoadBTN);
         Panel_Button.add(saveBTN);
         Panel_Button.add(OptBTN);
@@ -78,6 +84,16 @@ public class ToolbarBTN extends JPanel{
         Panel_Button.add(recoveryBTN);
         Panel_Button.add(closeBTN);
         //按鍵動作
+        AddnewPG.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        MF.add_Panel_Main();
+                        MF.Messgebar.setLB("新頁面以建立");
+                    }
+                }
+        );
         closeBTN.addMouseListener(
                 new MouseAdapter()
                 {
@@ -92,7 +108,7 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                        Messgebar.setLB("讀取檔案");
+                        MF.Messgebar.setLB("讀取檔案");
                     }
                 }
         );
@@ -101,7 +117,7 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                         Messgebar.setLB("儲存檔案");;
+                         MF.Messgebar.setLB("儲存檔案");;
                     }
                 }
         );
@@ -110,7 +126,7 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                         Messgebar.setLB("輸出");
+                         MF.Messgebar.setLB("輸出");
                     }
                 }
         );
@@ -119,8 +135,8 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                         Messgebar.setLB("畫筆工具啟用中");
-                         MDS.status=Status.drawpencil;
+                        MF.Messgebar.setLB("畫筆工具啟用中");
+                        MF.Main_Drawing_space.status=Status.drawpencil;
                     }
                 }
         );
@@ -129,8 +145,8 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                         Messgebar.setLB("畫線工具啟用中");
-                         MDS.status=Status.drawline;
+                         MF.Messgebar.setLB("畫線工具啟用中");
+                         MF.Main_Drawing_space.status=Status.drawline;
                     }
                 }
         );
@@ -139,7 +155,7 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                         Messgebar.setLB("畫圓工具啟用中");
+                         MF.Messgebar.setLB("畫圓工具啟用中");
                     }
                 }
         );
@@ -149,13 +165,13 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {   
                         int temp ;
-                        temp = MDS.recovery();
+                        temp = MF.Main_Drawing_space.recovery();
                         if(temp == 1 ){
-                            Messgebar.setLB("返回上一步驟");
+                            MF.Messgebar.setLB("返回上一步驟");
                         }
                         else
                         {
-                            Messgebar.setLB("已是最原始步驟");
+                            MF.Messgebar.setLB("已是最原始步驟");
                         }
                         
                     }    
