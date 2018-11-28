@@ -12,8 +12,10 @@ import java.awt.*;
 public class SaveLine {
     Point firstpoint;
     Point lastpoint;
-      SaveLine(Point start ,Point end){
+    Pattern Pattern;
+      SaveLine(Point start ,Point end,Pattern pat){
           firstpoint=start;
-          lastpoint=end;          
+          lastpoint=end;
+          Pattern = pat;
       }
 }

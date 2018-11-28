@@ -22,15 +22,15 @@ public class Main_Drawing_space extends Canvas{
     Rectangle windowSize; 
     Point fp,lp;                     //存取座標點
     Status status;                   //狀態儲存
-    Vector<SaveLine> lines=null;     //繪布紀錄儲存
+    Vector<SaveLine> lines=null;     //繪布紀錄儲存(線)
     Color color;                     //色彩更改
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
-    int drawline =0 ;                //判斷是否為第一次畫線用
-    
+    int drawfirst =0 ;                //判斷是否為第一次畫用
+    Pattern Pattern;
     Main_Drawing_space(Main_Frame MF){
         super();
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.WHITE);     
         this.setVisible(true);
         re = new Stack();
         lines = new Vector<SaveLine>();
@@ -64,6 +64,16 @@ public class Main_Drawing_space extends Canvas{
                        {
                          fp=e.getPoint();
                        }
+                       //畫圓功能(按下滑鼠左鍵)
+                       else if(Main_Drawing_space.this.status==Status.drawOval)
+                       {
+                         fp=e.getPoint();
+                       }
+                       //矩形功能(按下滑鼠左鍵)
+                       else if(Main_Drawing_space.this.status==Status.drawRect)
+                       {
+                         fp=e.getPoint();
+                       }
                     }
                     public void mouseReleased(MouseEvent e)
                     {   
@@ -78,12 +88,30 @@ public class Main_Drawing_space extends Canvas{
                         //直線功能(放開滑鼠左鍵)
                         else if(Main_Drawing_space.this.status == Status.drawline)
                         {
-                            drawline=0;
+                            drawfirst=0;
                             lp=null;
                             fp=null;
                             re.push(1);
                             repaint();
-                        }    
+                        }
+                        //畫圓功能(放開滑鼠左鍵)
+                        else if(Main_Drawing_space.this.status==Status.drawOval)
+                       {
+                            drawfirst=0;
+                            lp=null;
+                            fp=null;
+                            re.push(1);
+                            repaint();
+                       }
+                        //矩形功能(放開滑鼠左鍵)
+                        else if(Main_Drawing_space.this.status==Status.drawRect)
+                       {
+                            drawfirst=0;
+                            lp=null;
+                            fp=null;
+                            re.push(1);
+                            repaint();
+                       }
                     }
                 }
         );
@@ -98,13 +126,13 @@ public class Main_Drawing_space extends Canvas{
                        Graphics g=  Main_Drawing_space.this.getGraphics();
                        g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new SaveLine(fp,lp));
+                       lines.add(new SaveLine(fp,lp,Pattern.Line));
                        fp=lp;     
                    }
                    //畫線功能(拖曳滑鼠)
                    else if(Main_Drawing_space.this.status == Status.drawline)
                    {  
-                           if(drawline !=0){
+                       if(drawfirst !=0){
                            int temp = lines.size();
                            lines.removeElementAt(temp-1);
                            repaint();
@@ -113,9 +141,73 @@ public class Main_Drawing_space extends Canvas{
                        Graphics g=  Main_Drawing_space.this.getGraphics();
                        g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new SaveLine(fp,lp)); 
-                       drawline=1;     
-                   }    
+                       lines.add(new SaveLine(fp,lp,Pattern.Line)); 
+                       drawfirst=1;     
+                   }
+                   //畫圓功能(拖曳滑鼠)
+                   else if(Main_Drawing_space.this.status == Status.drawOval)
+                   {
+                       if(drawfirst !=0){
+                           int temp = lines.size();
+                           lines.removeElementAt(temp-1);
+                           repaint();
+                       }
+                       lp=e.getPoint();
+                       Graphics g=  Main_Drawing_space.this.getGraphics();
+                       g.setColor(color);
+                       {    
+                            //第二象限
+                            if(lp.x<=fp.x && lp.y<fp.y){
+                                g.drawOval(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
+                            }
+                            //第二象限
+                            else if(lp.x>fp.x && lp.y<=fp.y){
+                                g.drawOval(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
+                            }
+                            //第三象限
+                            else if(lp.x<=fp.x && lp.y>fp.y){
+                                g.drawOval(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
+                            }
+                            //第四象限
+                            else if(lp.x>fp.x && lp.y>=fp.y){
+                                g.drawOval(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
+                            }
+                       }
+                       lines.add(new SaveLine(fp,lp,Pattern.Ovil)); 
+                       drawfirst=1;
+                   }
+                   //矩形功能
+                   else if(Main_Drawing_space.this.status == Status.drawRect)
+                   {
+                       if(drawfirst !=0){
+                           int temp = lines.size();
+                           lines.removeElementAt(temp-1);
+                           repaint();
+                       }
+                       lp=e.getPoint();
+                       Graphics g=  Main_Drawing_space.this.getGraphics();
+                       g.setColor(color);
+                       {    
+                            //第二象限
+                            if(lp.x<=fp.x && lp.y<fp.y){
+                                g.drawRect(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
+                            }
+                            //第二象限
+                            else if(lp.x>fp.x && lp.y<=fp.y){
+                                g.drawRect(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
+                            }
+                            //第三象限
+                            else if(lp.x<=fp.x && lp.y>fp.y){
+                                g.drawRect(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
+                            }
+                            //第四象限
+                            else if(lp.x>fp.x && lp.y>=fp.y){
+                                g.drawRect(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
+                            }
+                       }
+                       lines.add(new SaveLine(fp,lp,Pattern.Rect)); 
+                       drawfirst=1;
+                   }
                  }
             }
         );
@@ -175,8 +267,53 @@ public class Main_Drawing_space extends Canvas{
         if(lines!=null)
         {   
             for(SaveLine l : lines)
-            {
-                 g.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+            {    
+                 if(l.Pattern == Pattern.Line){
+                     g.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                 }
+                 else if(l.Pattern ==Pattern.Ovil)
+                 {
+                    {    
+                        //第一象限
+                        if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
+                            g.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第二象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
+                            g.drawOval(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第三象限
+                        else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
+                            g.drawOval(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                        //第四象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
+                            g.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                    }
+                 }
+                 else if(l.Pattern ==Pattern.Rect)
+                 {
+                    {    
+                        //第一象限
+                        if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
+                            g.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第二象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
+                            g.drawRect(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第三象限
+                        else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
+                            g.drawRect(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                        //第四象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
+                            g.drawRect(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                    }
+                 }
+                 
             }
         }
     }

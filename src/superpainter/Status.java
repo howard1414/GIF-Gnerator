@@ -11,6 +11,8 @@ package superpainter;
  */
 public enum Status {
     active,                     //待機
-    drawpencil,drawingpencil,       //畫筆工具狀態
-    drawline,drawingline,          //畫線工具狀態
+    drawpencil,       //畫筆工具狀態
+    drawline,        //畫線工具狀態
+    drawRect,     //矩形工具狀態
+    drawOval,   //圓形工具狀態
 }
