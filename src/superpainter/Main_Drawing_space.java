@@ -30,7 +30,7 @@ public class Main_Drawing_space extends Canvas{
     
     Main_Drawing_space(Main_Frame MF){
         super();
-        this.setBackground(Color.WHITE);     
+        this.setBackground(Color.WHITE);
         this.setVisible(true);
         re = new Stack();
         lines = new Vector<SaveLine>();
