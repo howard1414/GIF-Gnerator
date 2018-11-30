@@ -17,7 +17,8 @@ public class Main_Frame extends Frame {
     private int Drawing_space_x=500,Drawing_space_y=500;
     Main_Drawing_space Main_Drawing_space ;
     Messgebar  Messgebar ;
-    
+    ToolbarBTN toolbarBTN;
+    int x;
      Main_Frame(String APPVERSION,String Title) {
         Main_Drawing_space = new Main_Drawing_space(this);
         
@@ -41,13 +42,27 @@ public class Main_Frame extends Frame {
             }
         );
         
+        this.addMouseMotionListener(
+          new MouseAdapter()
+                {
+                    public void mouseMoved(MouseEvent e)
+                    {
+                        x=e.getX();                     
+                        if(x<20){
+                        ToolbarBTN.Panel_Button.setVisible(true); 
+                        toolbarBTN.close_event=false;
+                        }                 
+                    }
+                }
+         );
+        
 
         
 }
 
     void Add_Object(Main_Frame MF){
         //將其餘版面新增至程式面板上
-        ToolbarBTN toolbarBTN = new ToolbarBTN(MF);
+        toolbarBTN = new ToolbarBTN(MF);
         Panel_Main.add(Messgebar,BorderLayout.SOUTH);       
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
     }
@@ -61,19 +76,22 @@ public class Main_Frame extends Frame {
         Panel_size.add(Main_Drawing_space);
         Panel_size.add(size_btn);
         Panel_Main.add(Panel_size);
-        
         size_btn.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseReleased(MouseEvent e)
                     {   
-                        Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x- Panel_Main.getLocationOnScreen().x - 100;
+                        if(toolbarBTN.close_event=false){
+                        Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x- Panel_Main.getLocationOnScreen().x-100;    
+                        }else{
+                        Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x- Panel_Main.getLocationOnScreen().x;
+                        }
+                        
                         Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y- Panel_Main.getLocationOnScreen().y;
                         if(Drawing_space_x <0){Drawing_space_x=0;}
                         if(Drawing_space_y <0){Drawing_space_y=0;}
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
-                        Main_Drawing_space.setBounds(0,0,  Drawing_space_x,  Drawing_space_y);
-                       
+                        Main_Drawing_space.setBounds(0,0,  Drawing_space_x,  Drawing_space_y);         
                     }    
                 }    
         );

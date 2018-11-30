@@ -42,7 +42,8 @@ public class Main_Drawing_space extends Canvas{
                     {
                         x=e.getX();                     
                         if(x<20){
-                        ToolbarBTN.Panel_Button.setVisible(true);                        
+                        ToolbarBTN.Panel_Button.setVisible(true); 
+                        MF.toolbarBTN.close_event=false;
                         }                 
                     }
                 }
