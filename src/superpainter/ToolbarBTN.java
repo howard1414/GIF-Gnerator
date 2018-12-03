@@ -18,6 +18,7 @@ public class ToolbarBTN extends JPanel{
     JButton pencilall,fileall,patternall;
     JFrame pen,file,pat;
     final static JPanel Panel_Button = new JPanel();
+    
     ToolbarBTN(Main_Frame MF){
         super();
         // 統合按鈕
@@ -198,8 +199,13 @@ public class ToolbarBTN extends JPanel{
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
-                    {
+                    {                       
                         MF.Messgebar.setLB("讀取檔案");
+                        try{
+                        MF.Main_Drawing_space.loadimage();
+                        }catch(Exception ex){
+                             System.out.println("Load image Failed!");
+                        }
                         file.setVisible(false);
                     }
                 }
@@ -291,4 +297,7 @@ public class ToolbarBTN extends JPanel{
     public void set_pannel_visible(boolean state){
         Panel_Button.setVisible(state);
     }
+    
+
+    
 }

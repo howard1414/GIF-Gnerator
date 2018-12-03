@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
+
 /*
 主視窗介面
 -- 設定視窗大小 
@@ -41,6 +42,7 @@ public class Main_Frame extends Frame {
             }
         );
         
+        
 
         
 }
@@ -64,17 +66,17 @@ public class Main_Frame extends Frame {
         
         size_btn.addMouseListener(
                 new MouseAdapter()
-                {
+                {                                    
                     public void mouseReleased(MouseEvent e)
                     {   
-                        Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x- Panel_Main.getLocationOnScreen().x - 100;
-                        Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y- Panel_Main.getLocationOnScreen().y;
+                        Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x - 100 ;
+                        Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;
                         if(Drawing_space_x <0){Drawing_space_x=0;}
                         if(Drawing_space_y <0){Drawing_space_y=0;}
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
-                        Main_Drawing_space.setBounds(0,0,  Drawing_space_x,  Drawing_space_y);
-                       
+                        Main_Drawing_space.setBounds(0,0,  Drawing_space_x,  Drawing_space_y);                    
                     }    
+                    
                 }    
         );
         

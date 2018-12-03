@@ -6,17 +6,27 @@
 package superpainter;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.JPanel;
 import java.util.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  *
  * @author lv379
  */
 public class Main_Drawing_space extends Canvas{
-    Random ran = new Random();  
-    JPanel Drawing_space = new JPanel();
+    
+    Image Img;
+    JPanel Drawing_space ;
+    JFileChooser file_choose ;
+    File file_path;
     //painting_space sp ; 
     int x=0,y=0;
     Rectangle windowSize; 
@@ -28,8 +38,12 @@ public class Main_Drawing_space extends Canvas{
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
     Pattern Pattern;
+     private BufferedImage img;
+    
     Main_Drawing_space(Main_Frame MF){
         super();
+        file_choose = new JFileChooser();
+        Drawing_space = new JPanel();
         this.setBackground(Color.WHITE);     
         this.setVisible(true);
         re = new Stack();
@@ -252,6 +266,7 @@ public class Main_Drawing_space extends Canvas{
         }
     } 
     //double buffering
+    @Override
     public void update(Graphics g){
         Image ImageBuffer = null;
         Graphics GraImage = null;
@@ -259,8 +274,13 @@ public class Main_Drawing_space extends Canvas{
         GraImage = ImageBuffer.getGraphics();
         paint(GraImage);
         GraImage.dispose(); 
-        g.drawImage(ImageBuffer, 0, 0, this);
+        if (img != null) {             
+                int img_x = (getWidth() - img.getWidth()) / 2;
+                int img_y = (getHeight() - img.getHeight()) / 2;
+                g.drawImage(img, img_x, img_y, this);             
+            }
     }
+    @Override
     public void paint(Graphics g)
     {
         g.setColor(color);
@@ -316,5 +336,32 @@ public class Main_Drawing_space extends Canvas{
                  
             }
         }
+      if (img != null) {              
+                int img_x = (getWidth() - img.getWidth()) / 2;
+                int img_y = (getHeight() - img.getHeight()) / 2;
+                g.drawImage(img, img_x, img_y, this);              
+            }
     }
+    
+    public void loadimage() throws FileNotFoundException{
+        FileFilter filter = new FileNameExtensionFilter("Images Files", "jpg", "jpeg","gif","bmp");
+        System.out.println("Load image...");
+        file_choose.setFileFilter(filter);
+            if(file_choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            file_path = file_choose.getSelectedFile();
+            }
+        String path = String.valueOf(file_path);
+       try
+       {
+         img = ImageIO.read(new File(path));
+        
+       }catch(Exception ex){
+            System.out.println("Printing image failed!");       
+       }
+       repaint();
+    }
+        @Override
+        public Dimension getPreferredSize() {
+            return img == null ? new Dimension(200, 200) : new Dimension(img.getWidth(), img.getHeight());
+        }
 }
