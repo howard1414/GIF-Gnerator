@@ -273,12 +273,13 @@ public class Main_Drawing_space extends Canvas{
         ImageBuffer = createImage(this.getWidth(), this.getHeight());
         GraImage = ImageBuffer.getGraphics();
         paint(GraImage);
-        GraImage.dispose(); 
+        GraImage.dispose();         
         if (img != null) {             
                 int img_x = (getWidth() - img.getWidth()) / 2;
                 int img_y = (getHeight() - img.getHeight()) / 2;
-                g.drawImage(img, img_x, img_y, this);             
-            }
+                
+                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);           
+            }     
     }
     @Override
     public void paint(Graphics g)
@@ -336,11 +337,15 @@ public class Main_Drawing_space extends Canvas{
                  
             }
         }
+        
       if (img != null) {              
                 int img_x = (getWidth() - img.getWidth()) / 2;
                 int img_y = (getHeight() - img.getHeight()) / 2;
-                g.drawImage(img, img_x, img_y, this);              
+                
+                //g.drawImage(img, img_x, img_y, this);   
+                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);  
             }
+      
     }
     
     public void loadimage() throws FileNotFoundException{
