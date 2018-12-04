@@ -18,7 +18,8 @@ public class Main_Frame extends Frame {
     private int Drawing_space_x=500,Drawing_space_y=500;
     Main_Drawing_space Main_Drawing_space ;
     Messgebar  Messgebar ;
-    
+    ToolbarBTN toolbarBTN; 
+    int x;
      Main_Frame(String APPVERSION,String Title) {
          
         //Main_Drawing_space = new Main_Drawing_space(this);
@@ -39,15 +40,23 @@ public class Main_Frame extends Frame {
                 }
             }
         );
-        
-        
-
-        
+        this.addMouseMotionListener(
+          new MouseAdapter()
+                {
+                    public void mouseMoved(MouseEvent e)
+                    {
+                        x=e.getX();                     
+                        if(x<20){
+                            toolbarBTN.set_pannel_visible(true);
+                        }                 
+                    }
+                }
+         );
 }
 
     void Add_Object(Main_Frame MF){
         //將其餘版面新增至程式面板上
-        ToolbarBTN toolbarBTN = new ToolbarBTN(MF);
+        toolbarBTN = new ToolbarBTN(MF);
         Panel_Main.add(Messgebar,BorderLayout.SOUTH);       
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
     }
@@ -76,11 +85,7 @@ public class Main_Frame extends Frame {
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
                         Main_Drawing_space.setBounds(0,0,  Drawing_space_x,  Drawing_space_y);                    
                     }    
-                    
                 }    
         );
-        
-
     }
-    
 }

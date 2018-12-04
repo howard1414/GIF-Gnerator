@@ -365,7 +365,6 @@ public class Main_Drawing_space extends Canvas{
        try
        {
          img = ImageIO.read(new File(path));
-        
        }catch(Exception ex){
             System.out.println("Printing image failed!");       
        }

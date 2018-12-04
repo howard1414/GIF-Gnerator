@@ -14,40 +14,50 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,AddnewPG;
-    JButton pencilall,fileall,patternall;
+    JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette;
+    JButton pencilall,fileall,patternall,backup;
     JFrame pen,file,pat;
     int checknum=0;
+    Button_Status BS;
     final static JPanel Panel_Button = new JPanel();
     ToolbarBTN(Main_Frame MF){
         super();
-        // 統合按鈕
+        BS = BS.initial;
+        //畫筆類
         pencilall = new JButton("  鉛筆工具  ");
+        pencilBTN = new JButton("     畫筆     ");
+        lineBTN = new JButton("   直線   ");
+        //檔案類
         fileall = new JButton("  檔案存取  ");
+        saveBTN = new JButton("     存檔     ");
+        loadBTN = new JButton("   讀檔   ");
+        optBTN = new JButton("   輸出   ");
+        //圖形類
         patternall = new JButton("  圖形工具  ");
-        //
-        AddnewPG = new JButton("  新建頁面  ");
-        saveBTN = new JButton("  存檔  ");
-        LoadBTN = new JButton("  讀檔  ");
-        OptBTN = new JButton("  輸出  ");
-        pencilBTN = new JButton("  畫筆  ");
-        rectBTN = new JButton("  矩形  ");
-        circleBTN = new JButton("  圓  ");
-        lineBTN = new JButton("  直線  ");
+        rectBTN = new JButton("     矩形     ");
+        circleBTN = new JButton("      圓      ");
+        //調色盤
+        palette = new JButton(" 調色盤 ");
+        //功能類
+        backup = new JButton(" <= ");
+        addnewPG = new JButton("  新建頁面  ");
+        recoveryBTN = new JButton("   復原   ");
         chang3d = new JButton(" 3D切換 ");       
-        closeBTN = new JButton(" << ");
-        recoveryBTN = new JButton(" 復原 ");
+        closeBTN = new JButton("  <<  ");
+       
         //設定外觀
+        set_buttonUI(backup);
+        set_buttonUI(palette);
         set_buttonUI(patternall);
         set_buttonUI(fileall);
         set_buttonUI(pencilall);
-        set_buttonUI(AddnewPG);
+        set_buttonUI(addnewPG);
         set_buttonUI(chang3d);
         set_buttonUI(rectBTN);
         set_buttonUI(lineBTN);
-        set_buttonUI(LoadBTN);
+        set_buttonUI(loadBTN);
         set_buttonUI(saveBTN);
-        set_buttonUI(OptBTN);
+        set_buttonUI(optBTN);
         set_buttonUI(circleBTN);
         set_buttonUI(closeBTN);
         set_buttonUI(pencilBTN);
@@ -55,51 +65,10 @@ public class ToolbarBTN extends JPanel{
         //設定pannel layout
         Panel_Button.setLayout(new GridLayout(10,1,10,10));
         Panel_Button.setBackground(new Color(0x8e8e8e));
-        //新增到panel上
-        Panel_Button.add(AddnewPG);
-        Panel_Button.add(fileall);
-        //Panel_Button.add(LoadBTN);
-        //Panel_Button.add(saveBTN);
-        //Panel_Button.add(OptBTN);
-        Panel_Button.add(pencilall);
-        //Panel_Button.add(pencilBTN);
-        //Panel_Button.add(lineBTN);
-        Panel_Button.add(patternall);
-        //Panel_Button.add(circleBTN); 
-        //Panel_Button.add(chang3d);
-        Panel_Button.add(recoveryBTN);
-        Panel_Button.add(closeBTN);
-        //統整按鈕視窗設計
-         //檔案
-        file = new JFrame();
-        file.setLayout(new GridLayout(1,3,10,10));
-        file.setLocation(208,100);
-        file.setSize(330,100);
-        file.setTitle("檔案存取");
-        file.setBackground(new Color( 50 , 50  ,50));
-        file.add(LoadBTN);
-        file.add(saveBTN);
-        file.add(OptBTN);
-         //鉛筆工具
-        pen = new JFrame();
-        pen.setLayout(new GridLayout(1,2,10,10));
-        pen.setLocation(208,150);
-        pen.setSize(220,100);
-        pen.setTitle("鉛筆工具");
-        pen.setBackground(new Color( 50 , 50  ,50));
-        pen.add(pencilBTN);
-        pen.add(lineBTN);
-         //圖形
-        pat = new JFrame();
-        pat.setLayout(new GridLayout(1,2,10,10));
-        pat.setLocation(208,200);
-        pat.setSize(220,100);
-        pat.setTitle("檔案存取");
-        pat.setBackground(new Color( 50 , 50  ,50));
-        pat.add(circleBTN);
-        pat.add(rectBTN);
-        //按鍵動作
-        AddnewPG.addMouseListener(
+        //新增到panel上(初始化
+        chang_button();
+        //按鍵動作*/
+        addnewPG.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
@@ -123,9 +92,8 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
-                        pen.setVisible(true);
-                        file.setVisible(false);
-                        pat.setVisible(false);
+                        BS = BS.brush;
+                        chang_button();
                     }
                 }
         );
@@ -134,9 +102,8 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
-                        file.setVisible(true);
-                        pen.setVisible(false);
-                        pat.setVisible(false);
+                       BS = BS.file;
+                       chang_button();
                     }
                 }
         );
@@ -145,9 +112,18 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
-                        pat.setVisible(true);
-                        file.setVisible(false);
-                        pen.setVisible(false);
+                        BS= BS.pattern;
+                        chang_button();
+                    }
+                }
+        );
+        backup.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        BS = BS.initial;
+                        chang_button();
                     }
                 }
         );
@@ -157,11 +133,10 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                         set_pannel_visible(false);
-                        
                     }
                 }
         );
-        LoadBTN.addMouseListener(
+        loadBTN.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
@@ -172,7 +147,6 @@ public class ToolbarBTN extends JPanel{
                         }catch(Exception ex){
                              System.out.println("Load image Failed!");
                         }
-                        file.setVisible(false);
                     }
                 }
         );
@@ -182,17 +156,15 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          MF.Messgebar.setLB("儲存檔案");;
-                         file.setVisible(false);
                     }
                 }
         );
-        OptBTN.addMouseListener(
+        optBTN.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
                     {    
                          MF.Messgebar.setLB("輸出");
-                         file.setVisible(false);
                     }
                 }
         );
@@ -203,7 +175,6 @@ public class ToolbarBTN extends JPanel{
                     {
                         MF.Messgebar.setLB("畫筆工具啟用中");
                         MF.Main_Drawing_space.status=Status.drawpencil;
-                        pen.setVisible(false);
                     }
                 }
         );
@@ -214,7 +185,6 @@ public class ToolbarBTN extends JPanel{
                     {
                          MF.Messgebar.setLB("畫線工具啟用中");
                          MF.Main_Drawing_space.status=Status.drawline;
-                         pen.setVisible(false);
                     }
                 }
         );
@@ -225,7 +195,6 @@ public class ToolbarBTN extends JPanel{
                     {
                          MF.Messgebar.setLB("畫圓工具啟用中");
                          MF.Main_Drawing_space.status=Status.drawOval;
-                         pat.setVisible(false);
                     }
                 }
         );
@@ -236,7 +205,6 @@ public class ToolbarBTN extends JPanel{
                     {
                          MF.Messgebar.setLB("矩形工具啟用中");
                          MF.Main_Drawing_space.status=Status.drawRect;
-                         pat.setVisible(false);
                     }
                 }
         );
@@ -258,12 +226,47 @@ public class ToolbarBTN extends JPanel{
                     }    
                 }    
         );
-         //Panel_Button.pack();
     }
     public void set_pannel_visible(boolean state){
         Panel_Button.setVisible(state);
     }
-    
+    public void chang_button(){
+        switch(BS){
+            case initial:
+                Panel_Button.removeAll();
+                Panel_Button.add(addnewPG);
+                Panel_Button.add(fileall);
+                Panel_Button.add(pencilall);
+                Panel_Button.add(patternall);
+                Panel_Button.add(palette);          
+                Panel_Button.add(recoveryBTN);
+                Panel_Button.add(closeBTN);
+                Panel_Button.updateUI();
+            break;
+            case file:
+                 Panel_Button.removeAll();
+                 Panel_Button.add(loadBTN);
+                 Panel_Button.add(saveBTN);
+                 Panel_Button.add(optBTN);
+                 Panel_Button.add(backup);
+                 Panel_Button.updateUI();
+            break;
+            case pattern:
+                Panel_Button.removeAll();
+                Panel_Button.add(circleBTN); 
+                Panel_Button.add(rectBTN); 
+                Panel_Button.updateUI();
+                Panel_Button.add(backup);
+            break;
+            case brush:
+                Panel_Button.removeAll();
+                Panel_Button.add(pencilBTN);
+                Panel_Button.add(lineBTN);
+                Panel_Button.updateUI();
+                Panel_Button.add(backup);
+            break;
+        }
+    }
     public void set_buttonUI(JButton btn){
         btn.setFont(new Font("新細明體", Font.BOLD, 15));
         btn.setBackground(new Color(0xFFBB00));
