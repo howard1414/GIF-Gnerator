@@ -273,7 +273,8 @@ public class Main_Drawing_space extends Canvas{
         ImageBuffer = createImage(this.getWidth(), this.getHeight());
         GraImage = ImageBuffer.getGraphics();
         paint(GraImage);
-        GraImage.dispose();         
+        GraImage.dispose();
+        g.drawImage(ImageBuffer, 0, 0, this);
         if (img != null) {             
                 int img_x = (getWidth() - img.getWidth()) / 2;
                 int img_y = (getHeight() - img.getHeight()) / 2;

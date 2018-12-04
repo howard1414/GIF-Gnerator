@@ -38,63 +38,20 @@ public class ToolbarBTN extends JPanel{
         closeBTN = new JButton(" << ");
         recoveryBTN = new JButton(" 復原 ");
         //設定外觀
-        patternall.setFont(new Font("新細明體", Font.BOLD, 15));
-        patternall.setBackground(new Color(0xFFBB00));
-        patternall.setForeground(Color.white);
-        patternall.setUI(new UI_Template());
-        fileall.setFont(new Font("新細明體", Font.BOLD, 15));
-        fileall.setBackground(new Color(0xFFBB00));
-        fileall.setForeground(Color.white);
-        fileall.setUI(new UI_Template());
-        pencilall.setFont(new Font("新細明體", Font.BOLD, 15));
-        pencilall.setBackground(new Color(0xFFBB00));
-        pencilall.setForeground(Color.white);
-        pencilall.setUI(new UI_Template());
-        AddnewPG.setFont(new Font("新細明體", Font.BOLD, 15));
-        AddnewPG.setBackground(new Color(0xFFBB00));
-        AddnewPG.setForeground(Color.white);
-        AddnewPG.setUI(new UI_Template());
-        chang3d.setFont(new Font("新細明體", Font.BOLD, 15));
-        chang3d.setBackground(new Color(0xFFBB00));
-        chang3d.setForeground(Color.white);
-        chang3d.setUI(new UI_Template());
-        rectBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        rectBTN.setBackground(new Color(0xFFBB00));
-        rectBTN.setForeground(Color.white);
-        rectBTN.setUI(new UI_Template());
-        lineBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        lineBTN.setBackground(new Color(0xFFBB00));
-        lineBTN.setForeground(Color.white);
-        lineBTN.setUI(new UI_Template());
-        LoadBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        LoadBTN.setBackground(new Color(0xFFBB00));
-        LoadBTN.setForeground(Color.white);
-        LoadBTN.setUI(new UI_Template());
-        saveBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        saveBTN.setBackground(new Color(0xFFBB00));
-        saveBTN.setForeground(Color.white);
-        saveBTN.setUI(new UI_Template());
-        OptBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        OptBTN.setBackground(new Color(0xFFBB00));
-        OptBTN.setForeground(Color.white);
-        OptBTN.setUI(new UI_Template());
-        circleBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        circleBTN.setBackground(new Color(0xFFBB00));
-        circleBTN.setForeground(Color.white);
-        circleBTN.setUI(new UI_Template());
-        closeBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        closeBTN.setBackground(new Color(0xFFBB00));
-        closeBTN.setForeground(Color.white);
-        closeBTN.setUI(new UI_Template());
-        pencilBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        pencilBTN.setBackground(new Color(0xFFBB00));
-        pencilBTN.setForeground(Color.white);
-        pencilBTN.setUI(new UI_Template());
-        recoveryBTN.setFont(new Font("新細明體", Font.BOLD, 15));
-        recoveryBTN.setBackground(new Color(0xFFBB00));
-        recoveryBTN.setForeground(Color.white);
-        recoveryBTN.setUI(new UI_Template());
-        
+        set_buttonUI(patternall);
+        set_buttonUI(fileall);
+        set_buttonUI(pencilall);
+        set_buttonUI(AddnewPG);
+        set_buttonUI(chang3d);
+        set_buttonUI(rectBTN);
+        set_buttonUI(lineBTN);
+        set_buttonUI(LoadBTN);
+        set_buttonUI(saveBTN);
+        set_buttonUI(OptBTN);
+        set_buttonUI(circleBTN);
+        set_buttonUI(closeBTN);
+        set_buttonUI(pencilBTN);
+        set_buttonUI(recoveryBTN);
         //設定pannel layout
         Panel_Button.setLayout(new GridLayout(10,1,10,10));
         Panel_Button.setBackground(new Color(0x8e8e8e));
@@ -298,6 +255,12 @@ public class ToolbarBTN extends JPanel{
         Panel_Button.setVisible(state);
     }
     
+    public void set_buttonUI(JButton btn){
+        btn.setFont(new Font("新細明體", Font.BOLD, 15));
+        btn.setBackground(new Color(0xFFBB00));
+        btn.setForeground(Color.white);
+        btn.setUI(new UI_Template());        
+    }
 
     
 }
