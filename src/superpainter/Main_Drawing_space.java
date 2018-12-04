@@ -38,10 +38,11 @@ public class Main_Drawing_space extends Canvas{
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
     Pattern Pattern;
-     private BufferedImage img;
-    
+    private BufferedImage img;
+    Main_Frame parent;
     Main_Drawing_space(Main_Frame MF){
         super();
+        parent = MF;
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();
         this.setBackground(Color.WHITE);     
@@ -348,7 +349,11 @@ public class Main_Drawing_space extends Canvas{
             }
       
     }
-    
+    public void readdpage(){
+        lines.removeAllElements();
+        repaint();
+        parent.Messgebar.setLB("已重新建立頁面");
+    }
     public void loadimage() throws FileNotFoundException{
         FileFilter filter = new FileNameExtensionFilter("Images Files", "jpg", "jpeg","gif","bmp");
         System.out.println("Load image...");

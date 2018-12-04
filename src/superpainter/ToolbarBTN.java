@@ -17,8 +17,8 @@ public class ToolbarBTN extends JPanel{
     JButton saveBTN,LoadBTN,OptBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,AddnewPG;
     JButton pencilall,fileall,patternall;
     JFrame pen,file,pat;
+    int checknum=0;
     final static JPanel Panel_Button = new JPanel();
-    
     ToolbarBTN(Main_Frame MF){
         super();
         // 統合按鈕
@@ -103,9 +103,18 @@ public class ToolbarBTN extends JPanel{
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
-                    {
-                        MF.add_Panel_Main();
-                        MF.Messgebar.setLB("新頁面以建立");
+                    {    ;
+                        if(MF.Main_Drawing_space!=null){
+                             Re_Addpage RA = new Re_Addpage(MF);
+                             if(checknum==1){
+                             }
+                        }
+                        else
+                        {   
+                            MF.addpage();
+                            MF.add_Panel_Main();
+                            MF.Messgebar.setLB("新頁面以建立");
+                        }
                     }
                 }
         );

@@ -20,15 +20,14 @@ public class Main_Frame extends Frame {
     Messgebar  Messgebar ;
     
      Main_Frame(String APPVERSION,String Title) {
-        Main_Drawing_space = new Main_Drawing_space(this);
-        
+         
+        //Main_Drawing_space = new Main_Drawing_space(this);
         Messgebar = new Messgebar();
         this.setSize(700,700);
         this.setLocation(100, 20);
         this.add(Panel_Main);
         Panel_Main.setLayout(new BorderLayout());
         Panel_Main.setBackground(new Color( 50 , 50  ,50));
-        //add_Panel_Main();
         this.setTitle(Title + " - " + APPVERSION);
         Add_Object(this);
         this.setVisible(true);
@@ -38,7 +37,6 @@ public class Main_Frame extends Frame {
                 {
                         System.exit(0);
                 }
-                
             }
         );
         
@@ -53,7 +51,9 @@ public class Main_Frame extends Frame {
         Panel_Main.add(Messgebar,BorderLayout.SOUTH);       
         Panel_Main.add(toolbarBTN.Panel_Button,BorderLayout.WEST);
     }
-    
+    void addpage(){
+        Main_Drawing_space = new Main_Drawing_space(this);
+    }
     void add_Panel_Main(){
         Panel_size = new JPanel();   
         Panel_size.setLayout(null);
