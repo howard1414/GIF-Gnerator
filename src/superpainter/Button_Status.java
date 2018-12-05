@@ -14,5 +14,6 @@ public enum Button_Status {
     file,
     pattern,
     brush,
+    painting
     
 }

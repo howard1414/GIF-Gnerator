@@ -27,21 +27,21 @@ public class Main_Drawing_space extends Canvas{
     JPanel Drawing_space ;
     JFileChooser file_choose ;
     File file_path;
-    //painting_space sp ; 
     int x=0,y=0;
     Rectangle windowSize; 
     Point fp,lp;                     //存取座標點
     Status status;                   //狀態儲存
     Vector<SaveLine> lines=null;     //繪布紀錄儲存(線)
-    Color color;                     //色彩更改
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
     Pattern Pattern;
     private BufferedImage img;
     Main_Frame parent;
+    Color color;                    //色彩更改
     Main_Drawing_space(Main_Frame MF){
         super();
+        color = Color.red;
         parent = MF;
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();
@@ -49,7 +49,6 @@ public class Main_Drawing_space extends Canvas{
         this.setVisible(true);
         re = new Stack();
         lines = new Vector<SaveLine>();
-        color = Color.red;
         this.addMouseMotionListener(
           new MouseAdapter()
                 {
@@ -57,7 +56,7 @@ public class Main_Drawing_space extends Canvas{
                     {
                         x=e.getX();                     
                         if(x<20){
-                        ToolbarBTN.Panel_Button.setVisible(true);                        
+                        MF.toolbarBTN.set_pannel_visible(true);
                         }                 
                     }
                 }
@@ -141,7 +140,7 @@ public class Main_Drawing_space extends Canvas{
                        Graphics g=  Main_Drawing_space.this.getGraphics();
                        g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new SaveLine(fp,lp,Pattern.Line));
+                       lines.add(new SaveLine(fp,lp,Pattern.Line,color));
                        fp=lp;     
                    }
                    //畫線功能(拖曳滑鼠)
@@ -156,7 +155,7 @@ public class Main_Drawing_space extends Canvas{
                        Graphics g=  Main_Drawing_space.this.getGraphics();
                        g.setColor(color);
                        g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new SaveLine(fp,lp,Pattern.Line)); 
+                       lines.add(new SaveLine(fp,lp,Pattern.Line,color)); 
                        drawfirst=1;     
                    }
                    //畫圓功能(拖曳滑鼠)
@@ -188,7 +187,7 @@ public class Main_Drawing_space extends Canvas{
                                 g.drawOval(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
                             }
                        }
-                       lines.add(new SaveLine(fp,lp,Pattern.Ovil)); 
+                       lines.add(new SaveLine(fp,lp,Pattern.Ovil,color)); 
                        drawfirst=1;
                    }
                    //矩形功能
@@ -220,7 +219,7 @@ public class Main_Drawing_space extends Canvas{
                                 g.drawRect(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
                             }
                        }
-                       lines.add(new SaveLine(fp,lp,Pattern.Rect)); 
+                       lines.add(new SaveLine(fp,lp,Pattern.Rect,color)); 
                        drawfirst=1;
                    }
                  }
@@ -267,7 +266,6 @@ public class Main_Drawing_space extends Canvas{
         }
     } 
     //double buffering
-    @Override
     public void update(Graphics g){
         Image ImageBuffer = null;
         Graphics GraImage = null;
@@ -276,21 +274,21 @@ public class Main_Drawing_space extends Canvas{
         paint(GraImage);
         GraImage.dispose();
         g.drawImage(ImageBuffer, 0, 0, this);
-        if (img != null) {             
+        /*if (img != null) {             
                 int img_x = (getWidth() - img.getWidth()) / 2;
                 int img_y = (getHeight() - img.getHeight()) / 2;
                 
                 g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);           
-            }     
+            }     */
     }
     @Override
     public void paint(Graphics g)
     {
-        g.setColor(color);
         if(lines!=null)
         {   
             for(SaveLine l : lines)
-            {    
+            {   
+                g.setColor(l.Color);
                  if(l.Pattern == Pattern.Line){
                      g.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
                  }
@@ -343,11 +341,11 @@ public class Main_Drawing_space extends Canvas{
       if (img != null) {              
                 int img_x = (getWidth() - img.getWidth()) / 2;
                 int img_y = (getHeight() - img.getHeight()) / 2;
-                
-                //g.drawImage(img, img_x, img_y, this);   
-                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);  
+                //g.drawImage(img, img_x, img_y, this);
+                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);
+               /* this.setBounds(0, 0, img.getHeight(), img.getWidth());
+                parent.size_btn.setBounds(img.getHeight(), img.getWidth(), 15, 15);*/
             }
-      
     }
     public void readdpage(){
         lines.removeAllElements();
@@ -359,7 +357,7 @@ public class Main_Drawing_space extends Canvas{
         System.out.println("Load image...");
         file_choose.setFileFilter(filter);
             if(file_choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-            file_path = file_choose.getSelectedFile();
+                file_path = file_choose.getSelectedFile();
             }
         String path = String.valueOf(file_path);
        try
@@ -374,4 +372,5 @@ public class Main_Drawing_space extends Canvas{
         public Dimension getPreferredSize() {
             return img == null ? new Dimension(200, 200) : new Dimension(img.getWidth(), img.getHeight());
         }
+        
 }

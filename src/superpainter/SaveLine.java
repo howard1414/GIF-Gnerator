@@ -13,9 +13,11 @@ public class SaveLine {
     Point firstpoint;
     Point lastpoint;
     Pattern Pattern;
-      SaveLine(Point start ,Point end,Pattern pat){
+    Color Color;
+      SaveLine(Point start ,Point end,Pattern pat,Color color){
           firstpoint=start;
           lastpoint=end;
           Pattern = pat;
+          Color = color;
       }
 }

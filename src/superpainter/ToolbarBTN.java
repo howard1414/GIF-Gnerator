@@ -19,7 +19,7 @@ public class ToolbarBTN extends JPanel{
     JFrame pen,file,pat;
     int checknum=0;
     Button_Status BS;
-    final static JPanel Panel_Button = new JPanel();
+    public final static JPanel Panel_Button = new JPanel();
     ToolbarBTN(Main_Frame MF){
         super();
         BS = BS.initial;
@@ -68,11 +68,22 @@ public class ToolbarBTN extends JPanel{
         //新增到panel上(初始化
         chang_button();
         //按鍵動作*/
+        palette.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {   
+                        Palette_Frame pf = new Palette_Frame(MF);
+                    }
+                }
+        );
         addnewPG.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
-                    {    ;
+                    {    
+                        BS = BS.painting;
+                        chang_button();
                         if(MF.Main_Drawing_space!=null){
                              Re_Addpage RA = new Re_Addpage(MF);
                              if(checknum==1){
@@ -122,7 +133,7 @@ public class ToolbarBTN extends JPanel{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                        BS = BS.initial;
+                        BS = BS.painting;
                         chang_button();
                     }
                 }
@@ -233,6 +244,13 @@ public class ToolbarBTN extends JPanel{
     public void chang_button(){
         switch(BS){
             case initial:
+                Panel_Button.removeAll();
+                Panel_Button.add(addnewPG);
+                Panel_Button.add(fileall);
+                Panel_Button.add(closeBTN);
+                Panel_Button.updateUI();
+            break;
+            case painting:
                 Panel_Button.removeAll();
                 Panel_Button.add(addnewPG);
                 Panel_Button.add(fileall);

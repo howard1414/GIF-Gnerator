@@ -14,10 +14,11 @@ import javax.swing.*;
 public class Re_Addpage extends JFrame {
     Re_Addpage(Main_Frame MF){
         super();
-        this.setSize(180,120);
+        this.setSize(180,110);
         this.setLocation(300, 300);
         this.setVisible(true);
         this.setLayout(null);
+        this.setTitle("新建頁面");
         JButton check = new JButton("確定");
         JButton fail = new JButton("取消");
         JLabel LB1 = new JLabel("是否要放棄當前繪畫進度?");
@@ -44,9 +45,9 @@ public class Re_Addpage extends JFrame {
         this.add(check);
         this.add(fail);
         this.add(LB1);
-        LB1.setBounds(5,-30, 200, 100);
-        check.setBounds(10, 50, 60, 20);
-        fail.setBounds(90, 50, 60, 20);
+        LB1.setBounds(13,-30, 200, 100);
+        check.setBounds(10, 40, 60, 20);
+        fail.setBounds(90, 40, 60, 20);
         
         
     }
