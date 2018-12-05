@@ -349,8 +349,10 @@ public class Main_Drawing_space extends Canvas{
     }
     public void readdpage(){
         lines.removeAllElements();
+        img = null;
         repaint();
         parent.Messgebar.setLB("已重新建立頁面");
+        
     }
     public void loadimage() throws FileNotFoundException{
         FileFilter filter = new FileNameExtensionFilter("Images Files", "jpg", "jpeg","gif","bmp");
