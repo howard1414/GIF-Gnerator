@@ -18,6 +18,7 @@ public class ToolbarBTN extends JPanel{
     JButton pencilall,fileall,patternall,backup;
     JFrame pen,file,pat;
     Button_Status BS;
+    Boolean toolbarVisible=true;
     public final static JPanel Panel_Button = new JPanel();
     ToolbarBTN(Main_Frame MF){
         super();
@@ -145,7 +146,6 @@ public class ToolbarBTN extends JPanel{
                           MF.JSC.setBounds(0, 0,MF.getWidth()-16,MF.getHeight()-MF.Messgebar.getHeight()-38);
                           MF.Panel_Main.updateUI();
                         }
-                        
                     }
                 }
         );
@@ -242,6 +242,7 @@ public class ToolbarBTN extends JPanel{
     }
     public void set_pannel_visible(boolean state){
         Panel_Button.setVisible(state);
+        toolbarVisible = state;
     }
     public void chang_button(){
         switch(BS){

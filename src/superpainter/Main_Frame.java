@@ -48,7 +48,7 @@ public class Main_Frame extends Frame {
                     public void mouseMoved(MouseEvent e)
                     {
                         x=e.getX();                     
-                        if(x<20){
+                        if(x<20 && toolbarBTN.toolbarVisible==false){
                             toolbarBTN.set_pannel_visible(true);
                         }                 
                     }

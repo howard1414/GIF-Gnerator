@@ -55,10 +55,8 @@ public class Main_Drawing_space extends Canvas{
                     public void mouseMoved(MouseEvent e)
                     {
                         x=e.getX();                     
-                        if(x<20){
+                        if(x<20 && MF.toolbarBTN.toolbarVisible == false){
                             MF.toolbarBTN.set_pannel_visible(true);
-                            MF.JSC.setBounds(0, 0,MF.getWidth()-ToolbarBTN.Panel_Button.getWidth()-16,MF.getHeight()-MF.Messgebar.getHeight()-38);
-                            MF.Panel_Main.updateUI();
                         }                 
                     }
                 }
