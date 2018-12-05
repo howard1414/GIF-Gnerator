@@ -56,7 +56,9 @@ public class Main_Drawing_space extends Canvas{
                     {
                         x=e.getX();                     
                         if(x<20){
-                        MF.toolbarBTN.set_pannel_visible(true);
+                            MF.toolbarBTN.set_pannel_visible(true);
+                            MF.JSC.setBounds(0, 0,MF.getWidth()-ToolbarBTN.Panel_Button.getWidth()-16,MF.getHeight()-MF.Messgebar.getHeight()-38);
+                            MF.Panel_Main.updateUI();
                         }                 
                     }
                 }
@@ -349,6 +351,10 @@ public class Main_Drawing_space extends Canvas{
     }
     public void readdpage(){
         lines.removeAllElements();
+        parent.Drawing_space_x=500;
+        parent.Drawing_space_y=500;
+        this.setBounds(0, 0, parent.Drawing_space_x, parent.Drawing_space_y);
+        parent.size_btn.setBounds(parent.Drawing_space_x,parent.Drawing_space_y, 15, 15);
         img = null;
         repaint();
         parent.Messgebar.setLB("已重新建立頁面");

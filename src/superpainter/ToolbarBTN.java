@@ -17,7 +17,6 @@ public class ToolbarBTN extends JPanel{
     JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette;
     JButton pencilall,fileall,patternall,backup;
     JFrame pen,file,pat;
-    int checknum=0;
     Button_Status BS;
     public final static JPanel Panel_Button = new JPanel();
     ToolbarBTN(Main_Frame MF){
@@ -86,8 +85,6 @@ public class ToolbarBTN extends JPanel{
                         chang_button();
                         if(MF.Main_Drawing_space!=null){
                              Re_Addpage RA = new Re_Addpage(MF);
-                             if(checknum==1){
-                             }
                         }
                         else
                         {   
@@ -144,6 +141,11 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                         set_pannel_visible(false);
+                        if(MF.Main_Drawing_space!=null){
+                          MF.JSC.setBounds(0, 0,MF.getWidth()-16,MF.getHeight()-MF.Messgebar.getHeight()-38);
+                          MF.Panel_Main.updateUI();
+                        }
+                        
                     }
                 }
         );
