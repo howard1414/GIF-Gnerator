@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
     JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette;
     JButton pencilall,fileall,patternall,backup;
-    JFrame pen,file,pat;
     Button_Status BS;
     Boolean toolbarVisible=true;
     public final static JPanel Panel_Button = new JPanel();
