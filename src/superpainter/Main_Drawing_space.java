@@ -337,16 +337,16 @@ public class Main_Drawing_space extends Canvas{
                  
             }
         }
-        
+
       if (img != null) {              
                 int img_x = (getWidth() - img.getWidth()) / 2;
                 int img_y = (getHeight() - img.getHeight()) / 2;
                 //g.drawImage(img, img_x, img_y, this);
                 g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);
-               /* this.setBounds(0, 0, img.getHeight(), img.getWidth());
+               /*this.setBounds(0, 0, img.getHeight(), img.getWidth());
                 parent.size_btn.setBounds(img.getHeight(), img.getWidth(), 15, 15);*/
             }
-    }
+    }       
     public void readdpage(){
         lines.removeAllElements();
         parent.Drawing_space_x=500;

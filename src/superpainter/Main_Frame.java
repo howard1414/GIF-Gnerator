@@ -25,6 +25,7 @@ public class Main_Frame extends Frame {
     int PageHeight = 500;
     int x;
     int count=0;
+    
      Main_Frame(String APPVERSION,String Title){
         Messgebar = new Messgebar();
         THIS = this;
@@ -89,7 +90,11 @@ public class Main_Frame extends Frame {
                 {                                    
                     public void mouseDragged(MouseEvent e)
                     {   
-                        Main_Drawing_space.repaint();
+                        if(count%10 == 0)
+                        {
+                        Main_Frame.this.Main_Drawing_space.repaint();    
+                        Main_Frame.this.Panel_size.repaint();
+                        }
                         if(toolbarBTN.toolbarVisible==true){
                         Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x - ToolbarBTN.Panel_Button.getWidth();
                         Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;
@@ -102,13 +107,51 @@ public class Main_Frame extends Frame {
                         if(Drawing_space_x <0){Drawing_space_x=0;}
                         if(Drawing_space_y <0){Drawing_space_y=0;}
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
-                        Main_Drawing_space.setBounds(0,0,  Drawing_space_x,  Drawing_space_y); 
-                        
-                        Panel_size.setPreferredSize(new Dimension(Drawing_space_x+17, Drawing_space_y+17));     
-                        
+                        Panel_size.setPreferredSize(new Dimension(Drawing_space_x+17, Drawing_space_y+17));
+                        Graphics g = Main_Frame.this.Panel_size.getGraphics();
+                        Graphics2D g2d = (Graphics2D)g;
+                        g2d.setColor(Color.red);
+                        g2d.setStroke(new BasicStroke(8.0f));
+                        Graphics g2 = Main_Frame.this.Main_Drawing_space.getGraphics();
+                        Graphics2D g2d2 = (Graphics2D)g2;
+                        g2d2.setColor(Color.red);
+                        g2d2.setStroke(new BasicStroke(8.0f));
+                        if(Drawing_space_x>Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
+                        {    
+                            g2d.drawLine(Drawing_space_x, 0,Drawing_space_x,Drawing_space_y);
+                            g2d.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
+                        }
+                        else if(Drawing_space_x < Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
+                        {   
+                            g2d2.drawLine(Drawing_space_x, 0, Drawing_space_x, Main_Drawing_space.getHeight());
+                            g2d.drawLine(Drawing_space_x,(Drawing_space_y - Main_Drawing_space.getHeight()), Drawing_space_x, Drawing_space_y);
+                            g2d.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
+                        }
+                        else if(Drawing_space_x > Main_Drawing_space.getWidth() && Drawing_space_y < Main_Drawing_space.getHeight())
+                        {
+                            g2d2.drawLine(0, Drawing_space_y, Main_Drawing_space.getWidth(), Drawing_space_y);
+                            g2d.drawLine(Drawing_space_x,0, Drawing_space_x, Drawing_space_y);
+                            g2d.drawLine((Drawing_space_x-Main_Drawing_space.getWidth()), Drawing_space_y, Drawing_space_x, Drawing_space_y);
+                        }
+                        else if(Drawing_space_x < Main_Drawing_space.getWidth() && Drawing_space_y < Main_Drawing_space.getHeight())
+                        {
+                          g2d2.drawLine( Drawing_space_x, 0, Drawing_space_x, Drawing_space_y);
+                          g2d2.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
+                        }
                         Panel_Main.updateUI();
+                        count++;
                     }    
                 }    
         );
+        size_btn.addMouseListener(
+          new MouseAdapter()      
+                {
+                    public void mouseReleased(MouseEvent e){
+                       count=0;
+                       Main_Drawing_space.setSize(Drawing_space_x,  Drawing_space_y); 
+                       Main_Frame.this.Panel_size.repaint();
+                    }
+                }
+        );        
     }
 }
