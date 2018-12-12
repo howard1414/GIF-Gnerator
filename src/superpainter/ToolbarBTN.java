@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
     JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette,line_width;
     JButton pencilall,fileall,patternall,backup;
+    Output output;
     Button_Status BS;
     Boolean toolbarVisible=true;
     public final static JPanel Panel_Button = new JPanel();
@@ -189,7 +190,13 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {    
                          MF.Messgebar.setLB("輸出");
+                         if(output==null){
+                         output = new Output(MF);
+                         }else{
+                         JOptionPane.showMessageDialog(null,"輸出視窗已開啟");
+                         }
                     }
+                         
                 }
         );
         pencilBTN.addMouseListener(
