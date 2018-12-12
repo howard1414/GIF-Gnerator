@@ -23,10 +23,8 @@ public class Palette_Frame extends JFrame {
         JPanel PF = new JPanel();
         this.setLocation(200, 150);
         this.setSize(300, 200);
-        //this.setLayout(null);
         this.setBackground(new Color(50,50,50));
         this.setTitle("調色盤");
-        this.add(PF);
         PF.setLayout(null);
         PF.setBackground(new Color(50,50,50));
         JButton check = new JButton("確認");
@@ -113,7 +111,7 @@ public class Palette_Frame extends JFrame {
                     }
                 }
         );
-        check.addMouseListener(
+        fail.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
@@ -133,7 +131,7 @@ public class Palette_Frame extends JFrame {
         PF.add(greenSCB);
         PF.add(blueSCB);
         
-        
+        this.add(PF);
         this.setVisible(true);
     }
 }

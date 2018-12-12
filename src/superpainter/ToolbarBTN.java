@@ -14,7 +14,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette;
+    JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette,line_width;
     JButton pencilall,fileall,patternall,backup;
     Button_Status BS;
     Boolean toolbarVisible=true;
@@ -37,6 +37,8 @@ public class ToolbarBTN extends JPanel{
         circleBTN = new JButton("      圓      ");
         //調色盤
         palette = new JButton(" 調色盤 ");
+        //線條粗細
+        line_width = new JButton(" 線條粗細 ");
         //功能類
         backup = new JButton(" <= ");
         addnewPG = new JButton("  新建頁面  ");
@@ -61,12 +63,22 @@ public class ToolbarBTN extends JPanel{
         set_buttonUI(closeBTN);
         set_buttonUI(pencilBTN);
         set_buttonUI(recoveryBTN);
+        set_buttonUI(line_width);
         //設定pannel layout
         Panel_Button.setLayout(new GridLayout(10,1,10,10));
         Panel_Button.setBackground(new Color(0x8e8e8e));
         //新增到panel上(初始化
         chang_button();
         //按鍵動作*/
+        line_width.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        Line_width_Frame lf = new Line_width_Frame(MF);
+                    }
+                }
+        );
         palette.addMouseListener(
                 new MouseAdapter()
                 {
@@ -258,7 +270,8 @@ public class ToolbarBTN extends JPanel{
                 Panel_Button.add(fileall);
                 Panel_Button.add(pencilall);
                 Panel_Button.add(patternall);
-                Panel_Button.add(palette);          
+                Panel_Button.add(palette);
+                Panel_Button.add(line_width);
                 Panel_Button.add(recoveryBTN);
                 Panel_Button.add(closeBTN);
                 Panel_Button.updateUI();

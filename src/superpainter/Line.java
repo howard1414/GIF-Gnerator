@@ -9,15 +9,17 @@ import java.awt.*;
  *
  * @author HALUNA
  */
-public class SaveLine {
+public class Line {
     Point firstpoint;
     Point lastpoint;
     Pattern Pattern;
     Color Color;
-      SaveLine(Point start ,Point end,Pattern pat,Color color){
-          firstpoint=start;
-          lastpoint=end;
+    float BasicStroke;
+      Line(Point start ,Point end,Pattern pat,Color color,float BS){
+          firstpoint = start;
+          lastpoint = end;
           Pattern = pat;
           Color = color;
+          BasicStroke = BS;
       }
 }

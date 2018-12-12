@@ -31,7 +31,7 @@ public class Main_Drawing_space extends Canvas{
     Rectangle windowSize; 
     Point fp,lp;                     //存取座標點
     Status status;                   //狀態儲存
-    Vector<SaveLine> lines=null;     //繪布紀錄儲存(線)
+    Vector<Line> lines=null;     //繪布紀錄儲存(線)
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
@@ -39,16 +39,19 @@ public class Main_Drawing_space extends Canvas{
     private BufferedImage img;
     Main_Frame parent;
     Color color;                    //色彩更改
+    float BasicStroke;        //線條粗細
+    
     Main_Drawing_space(Main_Frame MF){
         super();
         color = Color.red;
+        BasicStroke = 1.0f;
         parent = MF;
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();
         this.setBackground(Color.WHITE);     
         this.setVisible(true);
         re = new Stack();
-        lines = new Vector<SaveLine>();
+        lines = new Vector<Line>();
         this.addMouseMotionListener(
           new MouseAdapter()
                 {
@@ -133,14 +136,17 @@ public class Main_Drawing_space extends Canvas{
             {
                 public void mouseDragged(MouseEvent e)
                 {  
-                   //鉛筆功能(拖曳滑鼠)
+                  
+                    lp=e.getPoint();
+                    Graphics g=  Main_Drawing_space.this.getGraphics();
+                    Graphics2D g2d = (Graphics2D)g;
+                    g2d.setColor(color);
+                    g2d.setStroke(new BasicStroke(BasicStroke));
+                     //鉛筆功能(拖曳滑鼠)
                    if(Main_Drawing_space.this.status == Status.drawpencil)
                    {    
-                       lp=e.getPoint();
-                       Graphics g=  Main_Drawing_space.this.getGraphics();
-                       g.setColor(color);
-                       g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new SaveLine(fp,lp,Pattern.Line,color));
+                       g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
+                       lines.add(new Line(fp,lp,Pattern.Line,color,BasicStroke));
                        fp=lp;     
                    }
                    //畫線功能(拖曳滑鼠)
@@ -152,10 +158,8 @@ public class Main_Drawing_space extends Canvas{
                            repaint();
                        }
                        lp=e.getPoint(); 
-                       Graphics g=  Main_Drawing_space.this.getGraphics();
-                       g.setColor(color);
-                       g.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new SaveLine(fp,lp,Pattern.Line,color)); 
+                       g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
+                       lines.add(new Line(fp,lp,Pattern.Line,color,BasicStroke)); 
                        drawfirst=1;     
                    }
                    //畫圓功能(拖曳滑鼠)
@@ -167,27 +171,25 @@ public class Main_Drawing_space extends Canvas{
                            repaint();
                        }
                        lp=e.getPoint();
-                       Graphics g=  Main_Drawing_space.this.getGraphics();
-                       g.setColor(color);
                        {    
                             //第二象限
                             if(lp.x<=fp.x && lp.y<fp.y){
-                                g.drawOval(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
+                                g2d.drawOval(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
                             }
                             //第二象限
                             else if(lp.x>fp.x && lp.y<=fp.y){
-                                g.drawOval(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
+                                g2d.drawOval(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
                             }
                             //第三象限
                             else if(lp.x<=fp.x && lp.y>fp.y){
-                                g.drawOval(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
+                                g2d.drawOval(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
                             }
                             //第四象限
                             else if(lp.x>fp.x && lp.y>=fp.y){
-                                g.drawOval(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
+                                g2d.drawOval(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
                             }
                        }
-                       lines.add(new SaveLine(fp,lp,Pattern.Ovil,color)); 
+                       lines.add(new Line(fp,lp,Pattern.Ovil,color,BasicStroke)); 
                        drawfirst=1;
                    }
                    //矩形功能
@@ -199,27 +201,25 @@ public class Main_Drawing_space extends Canvas{
                            repaint();
                        }
                        lp=e.getPoint();
-                       Graphics g=  Main_Drawing_space.this.getGraphics();
-                       g.setColor(color);
                        {    
                             //第二象限
                             if(lp.x<=fp.x && lp.y<fp.y){
-                                g.drawRect(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
+                                g2d.drawRect(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
                             }
                             //第二象限
                             else if(lp.x>fp.x && lp.y<=fp.y){
-                                g.drawRect(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
+                                g2d.drawRect(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
                             }
                             //第三象限
                             else if(lp.x<=fp.x && lp.y>fp.y){
-                                g.drawRect(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
+                                g2d.drawRect(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
                             }
                             //第四象限
                             else if(lp.x>fp.x && lp.y>=fp.y){
-                                g.drawRect(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
+                                g2d.drawRect(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
                             }
                        }
-                       lines.add(new SaveLine(fp,lp,Pattern.Rect,color)); 
+                       lines.add(new Line(fp,lp,Pattern.Rect,color,BasicStroke)); 
                        drawfirst=1;
                    }
                  }
@@ -274,42 +274,45 @@ public class Main_Drawing_space extends Canvas{
         paint(GraImage);
         GraImage.dispose();
         g.drawImage(ImageBuffer, 0, 0, this);
-        /*if (img != null) {             
-                int img_x = (getWidth() - img.getWidth()) / 2;
-                int img_y = (getHeight() - img.getHeight()) / 2;
-                
-                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);           
-            }     */
+        /*if (img != null) 
+        {             
+            int img_x = (getWidth() - img.getWidth()) / 2;
+            int img_y = (getHeight() - img.getHeight()) / 2;
+            g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);           
+        }     */
     }
     @Override
+    
     public void paint(Graphics g)
-    {
+    {   
+        Graphics2D g2d = (Graphics2D)g;
         if(lines!=null)
         {   
-            for(SaveLine l : lines)
+            for(Line l : lines)
             {   
-                g.setColor(l.Color);
+                g2d.setColor(l.Color);
+                g2d.setStroke(new BasicStroke(l.BasicStroke));
                  if(l.Pattern == Pattern.Line){
-                     g.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
                  }
                  else if(l.Pattern ==Pattern.Ovil)
                  {
                     {    
                         //第一象限
                         if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
-                            g.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            g2d.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
                         }
                         //第二象限
                         else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
-                            g.drawOval(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            g2d.drawOval(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
                         }
                         //第三象限
                         else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
-                            g.drawOval(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            g2d.drawOval(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
                         }
                         //第四象限
                         else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
-                            g.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            g2d.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
                         }
                     }
                  }
@@ -318,19 +321,19 @@ public class Main_Drawing_space extends Canvas{
                     {    
                         //第一象限
                         if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
-                            g.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            g2d.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
                         }
                         //第二象限
                         else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
-                            g.drawRect(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            g2d.drawRect(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
                         }
                         //第三象限
                         else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
-                            g.drawRect(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            g2d.drawRect(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
                         }
                         //第四象限
                         else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
-                            g.drawRect(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            g2d.drawRect(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
                         }
                     }
                  }

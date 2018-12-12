@@ -90,7 +90,7 @@ public class Main_Frame extends Frame {
                 {                                    
                     public void mouseDragged(MouseEvent e)
                     {   
-                        if(count%10 == 0)
+                        if(count%2 == 0)
                         {
                         Main_Frame.this.Main_Drawing_space.repaint();    
                         Main_Frame.this.Panel_size.repaint();
@@ -111,7 +111,7 @@ public class Main_Frame extends Frame {
                         Graphics g = Main_Frame.this.Panel_size.getGraphics();
                         Graphics2D g2d = (Graphics2D)g;
                         g2d.setColor(Color.red);
-                        g2d.setStroke(new BasicStroke(8.0f));
+                        g2d.setStroke(new BasicStroke(4.0f));
                         Graphics g2 = Main_Frame.this.Main_Drawing_space.getGraphics();
                         Graphics2D g2d2 = (Graphics2D)g2;
                         g2d2.setColor(Color.red);
