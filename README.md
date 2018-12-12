@@ -72,3 +72,11 @@ Computer Program Engineering (II) project work
 <br> Change size_btn's mouseDragged function
 <br> AddPage error Fixed(img repaint)
 <br> Add  JScrollPane
+
+<br> 20181212
+<br> Merged brench files
+<br> building version 2121
+<br> Add Line_width_Frame
+<br> Rename SaveLine -> Line
+<br> fix Palette_Frame bug
+<br> Add Output
