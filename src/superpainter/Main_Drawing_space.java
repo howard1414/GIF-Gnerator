@@ -71,6 +71,7 @@ public class Main_Drawing_space extends Canvas{
                     public void mousePressed(MouseEvent e)
                     {  
                         //鉛筆功能(按下滑鼠左鍵)
+                        System.out.println("MOUSE PRESSED!!");
                        if(Main_Drawing_space.this.status==Status.drawpencil)        
                        {                
                         fp=e.getPoint();
@@ -95,6 +96,7 @@ public class Main_Drawing_space extends Canvas{
                     public void mouseReleased(MouseEvent e)
                     {   
                         //鉛筆功能(放開滑鼠左鍵)
+                        System.out.println("MOUSE RELEASED!!");
                         if(Main_Drawing_space.this.status == Status.drawpencil)
                         {
                             re.push(lines.size()-pencilem);
@@ -136,7 +138,7 @@ public class Main_Drawing_space extends Canvas{
             {
                 public void mouseDragged(MouseEvent e)
                 {  
-                  
+                    System.out.println("MOUSE DRAGGED!!");
                     lp=e.getPoint();
                     Graphics g=  Main_Drawing_space.this.getGraphics();
                     Graphics2D g2d = (Graphics2D)g;

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
+import java.awt.geom.*;
 
 /*
 主視窗介面
@@ -92,7 +93,7 @@ public class Main_Frame extends Frame {
                     {   
                         if(count%2 == 0)
                         {
-                        Main_Frame.this.Main_Drawing_space.repaint();    
+                        Main_Frame.this.Main_Drawing_space.repaint();
                         Main_Frame.this.Panel_size.repaint();
                         }
                         if(toolbarBTN.toolbarVisible==true){
@@ -109,13 +110,15 @@ public class Main_Frame extends Frame {
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
                         Panel_size.setPreferredSize(new Dimension(Drawing_space_x+17, Drawing_space_y+17));
                         Graphics g = Main_Frame.this.Panel_size.getGraphics();
-                        Graphics2D g2d = (Graphics2D)g;
-                        g2d.setColor(Color.red);
-                        g2d.setStroke(new BasicStroke(4.0f));
                         Graphics g2 = Main_Frame.this.Main_Drawing_space.getGraphics();
+                        Graphics2D g2d = (Graphics2D)g;
                         Graphics2D g2d2 = (Graphics2D)g2;
+                        float[] dashPattern = {10F, 20F, 10F, 20F, 10F, 20F, 20F, 10F};
+                        Stroke dash = new BasicStroke(2.5f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,3.5f,dashPattern,0f);
+                        g2d.setColor(Color.red);
+                        g2d.setStroke(dash);
                         g2d2.setColor(Color.red);
-                        g2d2.setStroke(new BasicStroke(8.0f));
+                        g2d2.setStroke(dash);
                         if(Drawing_space_x>Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
                         {    
                             g2d.drawLine(Drawing_space_x, 0,Drawing_space_x,Drawing_space_y);
@@ -138,7 +141,7 @@ public class Main_Frame extends Frame {
                           g2d2.drawLine( Drawing_space_x, 0, Drawing_space_x, Drawing_space_y);
                           g2d2.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
                         }
-                        Panel_Main.updateUI();
+                      //  Panel_Main.updateUI();
                         count++;
                     }    
                 }    
