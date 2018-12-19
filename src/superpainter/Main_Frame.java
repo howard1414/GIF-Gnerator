@@ -24,7 +24,12 @@ public class Main_Frame extends Frame {
     Main_Frame THIS;
     int PageWidth = 500;
     int PageHeight = 500;
+    int SPW = 500;
+    int SPH = 500;
     int x;
+    int fpx;
+    int fpy;
+    boolean firstin = true;
     int count=0;
     
      Main_Frame(String APPVERSION,String Title){
@@ -91,59 +96,43 @@ public class Main_Frame extends Frame {
                 {                                    
                     public void mouseDragged(MouseEvent e)
                     {   
-                        if(count%2 == 0)
-                        {
-                        Main_Frame.this.Main_Drawing_space.repaint();
-                        Main_Frame.this.Panel_size.repaint();
+                        if(count %4 == 0){
+                            Main_Drawing_space.repaint();
+                            Panel_size.repaint();
                         }
-                        if(toolbarBTN.toolbarVisible==true){
-                        Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x - ToolbarBTN.Panel_Button.getWidth();
-                        Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;
-                        }
-                        else
-                        {
+                        
                         Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x ;
-                        Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;  
+                        Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;
+                        
+                        
+                        
+                        if(toolbarBTN.toolbarVisible==true && SPW <= JSC.getWidth() && SPH <= JSC.getHeight()){
+                            Drawing_space_x -= ToolbarBTN.Panel_Button.getWidth();
                         }
+                        System.out.println("SPW= " + SPW );
+                        System.out.println("SPH= " + SPH );
+                        System.out.println("Drawing_space_x= " + Drawing_space_x);
+                        System.out.println("Drawing_space_y= " + Drawing_space_y );
+                        System.out.println("Pressed" +"   fpx = " +fpx +"  fpy = " + fpy);
+                        System.out.println((fpx - Drawing_space_x) +"    "+(fpy - Drawing_space_y));
+                        if(SPW >= JSC.getWidth())   
+                            Drawing_space_x =  SPW + (Drawing_space_x-fpx);
+                        if(SPH >= JSC.getHeight())    
+                            Drawing_space_y  = SPH + (Drawing_space_y-fpy);
+                        
+                        
+                        //System.out.println("Drawing_space_x= " + Drawing_space_x);
+                        //System.out.println("Drawing_space_y= " + Drawing_space_y );
+                        
                         if(Drawing_space_x <0){Drawing_space_x=0;}
                         if(Drawing_space_y <0){Drawing_space_y=0;}
+                      
+                        
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
                         Panel_size.setPreferredSize(new Dimension(Drawing_space_x+17, Drawing_space_y+17));
-                        Graphics g = Main_Frame.this.Panel_size.getGraphics();
-                        Graphics g2 = Main_Frame.this.Main_Drawing_space.getGraphics();
-                        Graphics2D g2d = (Graphics2D)g;
-                        Graphics2D g2d2 = (Graphics2D)g2;
-                        float[] dashPattern = {10F, 20F, 10F, 20F, 10F, 20F, 20F, 10F};
-                        Stroke dash = new BasicStroke(2.5f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,3.5f,dashPattern,0f);
-                        g2d.setColor(Color.red);
-                        g2d.setStroke(dash);
-                        g2d2.setColor(Color.red);
-                        g2d2.setStroke(dash);
-                        if(Drawing_space_x>Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
-                        {    
-                            g2d.drawLine(Drawing_space_x, 0,Drawing_space_x,Drawing_space_y);
-                            g2d.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
-                        }
-                        else if(Drawing_space_x < Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
-                        {   
-                            g2d2.drawLine(Drawing_space_x, 0, Drawing_space_x, Main_Drawing_space.getHeight());
-                            g2d.drawLine(Drawing_space_x,(Drawing_space_y - Main_Drawing_space.getHeight()), Drawing_space_x, Drawing_space_y);
-                            g2d.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
-                        }
-                        else if(Drawing_space_x > Main_Drawing_space.getWidth() && Drawing_space_y < Main_Drawing_space.getHeight())
-                        {
-                            g2d2.drawLine(0, Drawing_space_y, Main_Drawing_space.getWidth(), Drawing_space_y);
-                            g2d.drawLine(Drawing_space_x,0, Drawing_space_x, Drawing_space_y);
-                            g2d.drawLine((Drawing_space_x-Main_Drawing_space.getWidth()), Drawing_space_y, Drawing_space_x, Drawing_space_y);
-                        }
-                        else if(Drawing_space_x < Main_Drawing_space.getWidth() && Drawing_space_y < Main_Drawing_space.getHeight())
-                        {
-                          g2d2.drawLine( Drawing_space_x, 0, Drawing_space_x, Drawing_space_y);
-                          g2d2.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
-                        }
-                      //  Panel_Main.updateUI();
+                        draw_outline();
                         count++;
-                    }    
+                    }
                 }    
         );
         size_btn.addMouseListener(
@@ -153,8 +142,54 @@ public class Main_Frame extends Frame {
                        count=0;
                        Main_Drawing_space.setSize(Drawing_space_x,  Drawing_space_y); 
                        Main_Frame.this.Panel_size.repaint();
+                       firstin = true;
+                       Panel_size.updateUI();
+                       SPW = Main_Drawing_space.getWidth();
+                       SPH = Main_Drawing_space.getHeight();
+                    }
+                    public void mousePressed(MouseEvent e){
+                        fpx = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x;
+                        fpy = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y;
+                        System.out.println("Pressed" +"   fpx = " +fpx +"  fpy" + fpy);
                     }
                 }
         );        
+    }
+    void draw_outline(){
+        Graphics g = Main_Frame.this.Panel_size.getGraphics();
+        Graphics g2 = Main_Frame.this.Main_Drawing_space.getGraphics();
+        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d2 = (Graphics2D)g2;
+        float[] dashPattern = {10F, 20F, 10F, 20F, 10F, 20F, 20F, 10F};
+        Stroke dash = new BasicStroke(2.5f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,3.5f,dashPattern,0f);
+        g2d.setColor(Color.red);
+        g2d.setStroke(dash);
+        g2d2.setColor(Color.red);
+        g2d2.setStroke(dash);
+        if(Drawing_space_x>Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
+        {    
+            g2d.drawLine(Drawing_space_x, 0,Drawing_space_x,Drawing_space_y);
+            g2d.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
+            
+        }
+        else if(Drawing_space_x < Main_Drawing_space.getWidth() && Drawing_space_y > Main_Drawing_space.getHeight())
+        {   
+            g2d2.drawLine(Drawing_space_x, 0, Drawing_space_x, Main_Drawing_space.getHeight());
+            g2d.drawLine(Drawing_space_x,(Drawing_space_y - Main_Drawing_space.getHeight()), Drawing_space_x, Drawing_space_y);
+            g2d.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
+        }
+        else if(Drawing_space_x > Main_Drawing_space.getWidth() && Drawing_space_y < Main_Drawing_space.getHeight())
+        {
+            g2d2.drawLine(0, Drawing_space_y, Main_Drawing_space.getWidth(), Drawing_space_y);
+            g2d.drawLine(Drawing_space_x,0, Drawing_space_x, Drawing_space_y);
+            g2d.drawLine((Drawing_space_x-Main_Drawing_space.getWidth()), Drawing_space_y, Drawing_space_x, Drawing_space_y);
+        }
+        else if(Drawing_space_x < Main_Drawing_space.getWidth() && Drawing_space_y < Main_Drawing_space.getHeight())
+        {
+            g2d2.drawLine( Drawing_space_x, 0, Drawing_space_x, Drawing_space_y);
+            g2d2.drawLine(0, Drawing_space_y, Drawing_space_x, Drawing_space_y);
+            
+        }
+ 
     }
 }

@@ -32,6 +32,7 @@ public class Main_Drawing_space extends Canvas{
     Point fp,lp;                     //存取座標點
     Status status;                   //狀態儲存
     Vector<Line> lines=null;     //繪布紀錄儲存(線)
+    Vector<test_image_class> imagesaved = null;
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
@@ -39,6 +40,7 @@ public class Main_Drawing_space extends Canvas{
     private BufferedImage img;
     Main_Frame parent;
     Color color;                    //色彩更改
+    Color BGD = Color.white;
     float BasicStroke;        //線條粗細
     
     Main_Drawing_space(Main_Frame MF){
@@ -48,7 +50,7 @@ public class Main_Drawing_space extends Canvas{
         parent = MF;
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();
-        this.setBackground(Color.WHITE);     
+        this.setBackground(BGD);     
         this.setVisible(true);
         re = new Stack();
         lines = new Vector<Line>();
