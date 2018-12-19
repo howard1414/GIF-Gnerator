@@ -103,9 +103,7 @@ public class Main_Frame extends Frame {
                         
                         Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x ;
                         Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;
-                        
-                        
-                        
+   
                         if(toolbarBTN.toolbarVisible==true && SPW <= JSC.getWidth() && SPH <= JSC.getHeight()){
                             Drawing_space_x -= ToolbarBTN.Panel_Button.getWidth();
                         }
