@@ -10,6 +10,7 @@ package superpainter;
  * @author User
  */
 public enum Pattern{
+    Pencil,
     Line,
     Ovil,
     Rect,

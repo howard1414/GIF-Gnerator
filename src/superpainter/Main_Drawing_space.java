@@ -32,7 +32,7 @@ public class Main_Drawing_space extends Canvas{
     Point fp,lp;                     //存取座標點
     Status status;                   //狀態儲存
     Vector<Line> lines=null;     //繪布紀錄儲存(線)
-    Vector<test_image_class> imagesaved = null;  //繪布記錄存儲(圖)
+  //  Vector<test_image_class> imagesaved = null;  //繪布記錄存儲(圖)
     Out_line Ol;
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
@@ -157,7 +157,7 @@ public class Main_Drawing_space extends Canvas{
                    if(Main_Drawing_space.this.status == Status.drawpencil)
                    {    
                        g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new Line(fp,lp,Pattern.Line,color,BasicStroke));
+                       lines.add(new Line(fp,lp,Pattern.Pencil,color,BasicStroke));
                        fp=lp;     
                    }
                    //畫線功能(拖曳滑鼠)
@@ -294,8 +294,86 @@ public class Main_Drawing_space extends Canvas{
             g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);           
         }     */
     }
-    @Override
     
+    public void history_replay(int step){
+         int num = 0;
+         System.out.println("I COMEIN");
+          Image ImageBuffer = null;
+          Graphics GraImage = null;
+          ImageBuffer = createImage(this.getWidth(), this.getHeight());
+          GraImage = ImageBuffer.getGraphics();
+          Graphics2D g2d = (Graphics2D)GraImage;
+          Boolean pencilon = false;
+          if(lines!=null)
+           {   
+            for(Line l : lines)
+            {  
+               if(l.Pattern!=Pattern.Pencil  && pencilon == true){ 
+                   num++;
+                   pencilon = false;
+               }
+               if(num == step) break;
+               g2d.setColor(l.Color);
+               g2d.setStroke(new BasicStroke(l.BasicStroke));
+               if(l.Pattern == Pattern.Line){
+                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                 }
+                 else  if(l.Pattern == Pattern.Pencil){
+                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);
+                     pencilon = true;
+                }
+                  else if(l.Pattern ==Pattern.Ovil)
+                 {
+                    {    
+                        //第一象限
+                        if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
+                            g2d.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第二象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
+                            g2d.drawOval(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第三象限
+                        else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
+                            g2d.drawOval(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                        //第四象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
+                            g2d.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                    }
+                 }
+                 else if(l.Pattern ==Pattern.Rect)
+                 {
+                    {    
+                        //第一象限
+                        if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
+                            g2d.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第二象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
+                            g2d.drawRect(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                        }
+                        //第三象限
+                        else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
+                            g2d.drawRect(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                        //第四象限
+                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
+                            g2d.drawRect(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                        }
+                    }
+                 }
+                 if(l.Pattern !=Pattern.Pencil)
+                 {
+                    num++;
+                 }
+            }
+        }
+        Graphics g = Main_Drawing_space.this.getGraphics();
+        g.drawImage(ImageBuffer, 0, 0,null);
+    }
+    @Override
     public void paint(Graphics g)
     {   
         Graphics2D g2d = (Graphics2D)g;
@@ -306,6 +384,9 @@ public class Main_Drawing_space extends Canvas{
                 g2d.setColor(l.Color);
                 g2d.setStroke(new BasicStroke(l.BasicStroke));
                  if(l.Pattern == Pattern.Line){
+                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                 }
+                 else if(l.Pattern ==Pattern.Pencil){
                      g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
                  }
                  else if(l.Pattern ==Pattern.Ovil)
