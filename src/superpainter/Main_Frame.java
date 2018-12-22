@@ -43,6 +43,7 @@ public class Main_Frame extends Frame {
         this.setTitle(Title + " - " + APPVERSION);
         Add_Object(this);
         this.setVisible(true);
+    
         this.addWindowListener( new WindowAdapter()
             {
                 public void windowClosing(WindowEvent e)
@@ -84,8 +85,10 @@ public class Main_Frame extends Frame {
         Main_Drawing_space.setBounds(0,0, Drawing_space_x, Drawing_space_y);
         size_btn = new JButton();
         size_btn.setBounds(Drawing_space_x,Drawing_space_y, 15, 15);
+        
         Panel_size.add(Main_Drawing_space);
         Panel_size.add(size_btn);
+        
         JSC.add(Panel_size);
         JSC.validate();
         Panel_Main.add(JSC);
@@ -103,29 +106,21 @@ public class Main_Frame extends Frame {
                         
                         Drawing_space_x = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x ;
                         Drawing_space_y = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y ;
-   
-                        if(toolbarBTN.toolbarVisible==true && SPW <= JSC.getWidth() && SPH <= JSC.getHeight()){
+                        
+                        if(toolbarBTN.toolbarVisible==true && SPW <= JSC.getWidth())
+                        {
                             Drawing_space_x -= ToolbarBTN.Panel_Button.getWidth();
                         }
-                        System.out.println("SPW= " + SPW );
-                        System.out.println("SPH= " + SPH );
-                        System.out.println("Drawing_space_x= " + Drawing_space_x);
-                        System.out.println("Drawing_space_y= " + Drawing_space_y );
-                        System.out.println("Pressed" +"   fpx = " +fpx +"  fpy = " + fpy);
-                        System.out.println((fpx - Drawing_space_x) +"    "+(fpy - Drawing_space_y));
-                        if(SPW >= JSC.getWidth())   
+                        if(SPW >= JSC.getWidth()){   
                             Drawing_space_x =  SPW + (Drawing_space_x-fpx);
-                        if(SPH >= JSC.getHeight())    
+                        }
+                        if(SPH >= JSC.getHeight()){    
                             Drawing_space_y  = SPH + (Drawing_space_y-fpy);
-                        
-                        
-                        //System.out.println("Drawing_space_x= " + Drawing_space_x);
-                        //System.out.println("Drawing_space_y= " + Drawing_space_y );
+                        }
                         
                         if(Drawing_space_x <0){Drawing_space_x=0;}
                         if(Drawing_space_y <0){Drawing_space_y=0;}
                       
-                        
                         size_btn.setBounds( Drawing_space_x, Drawing_space_y, 15, 15);
                         Panel_size.setPreferredSize(new Dimension(Drawing_space_x+17, Drawing_space_y+17));
                         draw_outline();
@@ -148,7 +143,6 @@ public class Main_Frame extends Frame {
                     public void mousePressed(MouseEvent e){
                         fpx = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x;
                         fpy = (int)MouseInfo.getPointerInfo().getLocation().y - Panel_Main.getLocationOnScreen().y;
-                        System.out.println("Pressed" +"   fpx = " +fpx +"  fpy" + fpy);
                     }
                 }
         );        

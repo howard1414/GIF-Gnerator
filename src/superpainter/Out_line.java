@@ -9,13 +9,38 @@ package superpainter;
  *
  * @author HALUNA
  */
-
+import java.awt.*;
+import javax.swing.*;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.*;
 
-public class Out_line {
-    Out_line(Point fp,Point lp){
-    
-    
+public class Out_line  {
+   
+    Out_line(Point fp,Point lp,Main_Drawing_space MDS){
+     
+        MDS.addMouseListener(
+          new MouseAdapter()      
+                {
+                    public void mousePressed(MouseEvent e)
+                    {
+                        
+                    }  
+                    
+                     public void mouseReleased(MouseEvent e)
+                    {
+                        
+                    }   
+                });
+        MDS.addMouseMotionListener(new MouseAdapter()
+            {
+                public void mouseDragged(MouseEvent e)
+                {
+                    
+                }
+            });         
+
+ 
     }
-    
 }

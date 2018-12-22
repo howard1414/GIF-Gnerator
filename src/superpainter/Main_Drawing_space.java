@@ -32,7 +32,8 @@ public class Main_Drawing_space extends Canvas{
     Point fp,lp;                     //存取座標點
     Status status;                   //狀態儲存
     Vector<Line> lines=null;     //繪布紀錄儲存(線)
-    Vector<test_image_class> imagesaved = null;
+    Vector<test_image_class> imagesaved = null;  //繪布記錄存儲(圖)
+    Out_line Ol;
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
@@ -48,9 +49,11 @@ public class Main_Drawing_space extends Canvas{
         color = Color.red;
         BasicStroke = 1.0f;
         parent = MF;
+        
+        
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();
-        this.setBackground(BGD);     
+        this.setBackground(BGD);
         this.setVisible(true);
         re = new Stack();
         lines = new Vector<Line>();
@@ -100,7 +103,8 @@ public class Main_Drawing_space extends Canvas{
                         //鉛筆功能(放開滑鼠左鍵)
                         System.out.println("MOUSE RELEASED!!");
                         if(Main_Drawing_space.this.status == Status.drawpencil)
-                        {
+                        {  
+                            
                             re.push(lines.size()-pencilem);
                             lp=null;
                             fp=null;
@@ -109,6 +113,8 @@ public class Main_Drawing_space extends Canvas{
                         //直線功能(放開滑鼠左鍵)
                         else if(Main_Drawing_space.this.status == Status.drawline)
                         {
+                            //Image ImageBuffer =createImage(MF.Main_Drawing_space.getWidth(),MF.Main_Drawing_space.getHeight());
+                            //imagesaved.add(new test_image_class(ImageBuffer));
                             drawfirst=0;
                             lp=null;
                             fp=null;
@@ -117,7 +123,7 @@ public class Main_Drawing_space extends Canvas{
                         }
                         //畫圓功能(放開滑鼠左鍵)
                         else if(Main_Drawing_space.this.status==Status.drawOval)
-                       {
+                       {  
                             drawfirst=0;
                             lp=null;
                             fp=null;
@@ -127,6 +133,7 @@ public class Main_Drawing_space extends Canvas{
                         //矩形功能(放開滑鼠左鍵)
                         else if(Main_Drawing_space.this.status==Status.drawRect)
                        {
+                          
                             drawfirst=0;
                             lp=null;
                             fp=null;
@@ -275,9 +282,11 @@ public class Main_Drawing_space extends Canvas{
         Graphics GraImage = null;
         ImageBuffer = createImage(this.getWidth(), this.getHeight());
         GraImage = ImageBuffer.getGraphics();
+        
         paint(GraImage);
         GraImage.dispose();
-        g.drawImage(ImageBuffer, 0, 0, this);
+        
+        g.drawImage(ImageBuffer, 0, 0,null);
         /*if (img != null) 
         {             
             int img_x = (getWidth() - img.getWidth()) / 2;
@@ -363,7 +372,6 @@ public class Main_Drawing_space extends Canvas{
         img = null;
         repaint();
         parent.Messgebar.setLB("已重新建立頁面");
-        
     }
     public void loadimage() throws FileNotFoundException{
         FileFilter filter = new FileNameExtensionFilter("Images Files", "jpg", "jpeg","gif","bmp");
@@ -385,5 +393,8 @@ public class Main_Drawing_space extends Canvas{
         public Dimension getPreferredSize() {
             return img == null ? new Dimension(200, 200) : new Dimension(img.getWidth(), img.getHeight());
         }
+
+
+    
         
 }
