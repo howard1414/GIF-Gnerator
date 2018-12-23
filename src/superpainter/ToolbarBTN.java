@@ -247,7 +247,9 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                         MF.Messgebar.setLB("畫筆工具啟用中");
+                        System.out.println("離開狀態" + MF.Main_Drawing_space.status);
                         MF.Main_Drawing_space.status=Status.drawpencil;
+                        System.out.println("當前狀態" + MF.Main_Drawing_space.status);
                     }
                 }
         );
@@ -257,7 +259,9 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          MF.Messgebar.setLB("畫線工具啟用中");
+                         System.out.println("離開狀態" + MF.Main_Drawing_space.status);
                          MF.Main_Drawing_space.status=Status.drawline;
+                         System.out.println("當前狀態" + MF.Main_Drawing_space.status);
                     }
                 }
         );
@@ -267,7 +271,9 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          MF.Messgebar.setLB("畫圓工具啟用中");
+                         System.out.println("離開狀態" + MF.Main_Drawing_space.status);
                          MF.Main_Drawing_space.status=Status.drawOval;
+                         System.out.println("當前狀態" + MF.Main_Drawing_space.status);
                     }
                 }
         );
@@ -277,7 +283,9 @@ public class ToolbarBTN extends JPanel{
                     public void mouseClicked(MouseEvent e)
                     {
                          MF.Messgebar.setLB("矩形工具啟用中");
+                         System.out.println("離開狀態" + MF.Main_Drawing_space.status);
                          MF.Main_Drawing_space.status=Status.drawRect;
+                         System.out.println("當前狀態" + MF.Main_Drawing_space.status);
                     }
                 }
         );

@@ -17,6 +17,13 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.geom.*;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.*;
 /**
  *
  * @author lv379
@@ -29,11 +36,10 @@ public class Main_Drawing_space extends Canvas{
     File file_path;
     int x=0,y=0;
     Rectangle windowSize; 
-    Point fp,lp;                     //存取座標點
-    Status status;                   //狀態儲存
+    Point fp,lp,p1,p2;                     //存取座標點
+    Status status = Status.active,SaveStatus;                   //狀態儲存
     Vector<Line> lines=null;     //繪布紀錄儲存(線)
   //  Vector<test_image_class> imagesaved = null;  //繪布記錄存儲(圖)
-    Out_line Ol;
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
@@ -42,15 +48,12 @@ public class Main_Drawing_space extends Canvas{
     Main_Frame parent;
     Color color;                    //色彩更改
     Color BGD = Color.white;
-    float BasicStroke;        //線條粗細
-    
+    float BS;        //線條粗細
     Main_Drawing_space(Main_Frame MF){
         super();
         color = Color.red;
-        BasicStroke = 1.0f;
+        BS= 1.0f;
         parent = MF;
-        
-        
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();
         this.setBackground(BGD);
@@ -65,9 +68,57 @@ public class Main_Drawing_space extends Canvas{
                         x=e.getX();                     
                         if(x<20 && MF.toolbarBTN.toolbarVisible == false){
                             MF.toolbarBTN.set_pannel_visible(true);
-                        }                 
+                        }
+                        if(Main_Drawing_space.this.status==Status.select)
+                        {
+                         fp=e.getPoint(); 
+                         if(fp.x >= p1.x-5 &&fp.y >= p1.y-5 &&fp.x <= p2.x+5 && fp.y <= p2.y+5 )
+                         {
+                            if(fp.x >= p1.x-5 && fp.y >= p1.y-5 && fp.x <=p1.x && fp.y <= p1.y)
+                            {
+                                Main_Drawing_space.this.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= (p1.x+p2.x)/2 && fp.y >= p1.y-5 && fp.x <=(p1.x+p2.x)/2+5 && fp.y <= p1.y)
+                            {
+                                Main_Drawing_space.this.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= p2.x && fp.y >= p1.y-5 && fp.x <=p2.x+5 && fp.y <= p1.y)
+                            {
+                                Main_Drawing_space.this.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= p1.x-5 && fp.y >= (p1.y+p2.y)/2 && fp.x <=p1.x && fp.y <= (p1.y+p2.y)/2+5)
+                            {
+                                Main_Drawing_space.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= p2.x && fp.y >= (p1.y+p2.y)/2 && fp.x <=p2.x+5 && fp.y <= (p1.y+p2.y)/2+5)
+                            {
+                               Main_Drawing_space.this.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= p1.x-5 && fp.y >= p2.y && fp.x <=p1.x && fp.y <= p2.y+5)
+                            {
+                               Main_Drawing_space.this.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= (p1.x+p2.x)/2 && fp.y >= p2.y && fp.x <=(p1.x+p2.x)/2+5 && fp.y <= p2.y+5)
+                            {
+                                Main_Drawing_space.this.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
+                            }
+                            else if(fp.x >= p2.x && fp.y >= p2.y && fp.x <=p2.x+5 && fp.y <= p2.y+5)
+                            {
+                              Main_Drawing_space.this.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));
+                            }
+                            else
+                            {
+                                Main_Drawing_space.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+                            }
+                        }
+                        else
+                        {
+                           Main_Drawing_space.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                        }
+                        
                     }
                 }
+            }
          );
         //功能實作
         this.addMouseListener(
@@ -76,7 +127,7 @@ public class Main_Drawing_space extends Canvas{
                     public void mousePressed(MouseEvent e)
                     {  
                         //鉛筆功能(按下滑鼠左鍵)
-                        System.out.println("MOUSE PRESSED!!");
+                        //System.out.println("MOUSE PRESSED!!");
                        if(Main_Drawing_space.this.status==Status.drawpencil)        
                        {                
                         fp=e.getPoint();
@@ -94,14 +145,79 @@ public class Main_Drawing_space extends Canvas{
                        }
                        //矩形功能(按下滑鼠左鍵)
                        else if(Main_Drawing_space.this.status==Status.drawRect)
-                       {
+                       { 
+                         System.out.println("PRESSSE");
                          fp=e.getPoint();
                        }
+                       else if(Main_Drawing_space.this.status==Status.select)
+                       { 
+                         System.out.println("select");  
+                         fp=e.getPoint(); 
+                         System.out.println("fp=" +fp);
+                         System.out.println("p1=" +p1);
+                         System.out.println("p2=" +p2);
+                         
+                         if(fp.x >= p1.x-5 &&fp.y >= p1.y-5 &&fp.x <= p2.x+5 && fp.y <= p2.y+5 )
+                         {
+                             System.out.println("fp=" +fp);
+                             System.out.println("p1=" +p1);
+                             System.out.println("p2=" +p2);
+                            if(fp.x >= p1.x-5 && fp.y >= p1.y-5 && fp.x <=p1.x && fp.y <= p1.y)
+                            {
+                                System.out.println("point 1 is click");
+                            }
+                            else if(fp.x >= (p1.x+p2.x)/2 && fp.y >= p1.y-5 && fp.x <=(p1.x+p2.x)/2+5 && fp.y <= p1.y)
+                            {
+                                System.out.println("point 2 is click");
+                            }
+                            else if(fp.x >= p2.x && fp.y >= p1.y-5 && fp.x <=p2.x+5 && fp.y <= p1.y)
+                            {
+                                System.out.println("point 3 is click");
+                            }
+                            else if(fp.x >= p1.x-5 && fp.y >= (p1.y+p2.y)/2 && fp.x <=p1.x && fp.y <= (p1.y+p2.y)/2+5)
+                            {
+                                System.out.println("point 4 is click");
+                            }
+                            else if(fp.x >= p2.x && fp.y >= (p1.y+p2.y)/2 && fp.x <=p2.x+5 && fp.y <= (p1.y+p2.y)/2+5)
+                            {
+                                System.out.println("point 5 is click");
+                            }
+                            else if(fp.x >= p1.x-5 && fp.y >= p2.y && fp.x <=p1.x && fp.y <= p2.y+5)
+                            {
+                                System.out.println("point 6 is click");
+                            }
+                            else if(fp.x >= (p1.x+p2.x)/2 && fp.y >= p2.y && fp.x <=(p1.x+p2.x)/2+5 && fp.y <= p2.y+5)
+                            {
+                                System.out.println("point 7 is click");
+                            }
+                            else if(fp.x >= p2.x && fp.y >= p2.y && fp.x <=p2.x+5 && fp.y <= p2.y+5)
+                            {
+                                System.out.println("point 8 is click");
+                            }
+                            else
+                            {
+                                System.out.println("Moving point");
+                                System.out.println("離開狀態" + MF.Main_Drawing_space.status);
+                                Main_Drawing_space.this.status = Status.move;
+                                System.out.println("當前狀態" + MF.Main_Drawing_space.status);
+                                fp = e.getPoint();
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("離開狀態" + MF.Main_Drawing_space.status);
+                                status = SaveStatus;
+                            System.out.println("當前狀態" + MF.Main_Drawing_space.status);
+                            fp = e.getPoint();                   
+                            repaint();
+                        }
+                      }
                     }
                     public void mouseReleased(MouseEvent e)
                     {   
                         //鉛筆功能(放開滑鼠左鍵)
-                        System.out.println("MOUSE RELEASED!!");
+                        //System.out.println("MOUSE RELEASED!!");
+                     
                         if(Main_Drawing_space.this.status == Status.drawpencil)
                         {  
                             
@@ -113,8 +229,6 @@ public class Main_Drawing_space extends Canvas{
                         //直線功能(放開滑鼠左鍵)
                         else if(Main_Drawing_space.this.status == Status.drawline)
                         {
-                            //Image ImageBuffer =createImage(MF.Main_Drawing_space.getWidth(),MF.Main_Drawing_space.getHeight());
-                            //imagesaved.add(new test_image_class(ImageBuffer));
                             drawfirst=0;
                             lp=null;
                             fp=null;
@@ -132,58 +246,67 @@ public class Main_Drawing_space extends Canvas{
                        }
                         //矩形功能(放開滑鼠左鍵)
                         else if(Main_Drawing_space.this.status==Status.drawRect)
-                       {
-                          
+                       {    
+                            if(lp!=null && fp!=lp){
+                                System.out.println(p1);
+                                System.out.println(p2);
+                              draw_out_line(p1,p2);
+                            }
                             drawfirst=0;
                             lp=null;
                             fp=null;
                             re.push(1);
-                            repaint();
                        }
-                    }
+                        else if(Main_Drawing_space.this.status==Status.move)
+                        {
+                           draw_out_line(p1,p2);
+                        }
+                     }
                 }
         );
         this.addMouseMotionListener(new MouseAdapter()
             {
                 public void mouseDragged(MouseEvent e)
-                {  
-                    System.out.println("MOUSE DRAGGED!!");
+                {   
+                    System.out.println("DRAG");
                     lp=e.getPoint();
                     Graphics g=  Main_Drawing_space.this.getGraphics();
                     Graphics2D g2d = (Graphics2D)g;
                     g2d.setColor(color);
-                    g2d.setStroke(new BasicStroke(BasicStroke));
+                    g2d.setStroke(new BasicStroke(BS));
                      //鉛筆功能(拖曳滑鼠)
-                   if(Main_Drawing_space.this.status == Status.drawpencil)
-                   {    
-                       g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new Line(fp,lp,Pattern.Pencil,color,BasicStroke));
-                       fp=lp;     
-                   }
-                   //畫線功能(拖曳滑鼠)
-                   else if(Main_Drawing_space.this.status == Status.drawline)
-                   {  
-                       if(drawfirst !=0){
-                           int temp = lines.size();
-                           lines.removeElementAt(temp-1);
-                           repaint();
-                       }
-                       lp=e.getPoint(); 
-                       g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
-                       lines.add(new Line(fp,lp,Pattern.Line,color,BasicStroke)); 
-                       drawfirst=1;     
-                   }
-                   //畫圓功能(拖曳滑鼠)
-                   else if(Main_Drawing_space.this.status == Status.drawOval)
+                   if(fp != lp)
                    {
-                       if(drawfirst !=0){
-                           int temp = lines.size();
-                           lines.removeElementAt(temp-1);
-                           repaint();
-                       }
-                       lp=e.getPoint();
-                       {    
-                            //第二象限
+                        if(Main_Drawing_space.this.status == Status.drawpencil)
+                        {    
+                            lp=e.getPoint();
+                            g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
+                             lines.add(new Line(fp,lp,Pattern.Pencil,color,BS));
+                            fp=lp;     
+                        }
+                   //畫線功能(拖曳滑鼠)
+                        else if(Main_Drawing_space.this.status == Status.drawline)
+                        {   
+                            lp=e.getPoint();
+                            if(drawfirst !=0){
+                                int temp = lines.size();
+                                lines.removeElementAt(temp-1);
+                                repaint();
+                            }
+                            g2d.drawLine(fp.x, fp.y, lp.x, lp.y);
+                            lines.add(new Line(fp,lp,Pattern.Line,color,BS)); 
+                            drawfirst=1;     
+                        }
+                   //畫圓功能(拖曳滑鼠)
+                        else if(Main_Drawing_space.this.status == Status.drawOval)
+                        { 
+                            if(drawfirst !=0){
+                                int temp = lines.size();
+                                lines.removeElementAt(temp-1);
+                                repaint();
+                            }
+                            lp=e.getPoint();
+                            //第一象限
                             if(lp.x<=fp.x && lp.y<fp.y){
                                 g2d.drawOval(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
                             }
@@ -199,8 +322,8 @@ public class Main_Drawing_space extends Canvas{
                             else if(lp.x>fp.x && lp.y>=fp.y){
                                 g2d.drawOval(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
                             }
-                       }
-                       lines.add(new Line(fp,lp,Pattern.Ovil,color,BasicStroke)); 
+                       
+                       lines.add(new Line(fp,lp,Pattern.Ovil,color,BS)); 
                        drawfirst=1;
                    }
                    //矩形功能
@@ -212,44 +335,53 @@ public class Main_Drawing_space extends Canvas{
                            repaint();
                        }
                        lp=e.getPoint();
-                       {    
-                            //第二象限
+                            //第一象限
                             if(lp.x<=fp.x && lp.y<fp.y){
                                 g2d.drawRect(lp.x, lp.y, (fp.x-lp.x),(fp.y-lp.y));
+                                 p1 = new Point(lp);
+                                 p2 = new Point(fp);
                             }
                             //第二象限
                             else if(lp.x>fp.x && lp.y<=fp.y){
                                 g2d.drawRect(fp.x, lp.y, (lp.x-fp.x),(fp.y-lp.y));
+                                p1 = new Point(fp.x,lp.y);
+                                p2 = new Point(lp.x,fp.y );
                             }
                             //第三象限
                             else if(lp.x<=fp.x && lp.y>fp.y){
                                 g2d.drawRect(lp.x, fp.y, (fp.x-lp.x),(lp.y-fp.y));
+                                p1 = new Point(lp.x,fp.y);
+                                p2 = new Point(fp.x,lp.y );
                             }
                             //第四象限
                             else if(lp.x>fp.x && lp.y>=fp.y){
                                 g2d.drawRect(fp.x, fp.y, (lp.x-fp.x),(lp.y-fp.y));
+                                p1 = new Point(fp);
+                                p2 = new Point(lp);
                             }
-                       }
-                       lines.add(new Line(fp,lp,Pattern.Rect,color,BasicStroke)); 
+                       lines.add(new Line(fp,lp,Pattern.Rect,color,BS)); 
                        drawfirst=1;
+                   }
+                   else if(Main_Drawing_space.this.status == Status.move)
+                   {   
+                        lp=e.getPoint();
+                       int temp = lines.size();
+                       lines.removeElementAt(temp-1);
+                       repaint();
+                       int savewidth =0 , saveheight=0;
+                       savewidth = lp.x-fp.x;
+                       saveheight = lp.y-fp.y;
+                       p1= new Point(p1.x+savewidth,p1.y+saveheight);
+                       p2= new Point(p2.x+savewidth,p2.y+saveheight);
+                       g2d.drawRect(p1.x,p1.y ,p2.x-p1.x,p2.y-p1.y);
+                       lines.add(new Line(p1,p2,Pattern.Rect,color,BS)); 
+                       fp = lp;
                    }
                  }
             }
+           }
         );
-       
-         /*this.addMouseListener(
-                 new MouseAdapter(){
-                     public void mousePressed(MouseEvent e)
-                    {                 
-                        System.out.println("color event" + e.toString());
-                        change_color();
-                    }              
-                 }        
-         );*/    
     }
-   /* void change_color(){
-         this.setBackground(new Color( ran.nextInt(256) , ran.nextInt(256)  ,ran.nextInt(256)));
-    }*/
     //復原功能實作
     public int recovery(){
         if(re.empty() == false){
@@ -287,17 +419,11 @@ public class Main_Drawing_space extends Canvas{
         GraImage.dispose();
         
         g.drawImage(ImageBuffer, 0, 0,null);
-        /*if (img != null) 
-        {             
-            int img_x = (getWidth() - img.getWidth()) / 2;
-            int img_y = (getHeight() - img.getHeight()) / 2;
-            g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);           
-        }     */
     }
     
     public void history_replay(int step){
          int num = 0;
-         System.out.println("I COMEIN");
+         //System.out.println("I COMEIN");
           Image ImageBuffer = null;
           Graphics GraImage = null;
           ImageBuffer = createImage(this.getWidth(), this.getHeight());
@@ -474,8 +600,35 @@ public class Main_Drawing_space extends Canvas{
         public Dimension getPreferredSize() {
             return img == null ? new Dimension(200, 200) : new Dimension(img.getWidth(), img.getHeight());
         }
-
-
-    
-        
+        void draw_out_line(Point fp,Point lp){
+        if(status != Status.move)
+            SaveStatus =  Main_Drawing_space.this.status;
+        System.out.println("離開狀態" + Main_Drawing_space.this.status);
+        Main_Drawing_space.this.status = Status.select;
+        System.out.println("當前狀態" + Main_Drawing_space.this.status);
+        Graphics draw  = Main_Drawing_space.this.getGraphics();
+        Graphics2D draw2D = (Graphics2D)draw;
+        draw2D.setColor(Color.BLACK);
+        //(1)
+        draw2D.drawRect(fp.x-5       ,fp.y-5,         5,5);
+        //(2)
+        draw2D.drawRect((fp.x+lp.x)/2,fp.y-5,         5,5);
+        //(3)
+        draw2D.drawRect(lp.x          ,fp.y-5,        5,5);
+        //(4)
+        draw2D.drawRect(fp.x-5        ,(fp.y+lp.y)/2, 5,5);
+        //(5)
+        draw2D.drawRect(lp.x          ,(fp.y+lp.y)/2, 5,5);
+        //(6)
+        draw2D.drawRect(fp.x-5        ,lp.y,          5,5);
+        //(7)
+        draw2D.drawRect((fp.x+lp.x)/2 ,lp.y,          5,5);
+        //(8)
+        draw2D.drawRect(lp.x          ,lp.y,          5,5);
+        //外虛線
+        float[] dashPattern = {10F, 10F, 10F, 10F, 10F, 10F, 10F, 10F};
+        Stroke dash = new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,3.5f,dashPattern,0f);
+        draw2D.setStroke(dash);
+        draw2D.drawRect(fp.x-3, fp.y-3, (lp.x - fp.x)+6 , (lp.y - fp.y)+6); 
+  }
 }

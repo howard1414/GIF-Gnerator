@@ -33,7 +33,7 @@ public class Line_width_Frame extends JFrame{
         PF.setBackground(new Color(50,50,50));
         test linebox = new test(MF);
         linebox.setBounds(20, 20, 200, 50);
-        lw.setValue((int)MF.Main_Drawing_space.BasicStroke);
+        lw.setValue((int)MF.Main_Drawing_space.BS);
         lw.setBounds(20, 80, 200,20);
         lw.setMaximum(50);
         lw.setMinimum(1);
@@ -52,7 +52,7 @@ public class Line_width_Frame extends JFrame{
                 {
                     public void mouseClicked(MouseEvent e)
                     {
-                       MF.Main_Drawing_space.BasicStroke = temp;
+                       MF.Main_Drawing_space.BS = temp;
                         dispose();
                     }
                 }
@@ -82,7 +82,7 @@ class test extends Panel
     test(Main_Frame MF){
         super();
         MF = MF;
-        lsize = MF.Main_Drawing_space.BasicStroke;
+        lsize = MF.Main_Drawing_space.BS;
         color = MF.Main_Drawing_space.color;
         this.setBackground(Color.white);
     }
