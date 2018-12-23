@@ -78,5 +78,29 @@ Computer Program Engineering (II) project work
 <br> Merged brench files
 <br> Add Line_width_Frame
 <br> Rename SaveLine -> Line
-<br> fix Palette_Frame bug
+<br> Fix Palette_Frame bug
 <br> Add Output
+
+<br> 20181218
+<br> building version 2131
+<br> Change Main_Frame stroke
+
+<br> 20181219
+<br> building version 2227
+<br> Fix Main_Drawing_space resize size_btn BUG
+<br> Add Out_line.class
+
+<br> 20181222
+<br> building version 1716
+<br> Add history_replay 
+<br> Add new Pattern Pencil
+<br> Add new JButton reset history 
+
+<br> 20181223
+<br> building version 1410
+<br> Add Rect moving event
+<br> Remove Out_line.class
+<br> Add new Status select resize move
+
+
+
