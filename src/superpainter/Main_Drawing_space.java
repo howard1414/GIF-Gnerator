@@ -584,13 +584,12 @@ public class Main_Drawing_space extends Canvas{
           GraImage = ImageBuffer.getGraphics();
           Graphics2D g2d = (Graphics2D)GraImage;
           boolean pencilfist = false;
-          int pencilcount =1;
+          int pencilcount =0;
           if(lines!=null)
            {   
             for(Line l : lines)
             {  
                if(num == step) break;
-               
                g2d.setColor(l.Color);
                g2d.setStroke(new BasicStroke(l.BasicStroke));
                if(l.Pattern == Pattern.Line){
