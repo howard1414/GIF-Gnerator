@@ -806,6 +806,9 @@ public class Main_Drawing_space extends Canvas{
        }
        repaint();
     }
+    public Vector<Line> request_line(){
+    return lines;
+    }
         @Override
         public Dimension getPreferredSize() {
             return img == null ? new Dimension(200, 200) : new Dimension(img.getWidth(), img.getHeight());
