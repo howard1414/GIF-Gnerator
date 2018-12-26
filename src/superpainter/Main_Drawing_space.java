@@ -291,7 +291,7 @@ public class Main_Drawing_space extends Canvas{
                     g2d.setColor(color);
                     g2d.setStroke(new BasicStroke(BS));
                      //鉛筆功能(拖曳滑鼠)
-                   if(fp != lp)
+                   if(fp != lp && fp!=null)
                    {
                         if(Main_Drawing_space.this.status == Status.drawpencil)
                         {    
@@ -577,6 +577,7 @@ public class Main_Drawing_space extends Canvas{
         GraImage.dispose();
         g.drawImage(ImageBuffer, 0, 0,null);
     }
+    
     //歷史重放
     public void history_replay(int step){
          int num = 0;
@@ -658,11 +659,17 @@ public class Main_Drawing_space extends Canvas{
         Graphics g = Main_Drawing_space.this.getGraphics();
         g.drawImage(ImageBuffer, 0, 0,null);
     }
+    
     //繪圖
     @Override
     public void paint(Graphics g)
     {   
         Graphics2D g2d = (Graphics2D)g;
+        if (img != null) {              
+                int img_x = (getWidth() - img.getWidth()) / 2;
+                int img_y = (getHeight() - img.getHeight()) / 2;
+                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);
+        }
         if(lines!=null)
         {   
             for(Line l : lines)
@@ -719,14 +726,6 @@ public class Main_Drawing_space extends Canvas{
                  }
             }
         }
-      if (img != null) {              
-                int img_x = (getWidth() - img.getWidth()) / 2;
-                int img_y = (getHeight() - img.getHeight()) / 2;
-                //g.drawImage(img, img_x, img_y, this);
-                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);
-               /*this.setBounds(0, 0, img.getHeight(), img.getWidth());
-                parent.size_btn.setBounds(img.getHeight(), img.getWidth(), 15, 15);*/
-            }
     }       
     //重設頁面
     public void readdpage(){
@@ -735,6 +734,7 @@ public class Main_Drawing_space extends Canvas{
         parent.Drawing_space_y=500;
         this.setBounds(0, 0, parent.Drawing_space_x, parent.Drawing_space_y);
         parent.size_btn.setBounds(parent.Drawing_space_x,parent.Drawing_space_y, 15, 15);
+        re.removeAll(re);
         img = null;
         repaint();
         parent.Messgebar.setLB("已重新建立頁面");

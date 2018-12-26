@@ -14,5 +14,5 @@ public enum Pattern{
     Line,
     Ovil,
     Rect,
-    
+    Image
 }

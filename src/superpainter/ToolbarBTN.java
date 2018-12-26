@@ -184,9 +184,16 @@ public class ToolbarBTN extends JPanel{
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
-                    {
-                        BS = BS.painting;
-                        chang_button();
+                    {   
+                        if(MF.Main_Drawing_space==null){
+                            BS = BS.initial;
+                            chang_button();
+                        }
+                        else
+                        {
+                            BS = BS.painting;
+                            chang_button();
+                        }
                     }
                 }
         );

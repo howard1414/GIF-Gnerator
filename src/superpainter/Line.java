@@ -15,11 +15,16 @@ public class Line {
     Pattern Pattern;
     Color Color;
     float BasicStroke;
+    Image Image;
       Line(Point start ,Point end,Pattern pat,Color color,float BS){
           firstpoint = start;
           lastpoint = end;
           Pattern = pat;
           Color = color;
           BasicStroke = BS;
+          
+      }
+      Line(Image Image){
+          
       }
 }
