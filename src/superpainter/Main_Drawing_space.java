@@ -30,7 +30,7 @@ import java.awt.geom.*;
  */
 public class Main_Drawing_space extends Canvas{
     
-    Image Img;
+    //Image Img;
     JPanel Drawing_space ;
     JFileChooser file_choose ;
     File file_path;
@@ -56,7 +56,6 @@ public class Main_Drawing_space extends Canvas{
         parent = MF;
         file_choose = new JFileChooser();
         Drawing_space = new JPanel();  
-        
         this.setBackground(BGD);
         this.setVisible(true);
         re = new Stack();
@@ -532,10 +531,9 @@ public class Main_Drawing_space extends Canvas{
                            g2d.drawOval(p1.x,p1.y ,p2.x-p1.x,p2.y-p1.y);
                            lines.add(new Line(p1,p2,Pattern.Ovil,color,BS));
                        }  
-                       
                        fp = lp;
-                   }
-                 }
+                    }
+                }
             }
            }
         );
@@ -593,25 +591,31 @@ public class Main_Drawing_space extends Canvas{
             for(Line l : lines)
             {  
                if(num == step) break;
-               g2d.setColor(l.Color);
-               g2d.setStroke(new BasicStroke(l.BasicStroke));
-               if(l.Pattern == Pattern.Line){
-                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
-                     num++;
-                 }
-                 else  if(l.Pattern == Pattern.Pencil){
-                     if(pencilfist==false) pencilfist=true;
-                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);
-                     if(pencilfist==true) pencilcount++;
-                     if(pencilcount == (int)linecount.get(num))
-                     {  
-                         pencilfist = false;
-                         pencilcount =0;
-                         num++;
-                     }         
-                }
-                  else if(l.Pattern ==Pattern.Ovil)
-                 {
+               if(l.Pattern == Pattern.Image){
+                  g2d.drawImage(l.Image, 0, 0, 500 * l.Image.getHeight() / l.Image.getWidth(), 500 * l.Image.getHeight() / l.Image.getWidth(), this);
+                  num++;
+               }
+               else
+               {
+                    g2d.setColor(l.Color);
+                    g2d.setStroke(new BasicStroke(l.BasicStroke));
+                    if(l.Pattern == Pattern.Line){
+                        g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                        num++;
+                    }
+                    else  if(l.Pattern == Pattern.Pencil){
+                        if(pencilfist==false) pencilfist=true;
+                        g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);
+                        if(pencilfist==true) pencilcount++;
+                        if(pencilcount == (int)linecount.get(num))
+                        {  
+                            pencilfist = false;
+                            pencilcount =0;
+                        num++;
+                        }         
+                    }
+                    else if(l.Pattern ==Pattern.Ovil)
+                    {
                         //第一象限
                         if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
                             g2d.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
@@ -629,9 +633,9 @@ public class Main_Drawing_space extends Canvas{
                             g2d.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
                         }
                         num++;
-                 }
-                 else if(l.Pattern ==Pattern.Rect)
-                 {
+                    }
+                    else if(l.Pattern ==Pattern.Rect)
+                    {
                         //第一象限
                         if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
                             g2d.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
@@ -653,7 +657,8 @@ public class Main_Drawing_space extends Canvas{
                         
                         }
                         num++;
-                 }
+                    }
+                }
             }
         }
         Graphics g = Main_Drawing_space.this.getGraphics();
@@ -665,65 +670,68 @@ public class Main_Drawing_space extends Canvas{
     public void paint(Graphics g)
     {   
         Graphics2D g2d = (Graphics2D)g;
-        if (img != null) {              
-                int img_x = (getWidth() - img.getWidth()) / 2;
-                int img_y = (getHeight() - img.getHeight()) / 2;
-                g.drawImage(img, 0, 0, 500 * img.getHeight() / img.getWidth(), 500 * img.getHeight() / img.getWidth(), this);
-        }
         if(lines!=null)
         {   
             for(Line l : lines)
             {   
-                g2d.setColor(l.Color);
-                g2d.setStroke(new BasicStroke(l.BasicStroke));
-                if(l.Pattern == Pattern.Line){
-                     g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                if(l.Pattern == Pattern.Image)
+                {   
+                    System.out.println("LODINGE");
+                    g2d.drawImage(l.Image, 0, 0, 500 * l.Image.getHeight() / l.Image.getWidth(), 500 * l.Image.getHeight() / l.Image.getWidth(), this);
                 }
-                else if(l.Pattern ==Pattern.Pencil){
-                    g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
-                }
-                else if(l.Pattern ==Pattern.Ovil)
-                { 
-                   {    
-                        //第一象限
-                        if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
-                           g2d.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
-                        }
-                        //第二象限
-                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
-                           g2d.drawOval(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
-                        }
-                        //第三象限
-                        else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
-                           g2d.drawOval(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
-                        }
-                       //第四象限
-                       else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
-                            g2d.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                else
+                {
+                    g2d.setColor(l.Color);
+                    g2d.setStroke(new BasicStroke(l.BasicStroke));
+                    if(l.Pattern == Pattern.Line){
+                        g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                    }
+                    else if(l.Pattern ==Pattern.Pencil){
+                        g2d.drawLine(l.firstpoint.x, l.firstpoint.y, l.lastpoint.x, l.lastpoint.y);  
+                    }
+                    else if(l.Pattern ==Pattern.Ovil)
+                    { 
+                        {    
+                            //第一象限
+                            if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
+                                g2d.drawOval(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            }
+                            //第二象限
+                            else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
+                                g2d.drawOval(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            }
+                            //第三象限
+                            else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
+                                g2d.drawOval(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            }
+                            //第四象限
+                            else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
+                                g2d.drawOval(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            }
                         }
                     }
-                 }
-                 else if(l.Pattern ==Pattern.Rect)
-                 {
-                    {    
-                        //第一象限
-                        if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
-                            g2d.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
-                        }
-                        //第二象限
-                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
-                            g2d.drawRect(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
-                        }
-                        //第三象限
-                        else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
-                            g2d.drawRect(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
-                        }
-                        //第四象限
-                        else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
-                            g2d.drawRect(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                    else if(l.Pattern ==Pattern.Rect)
+                    {
+                        {    
+                            //第一象限
+                            if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
+                                g2d.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            }
+                            //第二象限
+                            else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
+                                g2d.drawRect(l.firstpoint.x, l.lastpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.firstpoint.y-l.lastpoint.y));
+                            }
+                            //第三象限
+                            else if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y>l.firstpoint.y){
+                                g2d.drawRect(l.lastpoint.x, l.firstpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            }
+                            //第四象限
+                            else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y>=l.firstpoint.y){
+                                g2d.drawRect(l.firstpoint.x, l.firstpoint.y, (l.lastpoint.x-l.firstpoint.x),(l.lastpoint.y-l.firstpoint.y));
+                            }
                         }
                     }
-                 }
+                }
             }
         }
     }       
@@ -750,7 +758,10 @@ public class Main_Drawing_space extends Canvas{
         String path = String.valueOf(file_path);
        try
        {
-         img = ImageIO.read(new File(path));
+            img = ImageIO.read(new File(path));
+            lines.add(new Line(Pattern.Image,img));
+            linecount.add(1);
+            re.push(1);
        }catch(Exception ex){
             System.out.println("Printing image failed!");       
        }

@@ -5,6 +5,7 @@
  */
 package superpainter;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 /**
  *
  * @author HALUNA
@@ -15,7 +16,7 @@ public class Line {
     Pattern Pattern;
     Color Color;
     float BasicStroke;
-    Image Image;
+    BufferedImage Image;
       Line(Point start ,Point end,Pattern pat,Color color,float BS){
           firstpoint = start;
           lastpoint = end;
@@ -24,7 +25,9 @@ public class Line {
           BasicStroke = BS;
           
       }
-      Line(Image Image){
-          
+      Line(Pattern pat,BufferedImage Im){
+          int x,y;
+          Pattern = pat;
+          Image = Im;
       }
 }
