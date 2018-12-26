@@ -47,6 +47,7 @@ public class Main_Drawing_space extends Canvas{
     Main_Frame parent;
     Color color;                    //色彩更改
     Color BGD = Color.white;
+    Image ImageBuffer;
     float BS;        //線條粗細
     Main_Drawing_space(Main_Frame MF){
         super();
@@ -54,7 +55,8 @@ public class Main_Drawing_space extends Canvas{
         BS= 1.0f;
         parent = MF;
         file_choose = new JFileChooser();
-        Drawing_space = new JPanel();
+        Drawing_space = new JPanel();  
+        
         this.setBackground(BGD);
         this.setVisible(true);
         re = new Stack();
@@ -567,7 +569,7 @@ public class Main_Drawing_space extends Canvas{
     } 
     //double buffering
     public void update(Graphics g){
-        Image ImageBuffer = null;
+        ImageBuffer = null;
         Graphics GraImage = null;
         ImageBuffer = createImage(this.getWidth(), this.getHeight());
         GraImage = ImageBuffer.getGraphics();
@@ -578,7 +580,7 @@ public class Main_Drawing_space extends Canvas{
     //歷史重放
     public void history_replay(int step){
          int num = 0;
-         Image ImageBuffer = null;
+          ImageBuffer = null;
           Graphics GraImage = null;        
           ImageBuffer = createImage(this.getWidth(), this.getHeight());
           GraImage = ImageBuffer.getGraphics();
@@ -756,6 +758,10 @@ public class Main_Drawing_space extends Canvas{
     }
     public Vector<Line> request_line(){
         return lines;
+    }
+    
+    public Image request_Image(){
+        return ImageBuffer;
     }
     
     @Override
