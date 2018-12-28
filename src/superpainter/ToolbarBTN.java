@@ -94,11 +94,12 @@ public class ToolbarBTN extends JPanel{
                             new MouseAdapter()
                             {
                                 public void mouseClicked(MouseEvent e)
-                                {
+                                {  
                                     int x = Integer.parseInt(TF.getText());
-                                    MF.Main_Drawing_space.history_replay(x);
+                                     MF.Main_Drawing_space.history_replay(x);
                                      temp.dispose();
                                 }
+                                
                             }
                         );
                     }

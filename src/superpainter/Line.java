@@ -10,24 +10,46 @@ import java.awt.image.BufferedImage;
  *
  * @author HALUNA
  */
-public class Line {
+public class Line {       
+    int label;
+    int stack;    
     Point firstpoint;
     Point lastpoint;
     Pattern Pattern;
     Color Color;
     float BasicStroke;
     BufferedImage Image;
-      Line(Point start ,Point end,Pattern pat,Color color,float BS){
+    int imgW,imgH;
+    
+    
+      Line(Point start ,Point end,Pattern pat,Color color,float BS,int stack){
           firstpoint = start;
           lastpoint = end;
           Pattern = pat;
           Color = color;
           BasicStroke = BS;
-          
+          switch(pat){
+              case Pencil:
+                  label=1;
+                  break;
+              case Line:
+                  label=2;
+                  break;
+              case Ovil:
+                  label=3;
+                  break;
+              case Rect:
+                  label=4;
+                  break;
+          }
       }
-      Line(Pattern pat,BufferedImage Im){
-          int x,y;
+      
+      
+      Line(Point start ,Point end,Pattern pat,BufferedImage Im,int stack){
+          firstpoint = start;
+          lastpoint = end;
           Pattern = pat;
           Image = Im;
+          label=5;
       }
 }
