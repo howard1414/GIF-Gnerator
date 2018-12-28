@@ -22,12 +22,13 @@ public class Line {
     int imgW,imgH;
     
     
-      Line(Point start ,Point end,Pattern pat,Color color,float BS,int stack){
+      Line(Point start ,Point end,Pattern pat,Color color,float BS,int sck){
           firstpoint = start;
           lastpoint = end;
           Pattern = pat;
           Color = color;
           BasicStroke = BS;
+          stack = sck;
           switch(pat){
               case Pencil:
                   label=1;
@@ -45,11 +46,12 @@ public class Line {
       }
       
       
-      Line(Point start ,Point end,Pattern pat,BufferedImage Im,int stack){
+      Line(Point start ,Point end,Pattern pat,BufferedImage Im,int sck){
           firstpoint = start;
           lastpoint = end;
           Pattern = pat;
           Image = Im;
           label=5;
+          stack = sck;
       }
 }
