@@ -49,6 +49,7 @@ public class Main_Drawing_space extends Canvas{
     Color color;                    //色彩更改
     Color BGD = Color.white;
     Image ImageBuffer;
+    
     float BS;        //線條粗細
     Main_Drawing_space(Main_Frame MF){
         super();
@@ -915,4 +916,17 @@ public class Main_Drawing_space extends Canvas{
         draw2D.setStroke(dash);
         draw2D.drawRect(fp.x-3, fp.y-3, (lp.x - fp.x)+6 , (lp.y - fp.y)+6); 
   }
+   
+    
+    public void drawp(int x1, int y1, int x2, int y2){
+          
+          Graphics GraImage = null;        
+          GraImage = ImageBuffer.getGraphics();
+          Graphics2D g2d = (Graphics2D)GraImage;
+          g2d.drawLine(x1, y1, x2, y2);
+          System.out.println(x1 + " " + y1+" "+ x2 +" " + y2+ "\n");
+          Graphics g = Main_Drawing_space.this.getGraphics();
+          g.drawImage(ImageBuffer, 0, 0,null);
+          
+    }
 }

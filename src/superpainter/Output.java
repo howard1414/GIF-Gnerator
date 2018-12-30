@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
 import javax.imageio.ImageIO;
@@ -35,12 +36,18 @@ public class Output extends Frame {
     Main_Frame MF;
     JPanel JP_Buttom;
     JPanel Panel_left;
+    JPanel Panel_Right;
     JScrollPane scrollPane;
     JButton button_save;
+    JButton button_setting;
+    JButton button_exit;
     JCheckBox[] checkbox;
     String[] name;
     Stack ss ;
+    int check_arr[];
+    Image img_buffers[];
     Output(Main_Frame parent){
+    
     MF = parent;
     ss = MF.Main_Drawing_space.re;
     Point pos;
@@ -49,7 +56,7 @@ public class Output extends Frame {
     int x= windowSize.width+pos.x;
     int y = pos.y;
     setup_comp();
-    //show_test();
+    show_test();
     if(count_stack()>=0){
     name = new String[count_stack()];
     }
@@ -60,6 +67,8 @@ public class Output extends Frame {
     this.add(JP_Buttom);
     this.setSize(300,300);
     this.setLocation(x,y);
+    this.pack();
+    this.setTitle("輸出");
     this.setVisible(true);
     this.addWindowListener( new WindowAdapter()
             {
@@ -70,19 +79,38 @@ public class Output extends Frame {
                 }
             }
         );
+    
+   new Thread(new Runnable(){
+   @Override
+        public void run(){
+          test_drawing_speed();  
+        }
+    }).start();
+     
+        
+    
     }
     void setup_comp(){
     JP_Buttom = new JPanel(); 
     Panel_left = new JPanel();
+    Panel_Right = new JPanel();
     button_save = new JButton("輸出");
+    button_setting= new JButton("設定");
+    button_exit= new JButton("取消");
     set_buttonUI(button_save);
+    set_buttonUI(button_setting);
+    set_buttonUI(button_exit);
     scrollPane = new JScrollPane(Panel_left);
-    Panel_left.setLayout(new BoxLayout( Panel_left, BoxLayout.PAGE_AXIS));
-    scrollPane.setPreferredSize(new Dimension(250, 300));
+    Panel_Right.setLayout(new GridLayout(3, 1));
+    Panel_left.setLayout(new BoxLayout(Panel_left, BoxLayout.PAGE_AXIS));
+    scrollPane.setPreferredSize(new Dimension(200, 300));
     //scrollPane.setBounds(0, 0, this.getWidth(), this.getHeight());
     JP_Buttom.setLayout(new BorderLayout());
-    JP_Buttom.add(Panel_left,BorderLayout.WEST);
-    JP_Buttom.add(button_save,BorderLayout.EAST);
+    Panel_Right.add(button_save);
+    Panel_Right.add(button_setting);
+    Panel_Right.add(button_exit);
+    JP_Buttom.add(scrollPane,BorderLayout.WEST);
+    JP_Buttom.add(Panel_Right,BorderLayout.EAST);
     
     button_save.addMouseListener(
                 new MouseAdapter()
@@ -90,6 +118,25 @@ public class Output extends Frame {
                     public void mouseClicked(MouseEvent e)
                     {   
                        gen_pic();                      
+                    }    
+                }    
+        );
+    button_setting.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {   
+                                          
+                    }    
+                }    
+        );
+    button_exit.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {   
+                    setVisible(false);    
+                    MF.toolbarBTN.output = null;                
                     }    
                 }    
         );
@@ -161,12 +208,63 @@ public class Output extends Frame {
     
     }
     }
+    void geneate_gif_buffer(Image imgbfr[]){
+        check_directory();
+        int count=0;
+        for (Image img : imgbfr) {
+           if(count ==0){
+           gen_pic(img,count);
+           }else if(count>=1){
+           
+           }
+           count++;
+        }
+    }
+    void gen_pic(Image ibf,int num){
+    try{
+        String filename = "\\temp"+(num+1)+".PNG";
+        ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
+    }catch(IOException ex){
+    
+    }
+    
+    }
+    void check_directory(){
+    File dir= new File("\\temp");
+    if(!dir.exists()){
+    try{
+        dir.mkdir();
+    }catch(SecurityException se){
+        
+    }        
+    }
+    }
+    void check_to_buffer(){
+        int amount=0;
+        for(int i=0;i<count_stack();i++){
+                if(checkbox[i].isSelected()){
+                    amount++;               
+                }
+        }
+        check_arr = new int[amount];
+        img_buffers = new Image[amount];
+        int j=0;
+        for(int i=0;i<count_stack();i++){
+                if(checkbox[i].isSelected()){
+                    check_arr[j] = i;
+                    MF.Main_Drawing_space.history_replay(i+1);
+                    img_buffers[j] = MF.Main_Drawing_space.request_Image();
+                    j++;
+                }
+        }
+        
+    }
     
     void show_test(){
     int count=0;
     line = MF.Main_Drawing_space.request_line();
     for(Line ll : line){
-    System.out.println(ll.lastpoint.x+" "+ll.lastpoint.y+"\n");
+    System.out.println(ll.Pattern+" "+ll.stack+"\n");
     count++;
     }
     System.out.println("size= "+count+"\n");
@@ -175,6 +273,19 @@ public class Output extends Frame {
     for(Object s:ss){
     System.out.println("ss= "+s+"\n");
     }
+    }
+    void test_drawing_speed(){
+    line = MF.Main_Drawing_space.request_line();
+    try{
+    for(Line ll : line){
+    MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+    Thread.sleep(10);
+    }
+    }catch(InterruptedException exx){
+    
+    }
+    //MF.Main_Drawing_space.history_replay(base+1);
+    //MF.Main_Drawing_space.drawp(d_line.firstpoint.x,d_line.firstpoint.y,d_line.lastpoint.x,d_line.lastpoint.y);
     }
     int count_stack(){
     int count=0;
@@ -186,6 +297,7 @@ public class Output extends Frame {
     return count;
     }
     public void set_buttonUI(JButton btn){
+        btn.setPreferredSize(new Dimension(80, 50));
         btn.setFont(new Font("新細明體", Font.BOLD, 15));
         btn.setBackground(new Color(0xFFBB00));
         btn.setForeground(Color.white);
