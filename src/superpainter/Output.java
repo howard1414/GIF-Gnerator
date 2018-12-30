@@ -279,13 +279,17 @@ public class Output extends Frame {
     try{
     for(Line ll : line){
     MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+    
     Thread.sleep(10);
     }
     }catch(InterruptedException exx){
     
     }
+    
+    
     //MF.Main_Drawing_space.history_replay(base+1);
     //MF.Main_Drawing_space.drawp(d_line.firstpoint.x,d_line.firstpoint.y,d_line.lastpoint.x,d_line.lastpoint.y);
+    MF.Main_Drawing_space.temp = true;
     }
     int count_stack(){
     int count=0;

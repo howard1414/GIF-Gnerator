@@ -818,14 +818,22 @@ public class Main_Drawing_space extends Canvas{
        {
             Graphics g = Main_Drawing_space.this.getGraphics();
             img = ImageIO.read(new File(path));
-            Point tfp = new Point(30,30);
+            Point tfp = new Point(0,0);
             Point tlp = new Point(30 + 500 * img.getHeight() / img.getWidth(),500 * img.getHeight() / img.getWidth()+30);
             g.drawImage(img, tfp.x, tfp.y, tlp.x-tfp.x, tlp.y-tfp.y,this);
-//            Main_Drawing_space.this.status = Status.active;
             p1 =new Point(tfp);
             p2 =new Point(tlp);
             lines.add(new Line(tfp,tlp,Pattern.Image,img,linecount.size()));
             Main_Drawing_space.this.status = Status.drawimage;
+            if((tlp.x-tfp.x)>=Main_Drawing_space.this.getWidth() || (tlp.y-tfp.y)>= Main_Drawing_space.this.getHeight() ){
+                parent.size_btn.setBounds( tlp.x-tfp.x,tlp.y-tfp.y, 15, 15);
+                parent.Panel_size.setPreferredSize(new Dimension((tlp.x-tfp.x)+17, (tlp.y-tfp.y)+17));
+                Main_Drawing_space.this.setSize(tlp.x-tfp.x,  tlp.y-tfp.y); 
+                parent.Panel_size.repaint();
+                parent.Panel_size.updateUI();
+                parent.SPW = Main_Drawing_space.this.getWidth();
+                parent.SPH = Main_Drawing_space.this.getHeight();
+            }
             draw_out_line(tfp,tlp);
             linecount.add(1);
             re.push(1);
@@ -917,9 +925,12 @@ public class Main_Drawing_space extends Canvas{
         draw2D.drawRect(fp.x-3, fp.y-3, (lp.x - fp.x)+6 , (lp.y - fp.y)+6); 
   }
    
-    
+    Boolean temp = true;
     public void drawp(int x1, int y1, int x2, int y2){
-          
+          if(temp == true){
+           temp = false;
+             ImageBuffer = createImage(this.getWidth(), this.getHeight());
+           }
           Graphics GraImage = null;        
           GraImage = ImageBuffer.getGraphics();
           Graphics2D g2d = (Graphics2D)GraImage;
