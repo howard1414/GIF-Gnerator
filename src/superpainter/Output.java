@@ -24,6 +24,7 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -41,6 +42,7 @@ public class Output extends Frame {
     JButton button_save;
     JButton button_setting;
     JButton button_exit;
+    JButton button_output_all;
     JCheckBox[] checkbox;
     String[] name;
     Stack ss ;
@@ -79,14 +81,14 @@ public class Output extends Frame {
                 }
             }
         );
-    
+    /*
    new Thread(new Runnable(){
    @Override
         public void run(){
           test_drawing_speed();  
         }
     }).start();
-     
+     */
         
     
     }
@@ -97,16 +99,19 @@ public class Output extends Frame {
     button_save = new JButton("輸出");
     button_setting= new JButton("設定");
     button_exit= new JButton("取消");
+    button_output_all = new JButton("輸出全部");
     set_buttonUI(button_save);
     set_buttonUI(button_setting);
     set_buttonUI(button_exit);
+    set_buttonUI(button_output_all);
     scrollPane = new JScrollPane(Panel_left);
-    Panel_Right.setLayout(new GridLayout(3, 1));
+    Panel_Right.setLayout(new GridLayout(4, 1));
     Panel_left.setLayout(new BoxLayout(Panel_left, BoxLayout.PAGE_AXIS));
     scrollPane.setPreferredSize(new Dimension(200, 300));
     //scrollPane.setBounds(0, 0, this.getWidth(), this.getHeight());
     JP_Buttom.setLayout(new BorderLayout());
     Panel_Right.add(button_save);
+    Panel_Right.add(button_output_all);
     Panel_Right.add(button_setting);
     Panel_Right.add(button_exit);
     JP_Buttom.add(scrollPane,BorderLayout.WEST);
@@ -140,7 +145,35 @@ public class Output extends Frame {
                     }    
                 }    
         );
+    
+    button_output_all.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    { 
+                            new Thread(new Runnable(){
+                            @Override
+                            public void run(){
+                                gen_all(1);   
+                            }
+                            }).start(); 
+                           
+                    }    
+                }    
+        );
     }
+    /*
+     new Thread(new Runnable(){
+   @Override
+        public void run(){
+            
+        }
+    }).start();
+    
+    
+    */
+    
+    
      void gen_box(int amount,String[] content){
      checkbox = new JCheckBox[amount];  
      for(int i=0;i<amount;i++){
@@ -222,7 +255,7 @@ public class Output extends Frame {
     }
     void gen_pic(Image ibf,int num){
     try{
-        String filename = "\\temp"+(num+1)+".PNG";
+        String filename = "temp_pic/"+(num+1)+".PNG";
         ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
     }catch(IOException ex){
     
@@ -230,13 +263,16 @@ public class Output extends Frame {
     
     }
     void check_directory(){
-    File dir= new File("\\temp");
+    File dir= new File("temp_pic");
     if(!dir.exists()){
     try{
-        dir.mkdir();
+        dir.mkdirs();
+        System.out.println("MK DIR");
     }catch(SecurityException se){
         
     }        
+    }else{
+    System.out.println("is exist");
     }
     }
     void check_to_buffer(){
@@ -259,7 +295,51 @@ public class Output extends Frame {
         }
         
     }
+    void gen_all(int speed){
+        
+        int counts=0;
+        check_directory();
+        
+        line = MF.Main_Drawing_space.request_line();
+        
+        try{
+        MF.Main_Drawing_space.drawp(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y);
+        Image fibf = MF.Main_Drawing_space.request_Image();
+        String first_name = "temp_pic/temp_0.PNG";
+        ImageIO.write((RenderedImage) fibf, "PNG", new File(first_name));
+        BufferedImage firstImage = ImageIO.read(new File("temp_pic/temp_0.PNG"));
+        ImageOutputStream output = new FileImageOutputStream(new File("temp_pic/opt.gif"));
+        GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), speed, true);
+        writer.writeToSequence(firstImage);
+        for(Line ll : line){
+        MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+        Image ibf = MF.Main_Drawing_space.request_Image();
+        String filename = "temp_pic/temp_"+counts+".PNG";
+        ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
+        BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(counts)+".PNG"));
+        System.out.println(counts);
+        writer.writeToSequence(nextImage); 
+        Thread.sleep(speed);
+        counts++;
+        }
+        
+        /*
+        for(int i=0;i<counts;i++){
+        BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(i+1)+".PNG"));
+        System.out.println(i);
+        writer.writeToSequence(nextImage); 
+        }
+        */
+        writer.close();
+        output.close();
+        JOptionPane.showMessageDialog(null,"輸出完成!");
+        }catch(InterruptedException exx){
+        System.out.println("Interrupted ERR");
+        }catch(IOException ex){
+        System.out.println("IO ERR");
+        }
     
+    }
     void show_test(){
     int count=0;
     line = MF.Main_Drawing_space.request_line();
