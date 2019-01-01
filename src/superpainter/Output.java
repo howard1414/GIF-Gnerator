@@ -6,6 +6,7 @@
 package superpainter;
 
 import java.awt.*;
+import java.awt.BasicStroke;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -48,6 +49,9 @@ public class Output extends Frame {
     Stack ss ;
     int check_arr[];
     Image img_buffers[];
+    Graphics BFG;
+    Graphics2D BFG2D;
+    
     Output(Main_Frame parent){
     
     MF = parent;
@@ -81,14 +85,14 @@ public class Output extends Frame {
                 }
             }
         );
-    /*
+    
    new Thread(new Runnable(){
    @Override
         public void run(){
           test_drawing_speed();  
         }
     }).start();
-     */
+     
         
     
     }
@@ -301,7 +305,6 @@ public class Output extends Frame {
         check_directory();
         
         line = MF.Main_Drawing_space.request_line();
-        
         try{
         MF.Main_Drawing_space.drawp(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y);
         Image fibf = MF.Main_Drawing_space.request_Image();
@@ -355,18 +358,25 @@ public class Output extends Frame {
     }
     }
     void test_drawing_speed(){
+    System.out.println("輸出中");
     line = MF.Main_Drawing_space.request_line();
     try{
     for(Line ll : line){
-    MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
-    
-    Thread.sleep(10);
+        Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
+        Graphics2D g2d = (Graphics2D)g;
+        
+        if(ll.Pattern == Pattern.Pencil){
+            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+        }
+        else if(ll.Pattern == Pattern.Ovil)
+        {
+            MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
+        }
+        Thread.sleep(10);
     }
     }catch(InterruptedException exx){
     
     }
-    
-    
     //MF.Main_Drawing_space.history_replay(base+1);
     //MF.Main_Drawing_space.drawp(d_line.firstpoint.x,d_line.firstpoint.y,d_line.lastpoint.x,d_line.lastpoint.y);
     MF.Main_Drawing_space.temp = true;

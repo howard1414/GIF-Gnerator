@@ -6,25 +6,22 @@
 package superpainter;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Random;
-import java.util.Vector;
-import javax.swing.JPanel;
-import java.util.*;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.geom.*;
-import java.awt.*;
-import javax.swing.*;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.*;
-
+import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.util.*;
+import java.util.Random;
+import java.util.Vector;
+import java.io.File;
+import java.io.FileNotFoundException;
+import javax.imageio.ImageIO;
+import java.math.*;
 /**
  *
  * @author lv379
@@ -873,6 +870,8 @@ public class Main_Drawing_space extends Canvas{
             p2 = new Point(lp);
         }
     }
+    
+    
     void Judge_Quadrant2(Point nfp,Point nlp){
         if(nlp.x<=nfp.x && nlp.y<nfp.y){
             p1 = new Point(nlp);
@@ -940,4 +939,31 @@ public class Main_Drawing_space extends Canvas{
           g.drawImage(ImageBuffer, 0, 0,null);
           
     }
+    
+    
+    public void drawOvil(int x1, int y1, int x2, int y2,Line ll){
+          if(temp == true){
+           temp = false;
+             ImageBuffer = createImage(this.getWidth(), this.getHeight());
+           }
+          Graphics GraImage = null;        
+          GraImage = ImageBuffer.getGraphics();
+          Graphics2D g2d = (Graphics2D)GraImage;
+          g2d.setColor(ll.Color);
+          g2d.setStroke(new BasicStroke(ll.BasicStroke));
+          Graphics g = Main_Drawing_space.this.getGraphics();
+          Point t1 = new Point(x1,y1);
+          Point t2 = new Point(x2,y2);
+          Judge_Quadrant2(t1,t2);
+          for(int i=0;i>=-360;i=i-5){
+            try {
+                g2d.drawArc(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,90,i);
+                System.out.println(i);
+                g.drawImage(ImageBuffer, 0, 0,null);
+                Thread.sleep(15);
+            } catch (InterruptedException ex) {
+            }
+          }
+    }
+
 }
