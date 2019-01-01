@@ -925,7 +925,7 @@ public class Main_Drawing_space extends Canvas{
   }
    
     Boolean temp = true;
-    public void drawp(int x1, int y1, int x2, int y2){
+    public void drawp(int x1, int y1, int x2, int y2,Line ls){
           if(temp == true){
            temp = false;
              ImageBuffer = createImage(this.getWidth(), this.getHeight());
@@ -933,6 +933,7 @@ public class Main_Drawing_space extends Canvas{
           Graphics GraImage = null;        
           GraImage = ImageBuffer.getGraphics();
           Graphics2D g2d = (Graphics2D)GraImage;
+          g2d.setColor(ls.Color);
           g2d.drawLine(x1, y1, x2, y2);
           System.out.println(x1 + " " + y1+" "+ x2 +" " + y2+ "\n");
           Graphics g = Main_Drawing_space.this.getGraphics();

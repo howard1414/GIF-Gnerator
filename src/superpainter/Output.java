@@ -51,7 +51,8 @@ public class Output extends Frame {
     Image img_buffers[];
     Graphics BFG;
     Graphics2D BFG2D;
-    
+    Output_setting opt_setting;
+    int setting_delay=10,setting_interval=1;
     Output(Main_Frame parent){
     
     MF = parent;
@@ -62,7 +63,7 @@ public class Output extends Frame {
     int x= windowSize.width+pos.x;
     int y = pos.y;
     setup_comp();
-    show_test();
+    //show_test();
     if(count_stack()>=0){
     name = new String[count_stack()];
     }
@@ -71,11 +72,12 @@ public class Output extends Frame {
     }   
     gen_box(count_stack(),name);
     this.add(JP_Buttom);
-    this.setSize(300,300);
+    this.setSize(300,400);
     this.setLocation(x,y);
     this.pack();
     this.setTitle("輸出");
     this.setVisible(true);
+    //opt_setting = new Output_setting(MF);
     this.addWindowListener( new WindowAdapter()
             {
                 public void windowClosing(WindowEvent e)
@@ -130,15 +132,21 @@ public class Output extends Frame {
                     }    
                 }    
         );
+    
     button_setting.addMouseListener(
                 new MouseAdapter()
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
-                                          
+                        if(opt_setting == null){
+                        opt_setting = new Output_setting(MF);
+                        }else{
+                        opt_setting.setVisible(true);
+                        }
                     }    
                 }    
         );
+    
     button_exit.addMouseListener(
                 new MouseAdapter()
                 {
@@ -155,10 +163,15 @@ public class Output extends Frame {
                 {
                     public void mouseClicked(MouseEvent e)
                     { 
+                        
+                        if(opt_setting == null){
+                        opt_setting = new Output_setting(MF);
+                        }
+                        
                             new Thread(new Runnable(){
                             @Override
                             public void run(){
-                                gen_all(1);   
+                                gen_all(setting_delay,setting_interval);   
                             }
                             }).start(); 
                            
@@ -299,14 +312,23 @@ public class Output extends Frame {
         }
         
     }
-    void gen_all(int speed){
+    void gen_all(int speed,int interval){
         
         int counts=0;
         check_directory();
-        
+        Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
+        Graphics2D g2d = (Graphics2D)g;
         line = MF.Main_Drawing_space.request_line();
         try{
-        MF.Main_Drawing_space.drawp(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y);
+        
+        if(line.get(0).Pattern == Pattern.Pencil){
+            MF.Main_Drawing_space.drawp(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0));
+        }
+        else if(line.get(0).Pattern == Pattern.Ovil)
+        {
+            MF.Main_Drawing_space.drawOvil(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0));
+        }
+        
         Image fibf = MF.Main_Drawing_space.request_Image();
         String first_name = "temp_pic/temp_0.PNG";
         ImageIO.write((RenderedImage) fibf, "PNG", new File(first_name));
@@ -315,14 +337,33 @@ public class Output extends Frame {
         GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), speed, true);
         writer.writeToSequence(firstImage);
         for(Line ll : line){
-        MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+        /*
+        if(ll.Pattern == Pattern.Pencil){
+            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+        }
+        else if(ll.Pattern == Pattern.Ovil)
+        {
+            MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
+        }
+            
+            */
+        
+        if(ll.Pattern == Pattern.Pencil){
+            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
+        }
+        else if(ll.Pattern == Pattern.Ovil)
+        {
+            MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
+        }
+        if(counts%interval==0){
         Image ibf = MF.Main_Drawing_space.request_Image();
         String filename = "temp_pic/temp_"+counts+".PNG";
         ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
         BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(counts)+".PNG"));
         System.out.println(counts);
-        writer.writeToSequence(nextImage); 
+        writer.writeToSequence(nextImage);
         Thread.sleep(speed);
+        }
         counts++;
         }
         
@@ -366,7 +407,7 @@ public class Output extends Frame {
         Graphics2D g2d = (Graphics2D)g;
         
         if(ll.Pattern == Pattern.Pencil){
-            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
+            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
         }
         else if(ll.Pattern == Pattern.Ovil)
         {
@@ -396,6 +437,10 @@ public class Output extends Frame {
         btn.setBackground(new Color(0xFFBB00));
         btn.setForeground(Color.white);
         btn.setUI(new UI_Template());        
+    }
+    public void send_setting(int delay,int interval){
+    setting_delay = delay;
+    setting_interval = interval;
     }
 }
 
