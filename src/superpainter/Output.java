@@ -87,14 +87,14 @@ public class Output extends Frame {
                 }
             }
         );
-    
+    /*
    new Thread(new Runnable(){
    @Override
         public void run(){
           test_drawing_speed();  
         }
     }).start();
-     
+     */
         
     
     }
@@ -166,6 +166,7 @@ public class Output extends Frame {
                         
                         if(opt_setting == null){
                         opt_setting = new Output_setting(MF);
+                        opt_setting.setVisible(false);
                         }
                         
                             new Thread(new Runnable(){
@@ -319,6 +320,7 @@ public class Output extends Frame {
         Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
         Graphics2D g2d = (Graphics2D)g;
         line = MF.Main_Drawing_space.request_line();
+        Output_progress opg = new Output_progress(line.size(),MF);
         try{
         
         if(line.get(0).Pattern == Pattern.Pencil){
@@ -364,6 +366,7 @@ public class Output extends Frame {
         writer.writeToSequence(nextImage);
         Thread.sleep(speed);
         }
+        opg.add_progress(1);
         counts++;
         }
         
@@ -376,6 +379,8 @@ public class Output extends Frame {
         */
         writer.close();
         output.close();
+        opg.setVisible(false);
+        opg = null;
         JOptionPane.showMessageDialog(null,"輸出完成!");
         }catch(InterruptedException exx){
         System.out.println("Interrupted ERR");

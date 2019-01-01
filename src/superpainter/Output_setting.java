@@ -168,6 +168,9 @@ public class Output_setting extends Frame {
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
+                        
+                        interval_text.setText("1");
+                        delay_text.setText("1");
                         setVisible(false);
                     }
                          
