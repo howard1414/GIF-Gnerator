@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
@@ -313,8 +315,8 @@ public class Output extends Frame {
         }
         
     }
+    
     void gen_all(int speed,int interval){
-        
         int counts=0;
         check_directory();
         Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
@@ -322,14 +324,14 @@ public class Output extends Frame {
         line = MF.Main_Drawing_space.request_line();
         Output_progress opg = new Output_progress(line.size(),MF);
         try{
-        
+        /*
         if(line.get(0).Pattern == Pattern.Pencil){
             MF.Main_Drawing_space.drawp(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0));
         }
         else if(line.get(0).Pattern == Pattern.Ovil)
         {
-            MF.Main_Drawing_space.drawOvil(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0));
-        }
+            MF.Main_Drawing_space.drawOvil(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0),360);
+        }*/
         
         Image fibf = MF.Main_Drawing_space.request_Image();
         String first_name = "temp_pic/temp_0.PNG";
@@ -352,24 +354,73 @@ public class Output extends Frame {
         
         if(ll.Pattern == Pattern.Pencil){
             MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
+            test_output(counts,interval,speed,writer);
+            /*if(counts%interval==0){
+            Image ibf = MF.Main_Drawing_space.request_Image();
+            String filename = "temp_pic/temp_"+counts+".PNG";
+            ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
+            BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(counts)+".PNG"));
+            System.out.println(counts);
+            writer.writeToSequence(nextImage);
+            Thread.sleep(speed);
+            }*/
+            counts++;
+            opg.add_progress(1);
         }
         else if(ll.Pattern == Pattern.Ovil)
-        {
-            MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
+        {   
+            for(int i=0;i>=-360;i=i-3){
+                MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll,i);
+                test_output(counts,interval,speed,writer);
+                counts++;
+            }
+            opg.add_progress(1);
         }
-        if(counts%interval==0){
-        Image ibf = MF.Main_Drawing_space.request_Image();
-        String filename = "temp_pic/temp_"+counts+".PNG";
-        ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
-        BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(counts)+".PNG"));
-        System.out.println(counts);
-        writer.writeToSequence(nextImage);
-        Thread.sleep(speed);
+        else if(ll.Pattern == Pattern.Rect)
+        {   
+            Point fp = new Point(ll.firstpoint);
+            Point lp = new Point(ll.lastpoint);
+            Point p1 = new Point(0,0);
+            Point p2 = new Point(0,0);
+            if(lp.x<=fp.x && lp.y<fp.y){
+                p1 = new Point(lp);
+                p2 = new Point(fp);
+            }
+            else if(lp.x>fp.x && lp.y<=fp.y){
+                p1 = new Point(fp.x,lp.y);
+                p2 = new Point(lp.x,fp.y );
+            }
+            else if(lp.x<=fp.x && lp.y>fp.y){
+                p1 = new Point(lp.x,fp.y);
+                p2 = new Point(fp.x,lp.y );
+            }
+            else if(lp.x>fp.x && lp.y>=fp.y){
+                p1 = new Point(fp);
+                p2 = new Point(lp);
+            }
+            for(int i = p1.x;i<=p2.x;i++){
+                MF.Main_Drawing_space.drawp(p1.x,p1.y,i,p1.y,ll);
+                test_output(counts,interval,speed,writer);
+                counts++;
+            }
+            for(int i = p1.y;i<=p2.y;i++){
+                MF.Main_Drawing_space.drawp(p2.x,p1.y,p2.x,i,ll);
+                test_output(counts,interval,speed,writer);
+                counts++;
+            }
+            for(int i = p2.x;i>=p1.x;i--){
+                MF.Main_Drawing_space.drawp(p2.x,p2.y,i,p2.y,ll);
+                test_output(counts,interval,speed,writer);
+                counts++;
+            }
+            for(int i = p2.y;i>=p1.y;i--){
+                MF.Main_Drawing_space.drawp(p1.x,p2.y,p1.x,i,ll);
+                test_output(counts,interval,speed,writer);
+                counts++;
+            }
+            opg.add_progress(1);
         }
-        opg.add_progress(1);
-        counts++;
-        }
-        
+     }
         /*
         for(int i=0;i<counts;i++){
         BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(i+1)+".PNG"));
@@ -382,13 +433,33 @@ public class Output extends Frame {
         opg.setVisible(false);
         opg = null;
         JOptionPane.showMessageDialog(null,"輸出完成!");
-        }catch(InterruptedException exx){
-        System.out.println("Interrupted ERR");
+        MF.Main_Drawing_space.temp = true;
+        //}catch(InterruptedException exx){
+        //System.out.println("Interrupted ERR");
         }catch(IOException ex){
         System.out.println("IO ERR");
         }
     
     }
+    /************************************test*/
+    void test_output(int counts,int interval,int speed,GifSequenceWriter writer){
+        if(counts%interval==0){
+            Image ibf = MF.Main_Drawing_space.request_Image();
+            String filename = "temp_pic/temp_"+counts+".PNG";
+        try {
+            ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
+            BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(counts)+".PNG"));
+            System.out.println(counts);
+            writer.writeToSequence(nextImage);
+            Thread.sleep(speed);
+        } catch (IOException ex) {
+            Logger.getLogger(Output.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Output.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }
+    /****************************************test*/
     void show_test(){
     int count=0;
     line = MF.Main_Drawing_space.request_line();
@@ -403,7 +474,7 @@ public class Output extends Frame {
     System.out.println("ss= "+s+"\n");
     }
     }
-    void test_drawing_speed(){
+    /*void test_drawing_speed(){
     System.out.println("輸出中");
     line = MF.Main_Drawing_space.request_line();
     try{
@@ -421,12 +492,11 @@ public class Output extends Frame {
         Thread.sleep(10);
     }
     }catch(InterruptedException exx){
-    
     }
     //MF.Main_Drawing_space.history_replay(base+1);
     //MF.Main_Drawing_space.drawp(d_line.firstpoint.x,d_line.firstpoint.y,d_line.lastpoint.x,d_line.lastpoint.y);
     MF.Main_Drawing_space.temp = true;
-    }
+    }*/
     int count_stack(){
     int count=0;
    

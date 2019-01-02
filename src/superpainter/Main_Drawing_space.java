@@ -931,18 +931,18 @@ public class Main_Drawing_space extends Canvas{
              ImageBuffer = createImage(this.getWidth(), this.getHeight());
            }
           Graphics GraImage = null;        
+          Graphics g = Main_Drawing_space.this.getGraphics();
           GraImage = ImageBuffer.getGraphics();
           Graphics2D g2d = (Graphics2D)GraImage;
+          g2d.setStroke(new BasicStroke(ls.BasicStroke));
           g2d.setColor(ls.Color);
           g2d.drawLine(x1, y1, x2, y2);
           System.out.println(x1 + " " + y1+" "+ x2 +" " + y2+ "\n");
-          Graphics g = Main_Drawing_space.this.getGraphics();
           g.drawImage(ImageBuffer, 0, 0,null);
-          
     }
     
     
-    public void drawOvil(int x1, int y1, int x2, int y2,Line ll){
+    public void drawOvil(int x1, int y1, int x2, int y2,Line ll,int angle){
           if(temp == true){
            temp = false;
              ImageBuffer = createImage(this.getWidth(), this.getHeight());
@@ -956,15 +956,33 @@ public class Main_Drawing_space extends Canvas{
           Point t1 = new Point(x1,y1);
           Point t2 = new Point(x2,y2);
           Judge_Quadrant2(t1,t2);
-          for(int i=0;i>=-360;i=i-5){
-            try {
-                g2d.drawArc(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,90,i);
-                System.out.println(i);
-                g.drawImage(ImageBuffer, 0, 0,null);
-                Thread.sleep(15);
-            } catch (InterruptedException ex) {
-            }
-          }
+          g2d.drawArc(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,90,angle);
+          g.drawImage(ImageBuffer, 0, 0,null);
     }
+    /*public void drawRect(int x1, int y1, int x2, int y2,Line ll,int linecount){
+          if(temp == true){
+           temp = false;
+             ImageBuffer = createImage(this.getWidth(), this.getHeight());
+           }
+          Graphics GraImage = null;        
+          GraImage = ImageBuffer.getGraphics();
+          Graphics2D g2d = (Graphics2D)GraImage;
+          g2d.setColor(ll.Color);
+          g2d.setStroke(new BasicStroke(ll.BasicStroke));
+          Graphics g = Main_Drawing_space.this.getGraphics();
+          switch(linecount){
+              case 1:
+                  break;
+              case 2:
+                  break;
+              case 3:
+                  break;
+              case 4:
+                  break;
+                  
+          }
+          
+
+    }*/
 
 }
