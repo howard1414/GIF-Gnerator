@@ -152,7 +152,7 @@ public class Output_setting extends Frame {
                     {   
                         
                         delay = Integer.parseInt(delay_text.getText());
-                        interval = Integer.parseInt(delay_text.getText());
+                        interval = Integer.parseInt(interval_text.getText());
                         if(delay<1 || interval<1){
                         JOptionPane.showMessageDialog(null,"數值不得小於1，請再次確認!");
                         }else{

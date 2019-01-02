@@ -194,6 +194,7 @@ public class Output extends Frame {
                             new Thread(new Runnable(){
                             @Override
                             public void run(){
+                                System.out.println(setting_delay + " "+setting_interval);
                                 gen_all(setting_delay,setting_interval);   
                             }
                             }).start(); 
@@ -621,6 +622,7 @@ public class Output extends Frame {
     }
     /************************************test*/
     void test_output(int counts,int interval,int speed,GifSequenceWriter writer){
+        System.out.println("counts= "+counts+" interval= "+interval+" mod= "+counts%interval+"\n");
         if(counts%interval==0){
             Image ibf = MF.Main_Drawing_space.request_Image();
             String filename = "temp_pic/temp_"+counts+".PNG";
