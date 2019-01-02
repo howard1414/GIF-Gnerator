@@ -27,9 +27,13 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -69,9 +73,11 @@ public class Output extends Frame {
     if(count_stack()>=0){
     name = new String[count_stack()];
     }
-    for(int i=0;i<count_stack();i++){
-    name[i] = ss.get(i).toString();
-    }   
+    Vector<Line> ln = MF.Main_Drawing_space.request_line();
+    for(Line llnn : ln){    
+    name[llnn.stack] = llnn.Pattern.toString();
+    }
+    ln = null;
     gen_box(count_stack(),name);
     this.add(JP_Buttom);
     this.setSize(300,400);
@@ -197,11 +203,16 @@ public class Output extends Frame {
      void gen_box(int amount,String[] content){
      checkbox = new JCheckBox[amount];  
      for(int i=0;i<amount;i++){
-         if(content[i].equals("1")){
+         if(content[i].equals("Pencil")){
              content[i]="畫線";
-         }else{
-             content[i]="線段";
+         }else if(content[i].equals("Line")){
+             content[i]="直線";
+         }else if(content[i].equals("Ovil")){
+             content[i]="圓";
+         }else if(content[i].equals("Rect")){
+             content[i]="方形";
          }
+         System.out.println(content[i]);
      checkbox[i] = new JCheckBox("步驟"+(i+1)+" : "+content[i]);    
      Panel_left.add(checkbox[i]);
      setup_event(checkbox[i],i);
@@ -228,7 +239,7 @@ public class Output extends Frame {
                     count_imgs++;
                 }
             }
-            gen_gif(count_imgs);
+            //gen_gif(count_imgs);
         }
     }).start();
     } 
@@ -236,8 +247,20 @@ public class Output extends Frame {
     MF.Main_Drawing_space.history_replay(step+1);
     Image ibf = MF.Main_Drawing_space.request_Image();
     try{
-        String filename = "c:\\TEST\\pic"+(step+1)+".PNG";
-        ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("選擇PNG儲存位置");
+        FileFilter filter = new FileNameExtensionFilter("PNG","png");
+        fileChooser.setFileFilter(filter);
+        int userSelection = fileChooser.showSaveDialog(null);
+        ImageOutputStream output;
+        String saves="";
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = new File("");    
+        fileToSave = fileChooser.getSelectedFile();
+        saves = fileToSave.getAbsolutePath()+".png";
+        } 
+        
+        ImageIO.write((RenderedImage) ibf, "PNG", new File(saves));
     }catch(Exception ex){
     
     }
@@ -295,6 +318,19 @@ public class Output extends Frame {
     System.out.println("is exist");
     }
     }
+    void delete_temp(){
+    File dir= new File("temp_pic");
+    if(dir.exists()){
+    try{
+        FileUtils.deleteDirectory(dir);
+        dir.delete();
+        System.out.println("deleted DIR");
+    }catch(SecurityException | IOException se){
+        
+    }
+    
+    }
+    }
     void check_to_buffer(){
         int amount=0;
         for(int i=0;i<count_stack();i++){
@@ -332,12 +368,25 @@ public class Output extends Frame {
         {
             MF.Main_Drawing_space.drawOvil(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0),360);
         }*/
-        
+        //
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("選擇GIF儲存位置");
+        FileFilter filter = new FileNameExtensionFilter("GIF","gif");
+        fileChooser.setFileFilter(filter);
+        int userSelection = fileChooser.showSaveDialog(null);
+        ImageOutputStream output;
+        String saves="";
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = new File("");    
+        fileToSave = fileChooser.getSelectedFile();
+        saves = fileToSave.getAbsolutePath()+".gif";
+        } 
+        output = new FileImageOutputStream(new File(saves));
         Image fibf = MF.Main_Drawing_space.request_Image();
         String first_name = "temp_pic/temp_0.PNG";
         ImageIO.write((RenderedImage) fibf, "PNG", new File(first_name));
         BufferedImage firstImage = ImageIO.read(new File("temp_pic/temp_0.PNG"));
-        ImageOutputStream output = new FileImageOutputStream(new File("temp_pic/opt.gif"));
+        //ImageOutputStream output = new FileImageOutputStream(new File("temp_pic/opt.gif"));
         GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), speed, true);
         writer.writeToSequence(firstImage);
         for(Line ll : line){
@@ -432,6 +481,7 @@ public class Output extends Frame {
         output.close();
         opg.setVisible(false);
         opg = null;
+        delete_temp();
         JOptionPane.showMessageDialog(null,"輸出完成!");
         MF.Main_Drawing_space.temp = true;
         //}catch(InterruptedException exx){
@@ -507,7 +557,7 @@ public class Output extends Frame {
     return count;
     }
     public void set_buttonUI(JButton btn){
-        btn.setPreferredSize(new Dimension(80, 50));
+        btn.setPreferredSize(new Dimension(100, 50));
         btn.setFont(new Font("新細明體", Font.BOLD, 15));
         btn.setBackground(new Color(0xFFBB00));
         btn.setForeground(Color.white);
