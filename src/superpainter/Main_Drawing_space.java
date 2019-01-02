@@ -630,7 +630,7 @@ public class Main_Drawing_space extends Canvas{
             {  
                if(num == step) break;
                if(l.Pattern == Pattern.Image){
-                  g2d.drawImage(l.Image, 0, 0, 500 * l.Image.getHeight() / l.Image.getWidth(), 500 * l.Image.getHeight() / l.Image.getWidth(), this);
+                  g2d.drawImage(l.Image,l.firstpoint.x, l.firstpoint.y, l.lastpoint.x-l.firstpoint.x, l.lastpoint.y-l.firstpoint.y, this);
                   num++;
                }
                else
@@ -971,30 +971,4 @@ public class Main_Drawing_space extends Canvas{
           g2d.drawImage(ll.Image,ll.firstpoint.x, ll.firstpoint.y, ll.lastpoint.x-ll.firstpoint.x, ll.lastpoint.y-ll.firstpoint.y, this);
           g.drawImage(ImageBuffer, 0, 0,null);
     }
-    /*public void drawRect(int x1, int y1, int x2, int y2,Line ll,int linecount){
-          if(temp == true){
-           temp = false;
-             ImageBuffer = createImage(this.getWidth(), this.getHeight());
-           }
-          Graphics GraImage = null;        
-          GraImage = ImageBuffer.getGraphics();
-          Graphics2D g2d = (Graphics2D)GraImage;
-          g2d.setColor(ll.Color);
-          g2d.setStroke(new BasicStroke(ll.BasicStroke));
-          Graphics g = Main_Drawing_space.this.getGraphics();
-          switch(linecount){
-              case 1:
-                  break;
-              case 2:
-                  break;
-              case 3:
-                  break;
-              case 4:
-                  break;
-                  
-          }
-          
-
-    }*/
-
 }
