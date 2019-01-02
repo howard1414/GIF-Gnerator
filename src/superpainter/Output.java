@@ -491,6 +491,112 @@ public class Output extends Frame {
             counts++;
             opg.add_progress(1);
         }
+         else if(ll.Pattern == Pattern.Line){
+             
+            Point fp = new Point(ll.firstpoint);
+            Point lp = new Point(ll.lastpoint);
+            Point p1 = new Point(0,0);
+            Point p2 = new Point(0,0);
+            int x,y,temp;
+            if((lp.x<fp.x && lp.y<fp.y)||(lp.x>fp.x && lp.y>fp.y))
+            {
+                if(lp.x<fp.x && lp.y<fp.y){
+                    p1 = new Point(lp);
+                    p2 = new Point(fp);
+                }
+                else if(lp.x>fp.x && lp.y>fp.y){
+                    p1 = new Point(fp);
+                    p2 = new Point(lp);
+                }
+                System.out.println("p1 = "+p1);
+                System.out.println("p2 = "+p2);
+                x = p2.x-p1.x;
+                y = p2.y-p1.y;
+                
+                if(x >= y){
+                    temp = x / y ;
+                    int ycount = 0;
+                    int xcount = p1.x;
+                    for(int i = 1;i<=x;i++){
+                            if(i % temp ==0){
+                                xcount = p1.x + i;
+                                ycount++;
+                            }
+                            MF.Main_Drawing_space.drawp(xcount,p1.y+ycount,p1.x+i,p1.y+ycount,ll);
+                            System.out.println("first Point=  " + xcount+ "," + (p1.y+ycount));
+                             System.out.println("Last  Point=  " + (p1.x+i) +","+ (p1.y+ycount));
+                            test_output(counts,interval,speed,writer);
+                            counts++;   
+                    }
+                }
+                else{
+                    temp = y/x ;
+                    int ycount = p1.y;
+                    int xcount = 0;
+                    for(int i = 1;i<=y;i++){
+                            if(i % temp ==0){
+                                xcount++;
+                                ycount=p1.y+i;
+                                System.out.println("x = " + xcount + "   y = " + ycount );
+                            }
+                            MF.Main_Drawing_space.drawp(p1.x+xcount,ycount,p1.x+xcount,p1.y+i,ll);
+                            System.out.println("first Point=  " + (p1.x+xcount)+ "," + (ycount));
+                            System.out.println("Last  Point=  " + (p1.x+xcount) +","+ (p1.y+i));
+                            test_output(counts,interval,speed,writer);
+                            counts++;   
+                    }
+                }
+            }
+            else if(lp.x == fp.x || lp.y == fp.y)
+            {
+                MF.Main_Drawing_space.drawp(fp.x, fp.y,lp.x, lp.y,ll);
+            }
+            else
+            {
+                if(lp.x<fp.x && lp.y>fp.y){
+                    p1 = new Point(fp);
+                    p2 = new Point(lp);
+                }
+                if(lp.x>fp.x && lp.y <fp.y)
+                {   
+                    p1 = new Point(lp);
+                    p2 = new Point(fp);
+                }
+                x = p1.x-p2.x;
+                y = p2.y-p1.y;
+                if(x>=y){
+                    temp = x/y;
+                    int ycount = 0;
+                    int xcount = p1.x;
+                    for(int i = -1;i>=(0-x);i--){
+                            if(i % temp ==0){
+                                xcount = p1.x + i;
+                                ycount++;
+                            }
+                            MF.Main_Drawing_space.drawp(xcount,p1.y+ycount,p1.x+i,p1.y+ycount,ll);
+                            test_output(counts,interval,speed,writer);
+                            counts++;   
+                    }
+                }
+                else
+                {
+                    temp = y/x ;
+                    int ycount = p1.y;
+                    int xcount = 0;
+                    for(int i = 1;i<=y;i++){
+                            if(i % temp ==0){
+                                xcount++;
+                                ycount=p1.y+i;
+                                System.out.println("x = " + xcount + "   y = " + ycount );
+                            }
+                            MF.Main_Drawing_space.drawp(p1.x-xcount,ycount,p1.x-xcount,p1.y+i,ll);
+                            test_output(counts,interval,speed,writer);
+                            counts++;   
+                    }
+                }
+            }
+            opg.add_progress(1);
+         }
      }
         /*
         for(int i=0;i<counts;i++){
