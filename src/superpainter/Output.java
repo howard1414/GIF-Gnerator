@@ -74,8 +74,15 @@ public class Output extends Frame {
     name = new String[count_stack()];
     }
     Vector<Line> ln = MF.Main_Drawing_space.request_line();
+    System.out.println("showing!");
+    int cts=0;
     for(Line llnn : ln){    
+    if("Pencil".equals(llnn.Pattern.toString())||"Line".equals(llnn.Pattern.toString())||"Ovil".equals(llnn.Pattern.toString())||"Rect".equals(llnn.Pattern.toString())){
     name[llnn.stack] = llnn.Pattern.toString();
+    cts++;
+    }else{
+    name[cts] = "Image";
+    }
     }
     ln = null;
     gen_box(count_stack(),name);
@@ -211,6 +218,8 @@ public class Output extends Frame {
              content[i]="圓";
          }else if(content[i].equals("Rect")){
              content[i]="方形";
+         }else{
+            content[i]="圖片";
          }
          System.out.println(content[i]);
      checkbox[i] = new JCheckBox("步驟"+(i+1)+" : "+content[i]);    
