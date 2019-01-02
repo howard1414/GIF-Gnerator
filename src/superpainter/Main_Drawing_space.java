@@ -959,6 +959,18 @@ public class Main_Drawing_space extends Canvas{
           g2d.drawArc(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y,90,angle);
           g.drawImage(ImageBuffer, 0, 0,null);
     }
+    public void drawImage(Line ll){
+        if(temp == true){
+           temp = false;
+           ImageBuffer = createImage(this.getWidth(), this.getHeight());
+        }
+          Graphics GraImage = null;        
+          GraImage = ImageBuffer.getGraphics();
+          Graphics2D g2d = (Graphics2D)GraImage;
+          Graphics g = Main_Drawing_space.this.getGraphics();
+          g2d.drawImage(ll.Image,ll.firstpoint.x, ll.firstpoint.y, ll.lastpoint.x-ll.firstpoint.x, ll.lastpoint.y-ll.firstpoint.y, this);
+          g.drawImage(ImageBuffer, 0, 0,null);
+    }
     /*public void drawRect(int x1, int y1, int x2, int y2,Line ll,int linecount){
           if(temp == true){
            temp = false;
