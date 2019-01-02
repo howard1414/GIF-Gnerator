@@ -76,10 +76,15 @@ public class Output extends Frame {
     Vector<Line> ln = MF.Main_Drawing_space.request_line();
     System.out.println("showing!");
     int cts=0;
+    int prev=0;
     for(Line llnn : ln){    
     if("Pencil".equals(llnn.Pattern.toString())||"Line".equals(llnn.Pattern.toString())||"Ovil".equals(llnn.Pattern.toString())||"Rect".equals(llnn.Pattern.toString())){
     name[llnn.stack] = llnn.Pattern.toString();
+    if(prev == llnn.stack){
     cts++;
+    prev++;
+    }
+    
     }else{
     name[cts] = "Image";
     }
