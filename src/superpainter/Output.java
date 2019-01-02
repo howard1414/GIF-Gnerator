@@ -485,6 +485,12 @@ public class Output extends Frame {
             }
             opg.add_progress(1);
         }
+         else if(ll.Pattern == Pattern.Image){
+            MF.Main_Drawing_space.drawImage(ll);
+            test_output(counts,interval,speed,writer);
+            counts++;
+            opg.add_progress(1);
+        }
      }
         /*
         for(int i=0;i<counts;i++){
