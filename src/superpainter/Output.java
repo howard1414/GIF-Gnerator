@@ -87,6 +87,8 @@ public class Output extends Frame {
     
     }else{
     name[cts] = "Image";
+    cts++;
+    prev++;
     }
     }
     ln = null;
