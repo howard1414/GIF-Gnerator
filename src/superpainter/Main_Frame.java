@@ -74,6 +74,7 @@ public class Main_Frame extends Frame {
     }
     void addpage(){
         Main_Drawing_space = new Main_Drawing_space(this);
+        Main_Drawing_space.status = Status.active;
     }
     void add_Panel_Main(){
         JSC = new ScrollPane();
@@ -85,15 +86,11 @@ public class Main_Frame extends Frame {
         Main_Drawing_space.setBounds(0,0, Drawing_space_x, Drawing_space_y);
         size_btn = new JButton();
         size_btn.setBounds(Drawing_space_x,Drawing_space_y, 15, 15);
-        
         Panel_size.add(Main_Drawing_space);
         Panel_size.add(size_btn);
-        
         JSC.add(Panel_size);
         JSC.validate();
         Panel_Main.add(JSC);
-        
-
         size_btn.addMouseMotionListener(
                 new MouseAdapter()
                 {                                    

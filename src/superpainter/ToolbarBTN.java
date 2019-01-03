@@ -94,11 +94,12 @@ public class ToolbarBTN extends JPanel{
                             new MouseAdapter()
                             {
                                 public void mouseClicked(MouseEvent e)
-                                {
+                                {  
                                     int x = Integer.parseInt(TF.getText());
-                                    MF.Main_Drawing_space.history_replay(x);
+                                     MF.Main_Drawing_space.history_replay(x);
                                      temp.dispose();
                                 }
+                                
                             }
                         );
                     }
@@ -240,9 +241,9 @@ public class ToolbarBTN extends JPanel{
                     {    
                          MF.Messgebar.setLB("輸出");
                          if(output==null){
-                         output = new Output(MF);
+                            output = new Output(MF);
                          }else{
-                         JOptionPane.showMessageDialog(null,"輸出視窗已開啟");
+                            JOptionPane.showMessageDialog(null,"輸出視窗已開啟");
                          }
                     }
                          
