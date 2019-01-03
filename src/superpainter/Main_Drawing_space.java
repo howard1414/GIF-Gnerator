@@ -800,12 +800,16 @@ public class Main_Drawing_space extends Canvas{
         lines.removeAllElements();
         parent.Drawing_space_x=500;
         parent.Drawing_space_y=500;
+        parent.SPH=500;
+        parent.SPW=500;
         this.setBounds(0, 0, parent.Drawing_space_x, parent.Drawing_space_y);
+        parent.Panel_size.setPreferredSize(new Dimension(parent.Drawing_space_x+17, parent.Drawing_space_y+17));
         parent.size_btn.setBounds(parent.Drawing_space_x,parent.Drawing_space_y, 15, 15);
         re.removeAll(re);
         linecount.removeAll(linecount);
         img = null;
         repaint();
+        parent.Panel_size.updateUI();
         parent.Messgebar.setLB("已重新建立頁面");
     }
     //讀取圖片

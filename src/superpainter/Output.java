@@ -55,8 +55,6 @@ public class Output extends Frame {
     Stack ss ;
     int check_arr[];
     Image img_buffers[];
-    Graphics BFG;
-    Graphics2D BFG2D;
     Output_setting opt_setting;
     int setting_delay=10,setting_interval=1;
     Output(Main_Frame parent){

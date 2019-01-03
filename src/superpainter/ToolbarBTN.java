@@ -338,8 +338,8 @@ public class ToolbarBTN extends JPanel{
                 Panel_Button.add(palette);
                 Panel_Button.add(line_width);
                 Panel_Button.add(recoveryBTN);
-                Panel_Button.add(history);
-                Panel_Button.add(reset);
+                //Panel_Button.add(history);
+                //Panel_Button.add(reset);
                 Panel_Button.add(closeBTN);
                 Panel_Button.updateUI();
             break;
