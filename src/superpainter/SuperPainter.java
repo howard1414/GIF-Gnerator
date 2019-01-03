@@ -11,7 +11,7 @@ public class SuperPainter {
     //自動日期版本設定
     static boolean Auto_date_State = false;
     //設定標題及手動版本號
-    static String  APPVERSION_static = "20181227 build 1943";
+    static String  APPVERSION_static = "20190103 build 1109";
     static String Title = "SuperPrinter";
     //
     

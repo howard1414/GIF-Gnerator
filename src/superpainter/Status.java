@@ -15,6 +15,7 @@ public enum Status {
     drawline,    //畫線工具狀態
     drawRect,   //矩形工具狀態
     drawOval,   //圓形工具狀態
+    drawimage,  //圖片放置狀態 
     select,     //選取狀態
     P1resize,   //P1點重設大小狀態
     P2resize,   //P2點重設大小狀態
