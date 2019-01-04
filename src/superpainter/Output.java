@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.exit;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -193,6 +194,7 @@ public class Output extends Frame {
                                 gen_all(setting_delay,setting_interval);   
                             }
                             }).start(); 
+                            
                            
                     }    
                 }    
@@ -247,32 +249,43 @@ public class Output extends Frame {
    @Override
         public void run(){
             int count_imgs=0;
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("選擇PNG儲存位置");
+            FileFilter filter = new FileNameExtensionFilter("PNG","png");
+            fileChooser.setFileFilter(filter);
+            int userSelection = fileChooser.showSaveDialog(null);
+            ImageOutputStream output;
+            String saves="";
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = new File("");    
+            fileToSave = fileChooser.getSelectedFile();
+            saves = fileToSave.getAbsolutePath();
+            }else{
+            saves = "deafult";
+            } 
             for(int i=0;i<count_stack();i++){
                 if(checkbox[i].isSelected()){
-                    gen_pic_count(i);
                     count_imgs++;
                 }
             }
+            Output_progress opg = new Output_progress(count_imgs,MF);
+            for(int i=0;i<count_stack();i++){
+                if(checkbox[i].isSelected()){
+                    gen_pic_count(i,(saves+"_"+(i+1)+".png"));
+                    opg.add_progress(1);
+                }
+            }
+            opg.setVisible(false);
+            opg = null;
+            JOptionPane.showMessageDialog(null,"輸出完成!");
             //gen_gif(count_imgs);
         }
     }).start();
     } 
-    void gen_pic_count(int step){
+    void gen_pic_count(int step,String saves){
     MF.Main_Drawing_space.history_replay(step+1);
     Image ibf = MF.Main_Drawing_space.request_Image();
     try{
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("選擇PNG儲存位置");
-        FileFilter filter = new FileNameExtensionFilter("PNG","png");
-        fileChooser.setFileFilter(filter);
-        int userSelection = fileChooser.showSaveDialog(null);
-        ImageOutputStream output;
-        String saves="";
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-        File fileToSave = new File("");    
-        fileToSave = fileChooser.getSelectedFile();
-        saves = fileToSave.getAbsolutePath()+".png";
-        } 
         
         ImageIO.write((RenderedImage) ibf, "PNG", new File(saves));
     }catch(Exception ex){
@@ -394,7 +407,11 @@ public class Output extends Frame {
         File fileToSave = new File("");    
         fileToSave = fileChooser.getSelectedFile();
         saves = fileToSave.getAbsolutePath()+".gif";
+        }else{
+        //Thread.stop();
+        saves = "deafult.gif";
         } 
+        
         output = new FileImageOutputStream(new File(saves));
         Image fibf = MF.Main_Drawing_space.request_Image();
         String first_name = "temp_pic/temp_0.PNG";
@@ -614,6 +631,7 @@ public class Output extends Frame {
         //System.out.println("Interrupted ERR");
         }catch(IOException ex){
         System.out.println("IO ERR");
+        
         }
     
     }

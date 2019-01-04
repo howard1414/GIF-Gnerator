@@ -141,11 +141,13 @@ public class ToolbarBTN extends JPanel{
                         chang_button();
                         if(MF.Main_Drawing_space!=null){
                              Re_Addpage RA = new Re_Addpage(MF);
+                             output.setVisible(false);    
+                             output = null;
                         }
                         else
                         {   
                             MF.addpage();
-                            MF.add_Panel_Main();
+                            MF.add_Panel_Main();                           
                             MF.Messgebar.setLB("新頁面以建立");
                         }
                     }
