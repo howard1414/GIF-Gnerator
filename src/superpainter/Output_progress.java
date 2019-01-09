@@ -6,6 +6,7 @@
 package superpainter;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -28,10 +29,10 @@ public class Output_progress extends Frame {
     int x= windowSize.width+pos.x;
     int y = pos.y;
     progressBar = new JProgressBar(0, size);
-     progressBar.setValue(0);
+    progressBar.setValue(0);
     JLabel LB = new JLabel("進度:");
+    LB.setFont(new Font("新細明體", Font.BOLD, 15));
     JPanel JP = new JPanel();
-    
     JP.setLayout(new GridLayout(0,2));
     JP.add(LB);
     JP.add(progressBar);
