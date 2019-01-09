@@ -165,5 +165,6 @@ Computer Program Engineering (II) project work
 <br>- Fixed the output file wont auto closed problem
 
 <br> 20190109
-<br>- building version 1235
+<br>- building version 1357
 <br>- Update output_setting's is loop selection
+<br>- Remove unnecessary blocks
