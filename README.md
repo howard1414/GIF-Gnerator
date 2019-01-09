@@ -1,4 +1,4 @@
-# SuperPainter
+# GIF Generator
 
 Computer Program Engineering (II) project work 
 
