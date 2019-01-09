@@ -55,6 +55,7 @@ public class Output extends Frame {
     String[] name;
     Stack ss ;
     int check_arr[];
+    boolean loop_check = false;
     Image img_buffers[];
     Output_setting opt_setting;
     int setting_delay=10,setting_interval=1;
@@ -190,8 +191,10 @@ public class Output extends Frame {
                             new Thread(new Runnable(){
                             @Override
                             public void run(){
-                                System.out.println(setting_delay + " "+setting_interval);
-                                gen_all(setting_delay,setting_interval);   
+                                setting_delay = opt_setting.delay;
+                                setting_interval = opt_setting.interval;
+                                loop_check = opt_setting.is_check;
+                                gen_all(setting_delay,setting_interval,loop_check);   
                             }
                             }).start(); 
                             
@@ -214,7 +217,7 @@ public class Output extends Frame {
     
      void gen_box(int amount,String[] content){
      checkbox = new JCheckBox[amount]; 
-     System.out.println("amount" + amount);
+     //System.out.println("amount" + amount);
      for(int i=0;i<amount;i++){
          System.out.println(content[i]);
          if(content[i].equals("Pencil")){
@@ -228,7 +231,7 @@ public class Output extends Frame {
          }else{
             content[i]="圖片";
          }
-        System.out.println(content[i]);
+        //System.out.println(content[i]);
         checkbox[i] = new JCheckBox("步驟"+(i+1)+" : "+content[i]);    
         Panel_left.add(checkbox[i]);
         setup_event(checkbox[i],i);
@@ -379,7 +382,7 @@ public class Output extends Frame {
         
     }
     
-    void gen_all(int speed,int interval){
+    void gen_all(int speed,int interval,boolean is_loop){
         int counts=0;
         check_directory();
         Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
@@ -418,7 +421,7 @@ public class Output extends Frame {
         ImageIO.write((RenderedImage) fibf, "PNG", new File(first_name));
         BufferedImage firstImage = ImageIO.read(new File("temp_pic/temp_0.PNG"));
         //ImageOutputStream output = new FileImageOutputStream(new File("temp_pic/opt.gif"));
-        GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), speed, true);
+        GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), speed, is_loop);
         writer.writeToSequence(firstImage);
         for(Line ll : line){
         /*
@@ -708,9 +711,10 @@ public class Output extends Frame {
         btn.setForeground(Color.white);
         btn.setUI(new UI_Template());        
     }
-    public void send_setting(int delay,int interval){
+    public void send_setting(int delay,int interval,boolean status){
     setting_delay = delay;
     setting_interval = interval;
+    loop_check = status;
     }
 }
 

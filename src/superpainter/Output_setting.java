@@ -17,6 +17,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,8 +40,10 @@ public class Output_setting extends Frame {
     JButton button_sub_delay;
     JTextArea interval_text;
     JTextArea delay_text;
-    int delay;
-    int interval;
+    JCheckBox check_loop;
+    public int delay=15;
+    public int interval=10;
+    public boolean is_check = false;
     Main_Frame MF;
     Output_setting(Main_Frame parent){
     Point pos;
@@ -73,8 +76,9 @@ public class Output_setting extends Frame {
     panel_interval = new JPanel();
     panel_delay = new JPanel();
     panel_Check_btns = new JPanel();
-    JLabel label_interval = new JLabel("間隔(每幀步數)");
-    JLabel label_delay = new JLabel("速度(ms)");
+    JLabel label_interval = new JLabel("每幀步數");
+    JLabel label_delay = new JLabel("間格速度(ms)");
+    check_loop = new JCheckBox("循環播放");
     button_ok = new JButton("確定");
     button_cancel = new JButton("取消");
     button_add_interval = new JButton("+");
@@ -82,10 +86,10 @@ public class Output_setting extends Frame {
     button_add_delay = new JButton("+");
     button_sub_delay = new JButton("-");
     interval_text = new  JTextArea(1,3);
-    interval_text.setText("1");
+    interval_text.setText("15");
     delay_text = new  JTextArea(1,3);
-    delay_text.setText("1");
-    JP.setLayout(new GridLayout(5,0));
+    delay_text.setText("10");
+    JP.setLayout(new GridLayout(6,0));
     panel_label_interval.add(label_interval);
     panel_label_delay.add(label_delay);
     panel_Check_btns.setLayout(new GridLayout(0,2));
@@ -103,6 +107,7 @@ public class Output_setting extends Frame {
     JP.add(panel_interval);
     JP.add(panel_label_delay);
     JP.add(panel_delay);
+    JP.add(check_loop);
     JP.add(panel_Check_btns);
     button_add_interval.addMouseListener(
                 new MouseAdapter()
@@ -153,11 +158,12 @@ public class Output_setting extends Frame {
                         
                         delay = Integer.parseInt(delay_text.getText());
                         interval = Integer.parseInt(interval_text.getText());
-                        if(delay<1 || interval<1){
-                        JOptionPane.showMessageDialog(null,"數值不得小於1，請再次確認!");
-                        }else{
-                        MF.toolbarBTN.output.send_setting(delay,interval);
+                        is_check = check_loop.isSelected();
+                        if(delay > 0 || interval > 0){
+                        //MF.toolbarBTN.output.send_setting(delay,interval,status);
                         setVisible(false);
+                        }else{
+                        JOptionPane.showMessageDialog(null,"數值輸入錯誤，需大於1或以上，請再次確認!");
                         }
                     }
                          
@@ -168,9 +174,8 @@ public class Output_setting extends Frame {
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
-                        
-                        interval_text.setText("1");
-                        delay_text.setText("1");
+                        interval_text.setText("10");
+                        delay_text.setText("10");
                         setVisible(false);
                     }
                          
@@ -178,6 +183,5 @@ public class Output_setting extends Frame {
         );
     
     }
-    
     
 }
