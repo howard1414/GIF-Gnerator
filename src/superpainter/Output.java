@@ -56,9 +56,10 @@ public class Output extends Frame {
     Stack ss ;
     int check_arr[];
     boolean loop_check = false;
+    boolean finish_delay_check = false;
     Image img_buffers[];
     Output_setting opt_setting;
-    int setting_delay=10,setting_interval=1;
+    int setting_delay=10,setting_interval=1,finish_delay_value=10;
     Output(Main_Frame parent){
     
     MF = parent;
@@ -176,8 +177,15 @@ public class Output extends Frame {
                             public void run(){
                                 setting_delay = opt_setting.delay;
                                 setting_interval = opt_setting.interval;
+                                finish_delay_value = opt_setting.finish_delay_value;
                                 loop_check = opt_setting.is_check;
-                                gen_all(setting_delay,setting_interval,loop_check);   
+                                finish_delay_check = opt_setting.is_finish_delay;
+                                if(setting_delay>0 && setting_interval>0 ){
+                                gen_all(setting_delay,setting_interval,loop_check,finish_delay_check,finish_delay_value);   
+                                }else{
+                                JOptionPane.showMessageDialog(null,"延遲及幀數不得小於1以下");
+                                }
+                                
                             }
                             }).start(); 
                             
@@ -349,7 +357,7 @@ public class Output extends Frame {
         
     }
     
-    void gen_all(int speed,int interval,boolean is_loop){
+    void gen_all(int speed,int interval,boolean is_loop,boolean is_finish_loop, int finish_delay_val){
         int counts=0;
         check_directory();
         Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
@@ -552,6 +560,9 @@ public class Output extends Frame {
             opg.add_progress(1);
          }
      }
+        if(is_finish_loop== true){
+            finish_delay(finish_delay_val,counts,writer);
+        }
         writer.close();
         output.close();
         opg.setVisible(false);
@@ -580,6 +591,22 @@ public class Output extends Frame {
         } catch (InterruptedException ex) {
             Logger.getLogger(Output.class.getName()).log(Level.SEVERE, null, ex);
         }
+        }
+    }
+    
+    void finish_delay(int counts,int orginal_count,GifSequenceWriter writer){
+            Image ibf = MF.Main_Drawing_space.request_Image();
+            String filename = "temp_pic/temp_final.PNG";
+            {
+        try {
+            ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
+            BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_final.PNG"));
+            for(int i=0;i<counts;i++){
+            writer.writeToSequence(nextImage);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Output.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         }
     }
     /****************************************test*/

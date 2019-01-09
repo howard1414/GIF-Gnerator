@@ -11,6 +11,8 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -32,17 +34,24 @@ public class Output_setting extends Frame {
     JPanel panel_Check_btns;
     JPanel panel_interval;
     JPanel panel_delay;
+    JPanel panel_finish_delay;
     JButton button_ok;
     JButton button_cancel;
     JButton button_add_interval;
     JButton button_sub_interval;
     JButton button_add_delay;
     JButton button_sub_delay;
+    JButton button_add_finish_delay;
+    JButton button_sub_finish_delay;
     JTextArea interval_text;
     JTextArea delay_text;
+    JTextArea finish_delay_text;
     JCheckBox check_loop;
+    JCheckBox check_finish_delay;
     public int delay=15;
     public int interval=10;
+    public int finish_delay_value =10;
+    public boolean is_finish_delay = false;
     public boolean is_check = false;
     Main_Frame MF;
     Output_setting(Main_Frame parent){
@@ -76,8 +85,10 @@ public class Output_setting extends Frame {
     panel_interval = new JPanel();
     panel_delay = new JPanel();
     panel_Check_btns = new JPanel();
+    panel_finish_delay = new JPanel();
     JLabel label_interval = new JLabel("每幀步數");
     JLabel label_delay = new JLabel("間格速度(ms)");
+    check_finish_delay = new JCheckBox("最後幀停留張數"); 
     check_loop = new JCheckBox("循環播放");
     button_ok = new JButton("確定");
     button_cancel = new JButton("取消");
@@ -85,11 +96,15 @@ public class Output_setting extends Frame {
     button_sub_interval = new JButton("-");
     button_add_delay = new JButton("+");
     button_sub_delay = new JButton("-");
+    button_add_finish_delay = new JButton("+");
+    button_sub_finish_delay = new JButton("-");
     interval_text = new  JTextArea(1,3);
     interval_text.setText("15");
     delay_text = new  JTextArea(1,3);
     delay_text.setText("10");
-    JP.setLayout(new GridLayout(6,0));
+    finish_delay_text = new  JTextArea(1,3);
+    finish_delay_text.setText("10");
+    JP.setLayout(new GridLayout(8,0));
     panel_label_interval.add(label_interval);
     panel_label_delay.add(label_delay);
     panel_Check_btns.setLayout(new GridLayout(0,2));
@@ -103,10 +118,17 @@ public class Output_setting extends Frame {
     panel_delay.add(button_add_delay);
     panel_delay.add(delay_text);
     panel_delay.add(button_sub_delay);
+    panel_finish_delay.setLayout(new GridLayout(0,3));
+    panel_finish_delay.add(button_add_finish_delay);
+    panel_finish_delay.add(finish_delay_text);
+    panel_finish_delay.add(button_sub_finish_delay);
     JP.add(panel_label_interval);
     JP.add(panel_interval);
     JP.add(panel_label_delay);
     JP.add(panel_delay);
+    JP.add(check_finish_delay);
+    JP.add(panel_finish_delay);
+    panel_finish_delay.setVisible(false);
     JP.add(check_loop);
     JP.add(panel_Check_btns);
     button_add_interval.addMouseListener(
@@ -150,6 +172,26 @@ public class Output_setting extends Frame {
                          
                 }
         );
+    button_add_finish_delay.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {    
+                        finish_delay_text.setText(Integer.toString(Integer.parseInt(finish_delay_text.getText())+1)); 
+                    }
+                         
+                }
+        );
+    button_sub_finish_delay.addMouseListener(
+                new MouseAdapter()
+                {
+                    public void mouseClicked(MouseEvent e)
+                    {    
+                        finish_delay_text.setText(Integer.toString(Integer.parseInt(finish_delay_text.getText())-1)); 
+                    }
+                         
+                }
+        );
     button_ok.addMouseListener(
                 new MouseAdapter()
                 {
@@ -158,8 +200,10 @@ public class Output_setting extends Frame {
                         
                         delay = Integer.parseInt(delay_text.getText());
                         interval = Integer.parseInt(interval_text.getText());
+                        finish_delay_value = Integer.parseInt(finish_delay_text.getText());
                         is_check = check_loop.isSelected();
-                        if(delay > 0 || interval > 0){
+                        is_finish_delay = check_finish_delay.isSelected();
+                        if(delay > 0 && interval > 0){
                         setVisible(false);
                         }else{
                         JOptionPane.showMessageDialog(null,"數值輸入錯誤，需大於1或以上，請再次確認!");
@@ -173,14 +217,24 @@ public class Output_setting extends Frame {
                 {
                     public void mouseClicked(MouseEvent e)
                     {   
-                        interval_text.setText("10");
+                        interval_text.setText("15");
                         delay_text.setText("10");
+                        finish_delay_text.setText("10");
                         setVisible(false);
                     }
                          
                 }
         );
-    
+     check_finish_delay.addItemListener(
+             new ItemListener() {      
+            public void itemStateChanged(ItemEvent e) {
+                if(check_finish_delay.isSelected()){
+                panel_finish_delay.setVisible(true);
+                }else{
+                panel_finish_delay.setVisible(false);
+                }
+            }
+        });
     }
     
 }

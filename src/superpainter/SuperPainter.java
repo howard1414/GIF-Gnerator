@@ -11,7 +11,8 @@ public class SuperPainter {
     //自動日期版本設定
     static boolean Auto_date_State = false;
     //設定標題及手動版本號
-    static String  APPVERSION_static = "20190109 build 1843";
+    //正式版內部版本號 : 20190109 build 2140
+    static String  APPVERSION_static = "v1.1";
     static String Title = "GIF Generator";
     //
     
