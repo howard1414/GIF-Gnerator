@@ -14,7 +14,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
-    JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette,line_width;
+    JButton loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette,line_width;
     JButton pencilall,fileall,patternall,backup;
     Output output;
     Button_Status BS;
@@ -29,7 +29,6 @@ public class ToolbarBTN extends JPanel{
         lineBTN = new JButton("   直線   ");
         //檔案類
         fileall = new JButton("  檔案存取  ");
-        saveBTN = new JButton("     存檔     ");
         loadBTN = new JButton("   插入圖片   ");
         optBTN = new JButton("   輸出   ");
         //圖形類
@@ -58,7 +57,6 @@ public class ToolbarBTN extends JPanel{
         set_buttonUI(rectBTN);
         set_buttonUI(lineBTN);
         set_buttonUI(loadBTN);
-        set_buttonUI(saveBTN);
         set_buttonUI(optBTN);
         set_buttonUI(circleBTN);
         set_buttonUI(closeBTN);
@@ -186,15 +184,6 @@ public class ToolbarBTN extends JPanel{
                     }
                 }
         );
-        saveBTN.addMouseListener(
-                new MouseAdapter()
-                {
-                    public void mouseClicked(MouseEvent e)
-                    {
-                         MF.Messgebar.setLB("儲存檔案");;
-                    }
-                }
-        );
         optBTN.addMouseListener(
                 new MouseAdapter()
                 {
@@ -304,7 +293,6 @@ public class ToolbarBTN extends JPanel{
             case file:
                  Panel_Button.removeAll();
                  Panel_Button.add(loadBTN);
-                 Panel_Button.add(saveBTN);
                  Panel_Button.add(optBTN);
                  Panel_Button.add(backup);
                  Panel_Button.updateUI();
