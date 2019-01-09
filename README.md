@@ -102,5 +102,68 @@ Computer Program Engineering (II) project work
 <br> Remove Out_line.class
 <br> Add new Status select resize move
 
+<br> 20181225
+<br> building version 2121
+<br> Fix history_replay
+<br> Add Judge_Quadrant()
 
+<br> 20181226
+<br> building version 1616
+<br> Adding output as gif
+<br> Fixed stack re
+<br> Add Line BufferedImage
+<br> Fixed history_replay Image problem
 
+<br> 20181227
+<br> building version 1943
+<br> Remove overlap main()
+
+<br> 20181228
+<br> building version 1611
+<br> Fixed Step error
+<br> Add Line label,stack
+
+<br> 20181230
+<br> building version 2208
+<br> Add  Image select,move,resize
+<br> Add Line label,stack
+
+<br> 20181231
+<br> building version 1603
+<br> Add output all line gif
+
+<br> 20190101
+<br> building version 2031
+<br> Add drawOvil
+<br> Adding output_all delay and interval settings
+<br> Prove the drawing performanc
+<br> Add output progress
+
+<br> 20190102
+<br> building version 2354
+<br> Add GIF drawRect
+<br> Add drawline(BETA)
+<br> Add select location to output
+<br> Add drawImage
+<br> Add common io jar
+<br> Fixed the shape name not showing properly
+<br> Fixed the Image step name problem
+<br> Fixed counter not activate properly
+<br> Fixed Image history replay
+<br> Fixed GIF drawOvil
+<br> Fixed the interval send value error 
+<br> The showning name to be fixed(bug for image)
+
+<br> 20190103
+<br> building version 1432
+<br> Fixed output stack count error
+<br> Fixed Panel resize
+
+<br> 20190104 
+<br> building version 2037
+<br> Optmized the file selection process
+<br> Fixed the output file wont auto closed problem
+
+<br> 20190109
+<br> building version 1235
+<br> Update output_setting's is loop selection
