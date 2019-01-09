@@ -46,6 +46,7 @@ public class Main_Drawing_space extends Canvas{
     Color BGD = Color.white;
     Image ImageBuffer;
     int clickcount=0;
+    FileFilter filter;
     float BS;        //線條粗細
     Main_Drawing_space(Main_Frame MF){
         super();
@@ -53,6 +54,7 @@ public class Main_Drawing_space extends Canvas{
         BS= 1.0f;
         parent = MF;
         file_choose = new JFileChooser();
+        filter = new FileNameExtensionFilter("Images Files", "JPG","jpg","JPEG", "jpeg","GIF","gif","BMP","bmp","PNG","png");
         Drawing_space = new JPanel();  
         this.setBackground(BGD);
         this.setVisible(true);
@@ -837,7 +839,7 @@ public class Main_Drawing_space extends Canvas{
     }
     //讀取圖片
     public void loadimage() throws FileNotFoundException{
-        FileFilter filter = new FileNameExtensionFilter("Images Files", "jpg", "jpeg","gif","bmp");
+        
         System.out.println("Load image...");
         file_choose.setFileFilter(filter);
             if(file_choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
