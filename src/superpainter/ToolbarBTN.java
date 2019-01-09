@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.JPanel;
 public class ToolbarBTN extends JPanel{
     JButton saveBTN,loadBTN,optBTN,lineBTN,pencilBTN,circleBTN,closeBTN,chang3d,recoveryBTN,rectBTN,addnewPG,palette,line_width;
-    JButton pencilall,fileall,patternall,backup,reset,history;
+    JButton pencilall,fileall,patternall,backup;
     Output output;
     Button_Status BS;
     Boolean toolbarVisible=true;
@@ -46,12 +46,8 @@ public class ToolbarBTN extends JPanel{
         recoveryBTN = new JButton("   復原   ");
         chang3d = new JButton(" 3D切換 ");       
         closeBTN = new JButton("  <<  ");
-        reset = new JButton("  重置畫面   ");
-        history = new JButton("  歷史紀錄  ");
        
         //設定外觀
-        set_buttonUI(history);
-        set_buttonUI(reset);
         set_buttonUI(backup);
         set_buttonUI(palette);
         set_buttonUI(patternall);
@@ -75,45 +71,6 @@ public class ToolbarBTN extends JPanel{
         //新增到panel上(初始化
         chang_button();
         //按鍵動作*/
-        history.addMouseListener(
-                new MouseAdapter()
-                {
-                    public void mouseClicked(MouseEvent e)
-                    {
-                        JFrame temp = new JFrame("歷史紀錄");
-                        JButton check = new JButton("確認");
-                        TextField TF = new TextField();
-                        check.setBounds(20, 80,100,40);
-                        TF.setBounds(20, 20, 120,30);
-                        temp.setBounds(120, 120, 180, 180);
-                        temp.setLayout(null);
-                        temp.add(TF);
-                        temp.add(check);
-                        temp.setVisible(true);
-                        check.addMouseListener(
-                            new MouseAdapter()
-                            {
-                                public void mouseClicked(MouseEvent e)
-                                {  
-                                    int x = Integer.parseInt(TF.getText());
-                                     MF.Main_Drawing_space.history_replay(x);
-                                     temp.dispose();
-                                }
-                                
-                            }
-                        );
-                    }
-                }
-        );
-        reset.addMouseListener(
-                new MouseAdapter()
-                {
-                    public void mouseClicked(MouseEvent e)
-                    {
-                       MF.Main_Drawing_space.repaint();
-                    }
-                }
-        );
         line_width.addMouseListener(
                 new MouseAdapter()
                 {
@@ -141,8 +98,10 @@ public class ToolbarBTN extends JPanel{
                         chang_button();
                         if(MF.Main_Drawing_space!=null){
                              Re_Addpage RA = new Re_Addpage(MF);
-                             output.setVisible(false);    
-                             output = null;
+                             if(output != null){
+                                output.setVisible(false);    
+                                output = null;
+                             }
                         }
                         else
                         {   
@@ -327,7 +286,6 @@ public class ToolbarBTN extends JPanel{
             case initial:
                 Panel_Button.removeAll();
                 Panel_Button.add(addnewPG);
-                Panel_Button.add(fileall);
                 Panel_Button.add(closeBTN);
                 Panel_Button.updateUI();
             break;
@@ -340,8 +298,6 @@ public class ToolbarBTN extends JPanel{
                 Panel_Button.add(palette);
                 Panel_Button.add(line_width);
                 Panel_Button.add(recoveryBTN);
-                //Panel_Button.add(history);
-                //Panel_Button.add(reset);
                 Panel_Button.add(closeBTN);
                 Panel_Button.updateUI();
             break;

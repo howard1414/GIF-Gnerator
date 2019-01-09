@@ -19,7 +19,6 @@ public class Line {
     Color Color;
     float BasicStroke;
     BufferedImage Image;
-    int imgW,imgH;
     
     
       Line(Point start ,Point end,Pattern pat,Color color,float BS,int sck){

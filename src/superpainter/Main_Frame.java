@@ -31,11 +31,11 @@ public class Main_Frame extends Frame {
     int fpy;
     boolean firstin = true;
     int count=0;
-    
+    Select_Panel select_panel;
      Main_Frame(String APPVERSION,String Title){
         Messgebar = new Messgebar();
         THIS = this;
-        this.setSize(700,700);
+        this.setSize(900,600);
         this.setLocation(100, 20);
         this.add(Panel_Main);
         Panel_Main.setLayout(new BorderLayout());
@@ -88,6 +88,8 @@ public class Main_Frame extends Frame {
         size_btn.setBounds(Drawing_space_x,Drawing_space_y, 15, 15);
         Panel_size.add(Main_Drawing_space);
         Panel_size.add(size_btn);
+        select_panel = new Select_Panel(this);
+        Panel_Main.add(select_panel,BorderLayout.EAST);
         JSC.add(Panel_size);
         JSC.validate();
         Panel_Main.add(JSC);
@@ -136,6 +138,8 @@ public class Main_Frame extends Frame {
                        Panel_size.updateUI();
                        SPW = Main_Drawing_space.getWidth();
                        SPH = Main_Drawing_space.getHeight();
+                       select_panel.change();
+                       //select_panel.TF_update();
                     }
                     public void mousePressed(MouseEvent e){
                         fpx = (int)MouseInfo.getPointerInfo().getLocation().x - Panel_Main.getLocationOnScreen().x;

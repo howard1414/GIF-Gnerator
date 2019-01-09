@@ -41,12 +41,12 @@ public class Main_Drawing_space extends Canvas{
     Stack re;                        //存取繪畫紀錄堆疊
     int pencilem = 0;                //復原用
     int drawfirst =0 ;                //判斷是否為第一次畫用
-    private BufferedImage img;
+    BufferedImage img;
     Main_Frame parent;
     Color color;                    //色彩更改
     Color BGD = Color.white;
     Image ImageBuffer;
-    
+    int clickcount=0;
     float BS;        //線條粗細
     Main_Drawing_space(Main_Frame MF){
         super();
@@ -216,6 +216,7 @@ public class Main_Drawing_space extends Canvas{
                             System.out.println("離開狀態" + MF.Main_Drawing_space.status);
                             if(SaveStatus == Status.drawimage){
                                 Main_Drawing_space.this.status = Status.active;
+                                Main_Drawing_space.this.parent.Messgebar.LB1.setText("待機中");
                             }
                             else
                             {
@@ -232,6 +233,7 @@ public class Main_Drawing_space extends Canvas{
                     {   
                         //鉛筆功能(放開滑鼠左鍵)
                         if(lp!=null){
+                            clickcount=0;
                             if(Main_Drawing_space.this.status == Status.drawpencil)
                             {   
                                 linecount.add(lines.size()-pencilem);
@@ -284,6 +286,15 @@ public class Main_Drawing_space extends Canvas{
                            draw_out_line(p1,p2);
                         }
                      }
+                     else
+                     {
+                        clickcount++;
+                        if(clickcount == 2){
+                            Main_Drawing_space.this.status = Status.active;
+                            Main_Drawing_space.this.parent.Messgebar.LB1.setText("待機中");
+                        }    
+                     }
+                        MF.select_panel.change();
                    }
                 }
         );
@@ -330,7 +341,7 @@ public class Main_Drawing_space extends Canvas{
                             lp=e.getPoint();
                             Judge_Quadrant();
                             g2d.drawOval(p1.x, p1.y, p2.x-p1.x,p2.y-p1.y);
-                            lines.add(new Line(fp,lp,Pattern.Ovil,color,BS,linecount.size())); 
+                            lines.add(new Line(p1,p2,Pattern.Ovil,color,BS,linecount.size())); 
                             drawfirst=1;
                         }
                         //矩形功能
@@ -344,7 +355,7 @@ public class Main_Drawing_space extends Canvas{
                         lp=e.getPoint();
                         Judge_Quadrant();
                         g2d.drawRect(p1.x, p1.y, p2.x-p1.x,p2.y-p1.y);
-                        lines.add(new Line(fp,lp,Pattern.Rect,color,BS,linecount.size())); 
+                        lines.add(new Line(p1,p2,Pattern.Rect,color,BS,linecount.size())); 
                         drawfirst=1;
                     }
                     else if(Main_Drawing_space.this.status == Status.P1resize)                    
@@ -462,7 +473,7 @@ public class Main_Drawing_space extends Canvas{
                        x = lp.x;
                        if(x<=p1.x) x=p1.x;
                        p2 = new Point(x,p2.y);
-                        if(SaveStatus ==Status.drawRect){
+                       if(SaveStatus ==Status.drawRect){
                            g2d.drawRect(p1.x,p1.y ,p2.x-p1.x,p2.y-p1.y);
                            lines.add(new Line(p1,p2,Pattern.Rect,color,BS,linecount.size()-1));
                        }
@@ -589,7 +600,7 @@ public class Main_Drawing_space extends Canvas{
                     }
                 }
             }
-           }
+          }
         );
     }
     //復原功能實作
@@ -612,6 +623,15 @@ public class Main_Drawing_space extends Canvas{
             }
             linecount.remove(linecount.size()-1);
             repaint();            
+            System.out.println(status);
+            if(status == Status.select){
+                System.out.println("CHANGE");
+                if(SaveStatus == Status.drawimage){
+                     status = Status.active;
+                }else{
+                    status = SaveStatus;
+                }
+            }
             return 1;
         }
         else
@@ -682,7 +702,6 @@ public class Main_Drawing_space extends Canvas{
                         //第一象限
                         if(l.lastpoint.x<=l.firstpoint.x && l.lastpoint.y<l.firstpoint.y){
                             g2d.drawRect(l.lastpoint.x, l.lastpoint.y, (l.firstpoint.x-l.lastpoint.x),(l.firstpoint.y-l.lastpoint.y));
-                 
                         }
                         //第二象限
                         else if(l.lastpoint.x>l.firstpoint.x && l.lastpoint.y<=l.firstpoint.y){
@@ -792,8 +811,11 @@ public class Main_Drawing_space extends Canvas{
                 }
             }
         }
+        if(status == Status.select)
+            draw_out_line(p1,p2,g2d);
         GraImage.dispose();
         g.drawImage(ImageBuffer, 0, 0,null);
+        
     }       
     //重設頁面
     public void readdpage(){
@@ -807,6 +829,8 @@ public class Main_Drawing_space extends Canvas{
         parent.size_btn.setBounds(parent.Drawing_space_x,parent.Drawing_space_y, 15, 15);
         re.removeAll(re);
         linecount.removeAll(linecount);
+        status = Status.active;
+        parent.select_panel.change();
         img = null;
         repaint();
         parent.Panel_size.updateUI();
@@ -845,6 +869,7 @@ public class Main_Drawing_space extends Canvas{
             linecount.add(1);
             System.out.println(linecount.size());
             re.push(1);
+            Main_Drawing_space.this.parent.select_panel.change();
        }catch(Exception ex){
             System.out.println("Printing image failed!");       
        }
@@ -911,6 +936,30 @@ public class Main_Drawing_space extends Canvas{
         System.out.println("SavaStatus = " + SaveStatus);
         Graphics draw  = Main_Drawing_space.this.getGraphics();
         Graphics2D draw2D = (Graphics2D)draw;
+        draw2D.setColor(Color.BLACK);
+        //(1)
+        draw2D.drawRect(fp.x-5       ,fp.y-5,         5,5);
+        //(2)
+        draw2D.drawRect((fp.x+lp.x)/2,fp.y-5,         5,5);
+        //(3)
+        draw2D.drawRect(lp.x          ,fp.y-5,        5,5);
+        //(4)
+        draw2D.drawRect(fp.x-5        ,(fp.y+lp.y)/2, 5,5);
+        //(5)
+        draw2D.drawRect(lp.x          ,(fp.y+lp.y)/2, 5,5);
+        //(6)
+        draw2D.drawRect(fp.x-5        ,lp.y,          5,5);
+        //(7)
+        draw2D.drawRect((fp.x+lp.x)/2 ,lp.y,          5,5);
+        //(8)
+        draw2D.drawRect(lp.x          ,lp.y,          5,5);
+        //外虛線
+        float[] dashPattern = {10F, 10F, 10F, 10F, 10F, 10F, 10F, 10F};
+        Stroke dash = new BasicStroke(1f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND,3.5f,dashPattern,0f);
+        draw2D.setStroke(dash);
+        draw2D.drawRect(fp.x-3, fp.y-3, (lp.x - fp.x)+6 , (lp.y - fp.y)+6); 
+  }
+     void draw_out_line(Point fp,Point lp,Graphics2D draw2D){ 
         draw2D.setColor(Color.BLACK);
         //(1)
         draw2D.drawRect(fp.x-5       ,fp.y-5,         5,5);
