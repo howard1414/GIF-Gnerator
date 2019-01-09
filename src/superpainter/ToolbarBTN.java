@@ -30,7 +30,7 @@ public class ToolbarBTN extends JPanel{
         //檔案類
         fileall = new JButton("  檔案存取  ");
         saveBTN = new JButton("     存檔     ");
-        loadBTN = new JButton("   讀檔   ");
+        loadBTN = new JButton("   插入圖片   ");
         optBTN = new JButton("   輸出   ");
         //圖形類
         patternall = new JButton("  圖形工具  ");

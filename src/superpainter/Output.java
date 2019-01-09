@@ -121,10 +121,10 @@ public class Output extends Frame {
     JP_Buttom = new JPanel(); 
     Panel_left = new JPanel();
     Panel_Right = new JPanel();
-    button_save = new JButton("輸出");
+    button_save = new JButton("輸出單張");
     button_setting= new JButton("設定");
     button_exit= new JButton("取消");
-    button_output_all = new JButton("輸出全部");
+    button_output_all = new JButton("輸出GIF");
     set_buttonUI(button_save);
     set_buttonUI(button_setting);
     set_buttonUI(button_exit);
