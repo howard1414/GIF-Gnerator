@@ -12,7 +12,7 @@ public class SuperPainter {
     static boolean Auto_date_State = false;
     //設定標題及手動版本號
     static String  APPVERSION_static = "20190109 build 1357";
-    static String Title = "SuperPrinter";
+    static String Title = "GIF Generator";
     //
     
     public static void main(String[] args) {
