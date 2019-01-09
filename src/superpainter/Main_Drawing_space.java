@@ -28,7 +28,6 @@ import java.math.*;
  */
 public class Main_Drawing_space extends Canvas{
     
-    //Image Img;
     JPanel Drawing_space ;
     JFileChooser file_choose ;
     File file_path;

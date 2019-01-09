@@ -74,16 +74,11 @@ public class Output extends Frame {
     name = new String[count_stack()];
     }
     Vector<Line> ln = MF.Main_Drawing_space.request_line();
-    System.out.println("showing!");
     int cts=0;
     int prev=0;
     for(Line llnn : ln){
-         System.out.println("llnn.stack " + llnn.stack + "cts " + cts);
         if(llnn.stack == cts){
-            //System.out.println("llnn.stack " + llnn.stack + "cts " + cts);
-            System.out.println("LLNN -- " + llnn.Pattern.toString());
             name[cts] = llnn.Pattern.toString();
-            System.out.println("NAME ARR= "+name[cts] );
             cts++;
         }   
         
@@ -96,7 +91,6 @@ public class Output extends Frame {
     this.pack();
     this.setTitle("輸出");
     this.setVisible(true);
-    //opt_setting = new Output_setting(MF);
     this.addWindowListener( new WindowAdapter()
             {
                 public void windowClosing(WindowEvent e)
@@ -106,16 +100,6 @@ public class Output extends Frame {
                 }
             }
         );
-    /*
-   new Thread(new Runnable(){
-   @Override
-        public void run(){
-          test_drawing_speed();  
-        }
-    }).start();
-     */
-        
-    
     }
     void setup_comp(){
     JP_Buttom = new JPanel(); 
@@ -133,7 +117,6 @@ public class Output extends Frame {
     Panel_Right.setLayout(new GridLayout(4, 1));
     Panel_left.setLayout(new BoxLayout(Panel_left, BoxLayout.PAGE_AXIS));
     scrollPane.setPreferredSize(new Dimension(200, 300));
-    //scrollPane.setBounds(0, 0, this.getWidth(), this.getHeight());
     JP_Buttom.setLayout(new BorderLayout());
     Panel_Right.add(button_save);
     Panel_Right.add(button_output_all);
@@ -203,21 +186,8 @@ public class Output extends Frame {
                 }    
         );
     }
-    /*
-     new Thread(new Runnable(){
-   @Override
-        public void run(){
-            
-        }
-    }).start();
-    
-    
-    */
-    
-    
      void gen_box(int amount,String[] content){
      checkbox = new JCheckBox[amount]; 
-     //System.out.println("amount" + amount);
      for(int i=0;i<amount;i++){
          System.out.println(content[i]);
          if(content[i].equals("Pencil")){
@@ -231,7 +201,6 @@ public class Output extends Frame {
          }else{
             content[i]="圖片";
          }
-        //System.out.println(content[i]);
         checkbox[i] = new JCheckBox("步驟"+(i+1)+" : "+content[i]);    
         Panel_left.add(checkbox[i]);
         setup_event(checkbox[i],i);
@@ -243,7 +212,6 @@ public class Output extends Frame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 MF.Main_Drawing_space.history_replay(ptr+1);
-                //gen_pic(ptr);
             }
         });
      }
@@ -281,7 +249,6 @@ public class Output extends Frame {
             opg.setVisible(false);
             opg = null;
             JOptionPane.showMessageDialog(null,"輸出完成!");
-            //gen_gif(count_imgs);
         }
     }).start();
     } 
@@ -390,15 +357,6 @@ public class Output extends Frame {
         line = MF.Main_Drawing_space.request_line();
         Output_progress opg = new Output_progress(line.size(),MF);
         try{
-        /*
-        if(line.get(0).Pattern == Pattern.Pencil){
-            MF.Main_Drawing_space.drawp(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0));
-        }
-        else if(line.get(0).Pattern == Pattern.Ovil)
-        {
-            MF.Main_Drawing_space.drawOvil(line.get(0).firstpoint.x,line.get(0).firstpoint.y,line.get(0).lastpoint.x,line.get(0).lastpoint.y,line.get(0),360);
-        }*/
-        //
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("選擇GIF儲存位置");
         FileFilter filter = new FileNameExtensionFilter("GIF","gif");
@@ -411,7 +369,6 @@ public class Output extends Frame {
         fileToSave = fileChooser.getSelectedFile();
         saves = fileToSave.getAbsolutePath()+".gif";
         }else{
-        //Thread.stop();
         saves = "deafult.gif";
         } 
         
@@ -420,33 +377,12 @@ public class Output extends Frame {
         String first_name = "temp_pic/temp_0.PNG";
         ImageIO.write((RenderedImage) fibf, "PNG", new File(first_name));
         BufferedImage firstImage = ImageIO.read(new File("temp_pic/temp_0.PNG"));
-        //ImageOutputStream output = new FileImageOutputStream(new File("temp_pic/opt.gif"));
         GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), speed, is_loop);
         writer.writeToSequence(firstImage);
         for(Line ll : line){
-        /*
-        if(ll.Pattern == Pattern.Pencil){
-            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y);
-        }
-        else if(ll.Pattern == Pattern.Ovil)
-        {
-            MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
-        }
-            
-            */
-        
         if(ll.Pattern == Pattern.Pencil){
             MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
             test_output(counts,interval,speed,writer);
-            /*if(counts%interval==0){
-            Image ibf = MF.Main_Drawing_space.request_Image();
-            String filename = "temp_pic/temp_"+counts+".PNG";
-            ImageIO.write((RenderedImage) ibf, "PNG", new File(filename));
-            BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(counts)+".PNG"));
-            System.out.println(counts);
-            writer.writeToSequence(nextImage);
-            Thread.sleep(speed);
-            }*/
             counts++;
             opg.add_progress(1);
         }
@@ -616,13 +552,6 @@ public class Output extends Frame {
             opg.add_progress(1);
          }
      }
-        /*
-        for(int i=0;i<counts;i++){
-        BufferedImage nextImage = ImageIO.read(new File("temp_pic/temp_"+(i+1)+".PNG"));
-        System.out.println(i);
-        writer.writeToSequence(nextImage); 
-        }
-        */
         writer.close();
         output.close();
         opg.setVisible(false);
@@ -630,11 +559,7 @@ public class Output extends Frame {
         delete_temp();
         JOptionPane.showMessageDialog(null,"輸出完成!");
         MF.Main_Drawing_space.temp = true;
-        //}catch(InterruptedException exx){
-        //System.out.println("Interrupted ERR");
         }catch(IOException ex){
-        System.out.println("IO ERR");
-        
         }
     
     }
@@ -668,38 +593,11 @@ public class Output extends Frame {
     System.out.println("size= "+count+"\n");
     
     Stack ss = MF.Main_Drawing_space.re ;
-    /*for(Object s:ss){
-    //System.out.println("ss= "+s+"\n");
-    }*/
     }
-    /*void test_drawing_speed(){
-    System.out.println("輸出中");
-    line = MF.Main_Drawing_space.request_line();
-    try{
-    for(Line ll : line){
-        Graphics g = MF.Main_Drawing_space.ImageBuffer.getGraphics();
-        Graphics2D g2d = (Graphics2D)g;
-        
-        if(ll.Pattern == Pattern.Pencil){
-            MF.Main_Drawing_space.drawp(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
-        }
-        else if(ll.Pattern == Pattern.Ovil)
-        {
-            MF.Main_Drawing_space.drawOvil(ll.firstpoint.x,ll.firstpoint.y,ll.lastpoint.x,ll.lastpoint.y,ll);
-        }
-        Thread.sleep(10);
-    }
-    }catch(InterruptedException exx){
-    }
-    //MF.Main_Drawing_space.history_replay(base+1);
-    //MF.Main_Drawing_space.drawp(d_line.firstpoint.x,d_line.firstpoint.y,d_line.lastpoint.x,d_line.lastpoint.y);
-    MF.Main_Drawing_space.temp = true;
-    }*/
     int count_stack(){
     int count=0;
    
     for(Object s:ss){
-    //System.out.println("ss= "+s+"\n");
         count++;
     }
     return count;

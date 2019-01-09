@@ -160,7 +160,6 @@ public class Output_setting extends Frame {
                         interval = Integer.parseInt(interval_text.getText());
                         is_check = check_loop.isSelected();
                         if(delay > 0 || interval > 0){
-                        //MF.toolbarBTN.output.send_setting(delay,interval,status);
                         setVisible(false);
                         }else{
                         JOptionPane.showMessageDialog(null,"數值輸入錯誤，需大於1或以上，請再次確認!");
